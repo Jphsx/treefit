@@ -25,6 +25,13 @@ void print2dvec(vector<vector<type> > v){
 		cout<<endl;
 	}
 }
+template <class type>
+void printvector(vector<type> v){
+	for(int i=0; i<v.size(); i++){
+			cout<<v.at(i)<<" ";
+	}
+	//cout<<endl;
+}
 void generateSubsets(std::vector<int> v, int k, int start, int currLen, std::vector<bool> used, std::vector<std::vector<int> >& combinations){
 	if(currLen == k) {
 		std::vector<int> indices;
@@ -62,6 +69,63 @@ void generateIndicesCombinations(int vectorsize, int nparticles, std::vector<std
 	generateSubsets(master,k,0,0,used,combinations);
 
 }
+/* C implementation QuickSort */
+//implementation modified and copied from 
+//http://www.geeksforgeeks.org/quick-sort/
+ 
+// A utility function to swap two elements
+template <class type>
+void swap(type* a, type* b)
+{
+    type t = *a;
+    *a = *b;
+    *b = t;
+}
+ 
+/* This function takes last element as pivot, places
+   the pivot element at its correct position in sorted
+    array, and places all smaller (smaller than pivot)
+   to left of pivot and all greater elements to right
+   of pivot */
+template <class type>
+int partition (vector<type>& arr, int low, int high)
+{
+    int pivot = arr.at(high);    // pivot
+    int i = (low - 1);  // Index of smaller element
+ 
+    for (int j = low; j <= high- 1; j++)
+    {
+        // If current element is smaller than or
+        // equal to pivot
+        if (arr.at(j) <= pivot)
+        {
+            i++;    // increment index of smaller element
+            swap(&arr.at(i), &arr.at(j));
+        }
+    }
+    swap(&arr.at(i + 1), &arr.at(high));
+    return (i + 1);
+}
+ 
+/* The main function that implements QuickSort
+ arr --> Array to be sorted,
+  low  --> Starting index,
+  high  --> Ending index */
+template <class type>
+void quickSort(vector<type>& arr, int low, int high)
+{
+    if (low < high)
+    {
+        /* pi is partitioning index, arr[p] is now
+           at right place */
+        int pi = partition(arr, low, high);
+ 
+        // Separately sort elements before
+        // partition and after partition
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
 //combo is index vector
 bool containsusedparticle(vector<int> combo){
 	for(int i=0; i<combo.size(); i++){
@@ -84,17 +148,21 @@ bool containsfinalstateparticle(vector<int> fsp_pdgs, vector<int> combo_pdgs){
 	//if we havent returned false yet then combo is good, return true
 	return true;
 }
-//combo argument is unique particle index not pdgs, is the combination of pdgs the same as the required combination?
-bool finalstatepdgmatch(vector<int> fsp, vector<int> combo){
+//combo argument is  pdgs, is the combination of pdgs the same as the required combination?
+bool finalstatepdgmatch(vector<int>& fsp_pdgs, vector<int>& combo_pdgs){
 
 	//create a matched vector of boolean values
-	vector<bool> used;
-	for(int i=0;fsp.size();i++  ){
-		used.push_back(false);
+	//get fsp pdgs and combo pdgs
+	//sort both arrays using quicksort
+	//if both arrays have the same pdg content then the two arrays should be identical after sorting
+	quickSort(fsp_pdgs, 0, fsp_pdgs.size()-1);
+	quickSort(combo_pdgs, 0, combo_pdgs.size()-1);
+
+	for(int i=0; i< fsp_pdgs.size(); i++){
+		if( fsp_pdgs.at(i) != combo_pdgs.at(i) ) return false;
 	}
 	
-		
-	return false;
+	return true;
 		
 }
 vector<vector<int> > filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> > pdgcombinations ){
@@ -105,7 +173,11 @@ vector<vector<int> > filtercombinations(vector<int> fsp, vector<vector<int> >& c
 	for(int i=0; i<combinations.size(); i++){
 
 		// 1- the set contains the same pdgs as the decay is supposed to have 
+		// this may be redundant (can only use 1-b to save time)
 		if(!containsfinalstateparticle(fsp,pdgcombinations.at(i))) continue;
+
+		// 1-b the set contains exactly the same composition of pdgs
+		if(!finalstatepdgmatch(fsp,pdgcombinations.at(i))) continue;
 		
 		// 2- none of the particles in the set are marked as used from previous sets
 		if(containsusedparticle(combinations.at(i))) continue;//used particle found reject combo
@@ -160,6 +232,25 @@ int main(){
 	vector<vector<int> > filteredpdgcombos;
 	filteredpdgcombos = mapindextopdg(filteredcombos);
 	print2dvec(filteredpdgcombos);
+
+
+	//sorting test: sort this random array
+	vector<int> numbers = {10 , -90, 400, 2, -7, 13, 999, -400, 10, 10 ,10 ,2, 14, 399, -399};
+	
+	quickSort(numbers, 0, numbers.size()-1);
+    	cout<<"Sorted array: ";
+   	printvector(numbers);
+   	cout<<endl;
+
+	//now test marking a particle used
+	//last photon is now used
+	cout<<"same combination generating but with last photon marked used"<<endl;
+	usedparts.at(usedparts.size()-1)=1;
+	filteredcombos = filtercombinations(finalstatepdgs, combos, pdgcombos);
+	filteredpdgcombos = mapindextopdg(filteredcombos);
+	print2dvec(filteredcombos);
+	print2dvec(filteredpdgcombos);
+	cout<<endl;
 	
 
 }
