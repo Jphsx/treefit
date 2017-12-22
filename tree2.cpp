@@ -2,35 +2,54 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
+#include <algorithm>
 #include <stdlib.h> //atof atoi
 
 using namespace std;
 
 //////globals///////////////////////////////////////////////////////////////////////////////////
+//vector marking particles as used or free
+vector<int> usedparts{};
 
+//the set of pdgs from the reconstructed set of particles
+vector<int> recopdgs{};
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 class Node{
 	public:
-	vector<Node*> children;
-	int pdg;
-	double mass; // -1 for leaf or no constraint at this node
-	bool isLeaf;
+	vector<Node*> children{};
+	int pdg = -1;
+	double mass = -1.0; // -1 for leaf or no constraint at this node
+	bool isLeaf = 0;
 
 	//unique ID from key
-	int nodeId;
+	int nodeId = -1;
 	
 	//store all combinations of final state particles
 	//indices of initial particle array
-	vector<int> particles;
-	vector<int> particle_pdgs;
+	vector<vector<int> > combinations{{}};
+	vector<vector<int> > combinations_pdgs{{}};
+	
+	//place holder for current set of particles for this node
+	vector<int> currentcombination{};
+	vector<int> currentcombination_pdgs{};
 
 	//the number of final state particles from this particular decay node
 	int nLeaves=0;
 	//the pdgcodes of all the final state particles for this
-	vector<int> leafpdgs;
+	vector<int> leafpdgs{};
+
+	//helper data structures
+	//quick access to see which children are leaves
+	//the values are 0 for no a leaf, otherwise the pdgcode is the element
+	//TODO change the values from 1's
+	vector<int> childrenleaves{};
+	//for each fit combination, need to store which indices that are flagged used
+	//so they can be unflagged in each iteration
+	//the incices used is the INDEX OF THE FLAG 
+	vector<int> usedpartsindicesflagged{};
 	
 };
 Node* newNode (int id){
@@ -70,7 +89,7 @@ vector<int> castVector_int(vector<string> v){
 	return v_int;
 }
 vector<string> splitString(string str, string delimiter){
-	vector<string> vectokens;
+	vector<string> vectokens{};
 	char* dup = strdup(str.c_str());
 	char* dup_delim = strdup(delimiter.c_str());
 	char* tokens = strtok(dup,dup_delim);
@@ -172,6 +191,19 @@ void populateNLeaves(Node* root){
 	}
 	return;
 }
+//TODO this function
+void setChildrenLeaves(Node* root){
+	//do a preorder traversal, check all the children at a node to see if hey are leaves
+	for(int i=0; i<root->children.size(); i++){
+		if(root->children.at(i)->isLeaf){
+			root->childrenleaves.push_back(root->children.at(i)->pdg);
+		}
+		else{
+			root->childrenleaves.push_back(0);
+		}
+		setChildrenLeaves(root->children.at(i));
+	}
+}
 //preorder print all tree information
 void printTree(Node* root){
 	cout<< "NodeId: "<< root->nodeId <<" Pdg: "<< root->pdg <<" Mass: "<< root->mass << " isLeaf= "<<root->isLeaf <<" Children { ";
@@ -180,30 +212,14 @@ void printTree(Node* root){
 	}
 	cout<< "}"<<" nLeaves= "<< root->nLeaves << " Leaf Pdgs: { " ;
 	printvector(root->leafpdgs);
-	cout<< "}"<<endl;
+	cout<< "}"<<" childrenleaves: ";
+	printvector(root->childrenleaves);
+	cout<<endl;
 	for(int i=0; i<root->children.size(); i++){
 		printTree(root->children.at(i));
 	}
 }
-//should test return a tree?
-void testTree(string pdg, string serial, string mass, string delimiter, int TESTNUM){
-	int index = 0;
-	Node* root = constructTree( splitString(serial,delimiter), &index);
-	cout<<"TREE "<<TESTNUM<<endl;
-	preOrderTraverse(root);
-	cout<<endl;
-	postOrderTraverse(root);
-	cout<<endl;
 
-	index=0;
-	setTreeMasses(root, castVector_double(splitString(mass,delimiter)), &index);
-	index=0;
-	setTreePdgCodes(root, castVector_int(splitString(pdg,delimiter)), &index);
-	markTreeLeaves(root);
-	populateNLeaves(root);
-	printTree(root);
-	
-}
 ////////////////////////////////////////////////////END TREE STUFF///////////////////////////////////////////////
 ////////////////////////////////////////////////////Begin Combinatorics//////////////////////////////////////////
 
@@ -341,9 +357,10 @@ bool finalstatepdgmatch(vector<int>& fsp_pdgs, vector<int>& combo_pdgs){
 	return true;
 		
 }
-vector<vector<int> > filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> > pdgcombinations ){
+void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> >& pdgcombinations ){
 
 	vector<vector<int> > filteredcombos;
+	vector<vector<int> > filteredpdgcombos;
 //the three main conditions for selecting a valid combination of particles is
 
 	for(int i=0; i<combinations.size(); i++){
@@ -362,13 +379,21 @@ vector<vector<int> > filtercombinations(vector<int> fsp, vector<vector<int> >& c
 			//require E/p uniqueness
 		//if all the tests are passed push the combination onto the new object
 		filteredcombos.push_back(combinations.at(i));
+		filteredpdgcombos.push_back(pdgcombinations.at(i));
 
 	}
 
-	return filteredcombos;
+	combinations.clear();
+	pdgcombinations.clear();//
+	//maybe combinations deleted when out of scope,so, try a hard copy
+	for(int i=0; i<filteredcombos.size(); i++){
+		combinations.push_back(filteredcombos.at(i));
+		pdgcombinations.push_back(filteredpdgcombos.at(i));
+	}
 }
 //map indices to pdgs
-vector<vector<int> > mapindextopdg( vector<vector<int> >& combinations){
+//vector<vector<int> >
+void mapindextopdg( vector<vector<int> >& combinations, vector<vector<int> >& pdgcombinations){
 	vector<vector<int> > pdgcombos;
 
 		for(int i=0; i<combinations.size(); i++){
@@ -379,19 +404,115 @@ vector<vector<int> > mapindextopdg( vector<vector<int> >& combinations){
 			pdgcombos.push_back(subarray);
 			subarray.clear();
 		}
-		return pdgcombos;
+		//return pdgcombos;
+		pdgcombinations = pdgcombos;	
 	
 }
 ///////////////////////////////////////////////////End Combinatorics///////////////////////////////////////////////
+//////////////////////////////////////////////////Begin generating fit combinations from reco particles///////////
+void initializeusedvector(int size){
+	for(int i=0; i<size; i++){
+		usedparts.push_back(0);
+	}
+	return;
+}
+bool allpartsused(){
+	for(int i=0; i<usedparts.size(); i++){
+		if(usedparts.at(i) == 0) return false;
+	}
+	return true;
+}
+//preorder combination generation recursively
+void generatefitcombinations(Node* root){
+
+	if(root->isLeaf) return;
+	//first generate all combinations for this node
+	//arguments(n,k,vector) n choose k and put index combos onto vector
+	//TODO what if mass=-1?? we dont want to make combinations
+	generateIndicesCombinations(recopdgs.size(),root->nLeaves,root->combinations);
+	mapindextopdg( root->combinations, root->combinations_pdgs);
+	filtercombinations(root->leafpdgs, root->combinations, root->combinations_pdgs );
+	
+	//iterate through combinations and through all children recursively
+	//for(int i=0; i
+	for(int i=0; i<root->combinations.size(); i++){
+		//first set the current combination
+		root->currentcombination = root->combinations.at(i);
+		root->currentcombination_pdgs = root->combinations_pdgs.at(i);
+
+		//for the children that are leaves, we will mark them as used for this combo
+		for(int j=0; j<root->childrenleaves.size(); j++){
+			//if element==false no flag
+			//if the element is nonzero it is a leaf, so we need to mark
+			if(root->childrenleaves.at(i)){
+				
+				//find the leaf that corresponds to index in combinations and usedparts
+				for(int x=0; x<root->currentcombination.size(); x++){
+					if(!usedparts.at(root->currentcombination.at(x)) && recopdgs.at(root->currentcombination.at(x)) == root->childrenleaves.at(j) ){				
+						usedparts.at(root->currentcombination.at(x))=1;
+					}
+				}
+				
+				//when a particle is marked check and see if we need to fit
+				if(allpartsused()){
+					cout<<"performing fit"<<endl;
+					//TODO printfit function;
+				}
+			}
+		}
+		
+		for(int k=0; k<root->children.size(); k++){
+			//recurse through the children
+			generatefitcombinations(root->children.at(k));
+		}
+		//before we proceed to the next combination unmark the leaves previously used
+		root->currentcombination.clear();
+		root->currentcombination_pdgs.clear();
+		for(int l=0; l<root->usedpartsindicesflagged.size(); l++){
+			usedparts.at(root->usedpartsindicesflagged.at(l))=0;
+		}
+		root->usedpartsindicesflagged.clear();
+		
+	}
+	return;
+}
+Node* testTree(string pdg, string serial, string mass, string delimiter, int TESTNUM){
+	int index = 0;
+	Node* root = new Node();
+	root = constructTree( splitString(serial,delimiter), &index);
+	cout<<"TREE "<<TESTNUM<<endl;
+	preOrderTraverse(root);
+	cout<<endl;
+	postOrderTraverse(root);
+	cout<<endl;
+
+	index=0;
+	setTreeMasses(root, castVector_double(splitString(mass,delimiter)), &index);
+	index=0;
+	setTreePdgCodes(root, castVector_int(splitString(pdg,delimiter)), &index);
+	markTreeLeaves(root);
+	populateNLeaves(root);
+	setChildrenLeaves(root);
+	printTree(root);
+        generatefitcombinations(root);
+
+	return root;
+	
+}
+///////////////////////////////////////////////////End fitting combinations//////////////////////////////////////
 int main(){ 
-	string preorder_pdg = " 443 331 321 -321 221 211 -211 111 22 22 ";
+
+	Node* tree;
+	string delimiter = " ,";
+/*	string preorder_pdg = " 443 331 321 -321 221 211 -211 111 22 22 ";
 	string preorder_key = "0 1 2 3 4 5 6 7 8 9";
 	string preorder_serial = "0 1 2 ) 3 ) ) 4 5 ) 6 ) 7 8 ) 9 ) ) ) )";
 	string preorder_mass = " 3.096 1.0195 -1 -1 0.547 -1 -1 0.135 -1 -1 ";
-	string delimiter = " ,";
 	
-	testTree(preorder_pdg, preorder_serial, preorder_mass, delimiter, 1);
 	
+	tree = testTree(preorder_pdg, preorder_serial, preorder_mass, delimiter, 1);
+	delete tree;
+	tree=NULL;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//test tree #2
 	string preorder_pdg2 = " 443 221 111 22 22 211 -211 331 321 -321";
@@ -399,8 +520,9 @@ int main(){
 	string preorder_serial2 = "0 1 2 3 ) 4 ) ) 5 ) 6 ) ) 7 8 ) 9 ) ) )";
 	string preorder_mass2 = " 3.096 0.547 0.135 -1 -1 -1 -1 1.0195 -1 -1";
 	
-	testTree(preorder_pdg2, preorder_serial2, preorder_mass2, delimiter, 2);
-	
+	tree = testTree(preorder_pdg2, preorder_serial2, preorder_mass2, delimiter, 2);
+	delete tree;
+	tree=NULL;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	string preorder_pdg3 = " 223 221 111 22 22 111 22 22 111 22 22 22";
@@ -408,8 +530,9 @@ int main(){
 	string preorder_serial3 ="0 1 2 3 ) 4 ) ) 5 6 ) 7 ) ) 8 9 ) 10 ) ) ) 11 ) )";
 	string preorder_mass3 = "0.782 0.547 0.135 -1 -1 0.135 -1 -1 0.135 -1 -1 -1";
 	
-	testTree(preorder_pdg3, preorder_serial3, preorder_mass3, delimiter, 3);
-
+	tree = testTree(preorder_pdg3, preorder_serial3, preorder_mass3, delimiter, 3);
+	delete tree;
+	tree=NULL;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	string preorder_pdg4 = " 223 22 221 111 22 22 111 22 22 111 22 22";
@@ -417,8 +540,9 @@ int main(){
 	string preorder_serial4 = "0 1 ) 2 3 4 ) 5 ) ) 6 7 ) 8 ) ) 9 10 ) 11 ) ) ) )";
 	string preorder_mass4 = "0.782 -1 0.547 0.135 -1 -1 0.135 -1 -1 0.135 -1 -1";
 
-	testTree(preorder_pdg4, preorder_serial4, preorder_mass4, delimiter, 4);
-
+	tree = testTree(preorder_pdg4, preorder_serial4, preorder_mass4, delimiter, 4);
+	delete tree;
+	tree=NULL;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	string preorder_pdg5 = " 221 211 -211 111 22 22";
@@ -426,8 +550,11 @@ int main(){
 	string preorder_serial5 = "0 1 ) 2 ) 3 4 ) 5 ) ) )";
 	string preorder_mass5 = "0.547 -1 -1 0.135 -1 -1";
 
-	testTree(preorder_pdg5, preorder_serial5, preorder_mass5, delimiter, 5);
+	tree = testTree(preorder_pdg5, preorder_serial5, preorder_mass5, delimiter, 5);
+	delete tree;
+	tree = NULL;
 
+*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	string preorder_pdg6 = " 221 111 22 22 211 -211";
@@ -435,9 +562,22 @@ int main(){
 	string preorder_serial6 = "0 1 2 ) 3 ) ) 4 ) 5 ) )";
 	string preorder_mass6 = "0.537 0.135 -1 -1 -1 -1";
 
-	testTree(preorder_pdg6, preorder_serial6, preorder_mass6, delimiter, 6);
+	
+	
+	//delete tree;
+	//tree = NULL;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//preorder combination generation
+	//define the reconstucted particles (by pdg)
+	// using tree 6, eta -> pi+ pi- pi0
+	//arbitrary reconstructed particles: 4 tracks 3 photons 7 particles total
+	recopdgs = { 211, -211, 13, -13, 22, 22, 22};
+	//start by setting global array for all particles unused
+	initializeusedvector(recopdgs.size());
+		
 
+	//tree fitting combination starting with simplest cases
+	tree = testTree(preorder_pdg6, preorder_serial6, preorder_mass6, delimiter, 6);
+	//take the tree and fit combinations
+		
 }

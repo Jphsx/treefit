@@ -165,9 +165,11 @@ bool finalstatepdgmatch(vector<int>& fsp_pdgs, vector<int>& combo_pdgs){
 	return true;
 		
 }
-vector<vector<int> > filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> > pdgcombinations ){
+//vector<vector<int> >
+void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> >& pdgcombinations ){
 
 	vector<vector<int> > filteredcombos;
+	vector<vector<int> > filteredpdgcombos;
 //the three main conditions for selecting a valid combination of particles is
 
 	for(int i=0; i<combinations.size(); i++){
@@ -186,10 +188,16 @@ vector<vector<int> > filtercombinations(vector<int> fsp, vector<vector<int> >& c
 			//require E/p uniqueness
 		//if all the tests are passed push the combination onto the new object
 		filteredcombos.push_back(combinations.at(i));
+		filteredpdgcombos.push_back(pdgcombinations.at(i));
 
 	}
 
-	return filteredcombos;
+	combinations.clear();
+	pdgcombinations.clear();
+	combinations=filteredcombos;
+	pdgcombinations=filteredpdgcombos;
+
+	//return filteredcombos;
 }
 //map indices to pdgs
 vector<vector<int> > mapindextopdg( vector<vector<int> >& combinations){
@@ -224,15 +232,18 @@ int main(){
 	vector<int> finalstatepdgs ={ 211, -211, 22, 22 };
 
 	vector<vector<int> > filteredcombos;
-	filteredcombos= filtercombinations(finalstatepdgs, combos, pdgcombos);
+	//filteredcombos= 
+	filtercombinations(finalstatepdgs, combos, pdgcombos);
 
-	cout<<"filtered n combinations = "<< filteredcombos.size()<<endl;
-	print2dvec(filteredcombos);
+	//cout<<"filtered n combinations = "<< filteredcombos.size()<<endl;
+	cout<<"filtered n combinations = "<<combos.size()<<endl;
+	//print2dvec(filteredcombos);
+	print2dvec(combos);
 	
-	vector<vector<int> > filteredpdgcombos;
-	filteredpdgcombos = mapindextopdg(filteredcombos);
-	print2dvec(filteredpdgcombos);
-
+	//vector<vector<int> > filteredpdgcombos;
+	//filteredpdgcombos = mapindextopdg(filteredcombos);
+	//print2dvec(filteredpdgcombos);
+	print2dvec(pdgcombos);
 
 	//sorting test: sort this random array
 	vector<int> numbers = {10 , -90, 400, 2, -7, 13, 999, -400, 10, 10 ,10 ,2, 14, 399, -399};
@@ -244,6 +255,7 @@ int main(){
 
 	//now test marking a particle used
 	//last photon is now used
+	/*
 	cout<<"same combination generating but with last photon marked used"<<endl;
 	usedparts.at(usedparts.size()-1)=1;
 	filteredcombos = filtercombinations(finalstatepdgs, combos, pdgcombos);
@@ -251,6 +263,7 @@ int main(){
 	print2dvec(filteredcombos);
 	print2dvec(filteredpdgcombos);
 	cout<<endl;
+	*/
 	
 
 }
