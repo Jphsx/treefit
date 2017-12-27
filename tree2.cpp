@@ -13,6 +13,8 @@ vector<int> usedparts{};
 
 //the set of pdgs from the reconstructed set of particles
 vector<int> recopdgs{};
+int maxusedparts=-1;
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,8 +31,8 @@ class Node{
 	
 	//store all combinations of final state particles
 	//indices of initial particle array
-	vector<vector<int> > combinations{{}};
-	vector<vector<int> > combinations_pdgs{{}};
+	vector<vector<int> > combinations{};
+	vector<vector<int> > combinations_pdgs{};
 	
 	//place holder for current set of particles for this node
 	vector<int> currentcombination{};
@@ -52,6 +54,10 @@ class Node{
 	vector<int> usedpartsindicesflagged{};
 	
 };
+
+/////the global tree
+Node* theTree = NULL;
+////////////
 Node* newNode (int id){
     Node* temp = new Node();
     temp->nodeId=id;
@@ -204,6 +210,11 @@ void setChildrenLeaves(Node* root){
 		setChildrenLeaves(root->children.at(i));
 	}
 }
+//input the root of the fully constructed tree to determine the maximum number of particles going to be used in a fit
+void setmaxusedparts(Node* root){
+	maxusedparts = root->nLeaves;
+	return;
+}
 //preorder print all tree information
 void printTree(Node* root){
 	cout<< "NodeId: "<< root->nodeId <<" Pdg: "<< root->pdg <<" Mass: "<< root->mass << " isLeaf= "<<root->isLeaf <<" Children { ";
@@ -340,24 +351,36 @@ bool containsfinalstateparticle(vector<int> fsp_pdgs, vector<int> combo_pdgs){
 	//if we havent returned false yet then combo is good, return true
 	return true;
 }
+bool subsetofparentcombo(parentcombo,combinations.at(i)){
+
+}
 //combo argument is  pdgs, is the combination of pdgs the same as the required combination?
 bool finalstatepdgmatch(vector<int>& fsp_pdgs, vector<int>& combo_pdgs){
 
+	//create a copy of both arrays, we don't want the originals sorted because we need to preserve indices
+	vector<int> fsp_copy{};
+	vector<int> combo_copy{};
+	//the vectors had better be the same size
+	for(int i=0; i<fsp_pdgs.size(); i++){ 
+		fsp_copy.push_back(fsp_pdgs.at(i));
+		combo_copy.push_back(combo_pdgs.at(i));
+	}
+	
 	//create a matched vector of boolean values
 	//get fsp pdgs and combo pdgs
 	//sort both arrays using quicksort
 	//if both arrays have the same pdg content then the two arrays should be identical after sorting
-	quickSort(fsp_pdgs, 0, fsp_pdgs.size()-1);
-	quickSort(combo_pdgs, 0, combo_pdgs.size()-1);
+	quickSort(fsp_copy, 0, fsp_copy.size()-1);
+	quickSort(combo_copy, 0, combo_copy.size()-1);
 
-	for(int i=0; i< fsp_pdgs.size(); i++){
-		if( fsp_pdgs.at(i) != combo_pdgs.at(i) ) return false;
+	for(int i=0; i< fsp_copy.size(); i++){
+		if( fsp_copy.at(i) != combo_copy.at(i) ) return false;
 	}
 	
 	return true;
 		
 }
-void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> >& pdgcombinations ){
+void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> >& pdgcombinations, vector<int> parentcombo ){
 
 	vector<vector<int> > filteredcombos;
 	vector<vector<int> > filteredpdgcombos;
@@ -371,6 +394,9 @@ void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vec
 
 		// 1-b the set contains exactly the same composition of pdgs
 		if(!finalstatepdgmatch(fsp,pdgcombinations.at(i))) continue;
+
+		//the combinations are a subset of the parent set of indices
+		if(!subsetofparentcombo(parentcombo,combinations.at(i))) continue;
 		
 		// 2- none of the particles in the set are marked as used from previous sets
 		if(containsusedparticle(combinations.at(i))) continue;//used particle found reject combo
@@ -386,6 +412,7 @@ void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vec
 	combinations.clear();
 	pdgcombinations.clear();//
 	//maybe combinations deleted when out of scope,so, try a hard copy
+	//TODO change this back i think it was okay
 	for(int i=0; i<filteredcombos.size(); i++){
 		combinations.push_back(filteredcombos.at(i));
 		pdgcombinations.push_back(filteredpdgcombos.at(i));
@@ -417,21 +444,50 @@ void initializeusedvector(int size){
 	return;
 }
 bool allpartsused(){
+	//count the number of used parts, if it is equal to maxused parts return true
+	int counter=0;
 	for(int i=0; i<usedparts.size(); i++){
-		if(usedparts.at(i) == 0) return false;
+		if(usedparts.at(i) == 1) counter++;
 	}
-	return true;
+	if(counter == maxusedparts){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+//preorder traverse and print current combinations and node information
+void printfit(Node* root){
+	
+	if(root->isLeaf) return;
+
+	cout<< "NodeId: "<< root->nodeId <<" Pdg: "<< root->pdg << " FSPs Indices: ";
+	printvector(root->currentcombination);
+	cout<< " FSPs Pdgs: ";
+	printvector(root->currentcombination_pdgs);
+	cout<<endl;
+
+	for(int i=0; i<root->children.size(); i++){
+		printfit(root->children.at(i));
+	}
+	return;
+	
 }
 //preorder combination generation recursively
-void generatefitcombinations(Node* root){
+void generatefitcombinations(Node* root, vector<int> parentcombo){
 
 	if(root->isLeaf) return;
 	//first generate all combinations for this node
 	//arguments(n,k,vector) n choose k and put index combos onto vector
 	//TODO what if mass=-1?? we dont want to make combinations
-	generateIndicesCombinations(recopdgs.size(),root->nLeaves,root->combinations);
+
+	/*generateIndicesCombinations(recopdgs.size(),root->nLeaves,root->combinations);
 	mapindextopdg( root->combinations, root->combinations_pdgs);
 	filtercombinations(root->leafpdgs, root->combinations, root->combinations_pdgs );
+	*/
+	generateIndicesCombinations(recopdgs.size(), root->nLeaves, root->combinations);
+	mapindextopdg( root->combinations, root->combinations_pdgs);
+	filtercombinations(root->leafpdgs, root->combinations, root->combinations_pdgs, parentcombo);
 	
 	//iterate through combinations and through all children recursively
 	//for(int i=0; i
@@ -444,42 +500,58 @@ void generatefitcombinations(Node* root){
 		for(int j=0; j<root->childrenleaves.size(); j++){
 			//if element==false no flag
 			//if the element is nonzero it is a leaf, so we need to mark
-			if(root->childrenleaves.at(i)){
+			if(root->childrenleaves.at(j) != 0){
 				
 				//find the leaf that corresponds to index in combinations and usedparts
 				for(int x=0; x<root->currentcombination.size(); x++){
 					if(!usedparts.at(root->currentcombination.at(x)) && recopdgs.at(root->currentcombination.at(x)) == root->childrenleaves.at(j) ){				
 						usedparts.at(root->currentcombination.at(x))=1;
+						root->usedpartsindicesflagged.push_back(root->currentcombination.at(x));
+
+						
 					}
 				}
 				
 				//when a particle is marked check and see if we need to fit
+				//all parts used needs changed, we need to check and see if n flags = n leaves of the root
 				if(allpartsused()){
 					cout<<"performing fit"<<endl;
 					//TODO printfit function;
+					printfit(theTree);
+
+					for(int l=0; l<root->usedpartsindicesflagged.size(); l++){
+						usedparts.at(root->usedpartsindicesflagged.at(l))=0;
+					}
+					root->usedpartsindicesflagged.clear();
+					break;
 				}
 			}
 		}
-		
+	
 		for(int k=0; k<root->children.size(); k++){
 			//recurse through the children
-			generatefitcombinations(root->children.at(k));
+			//generatefitcombinations(root->children.at(k));
+			generatefitcombinations(root->children.at(k), root->currentcombination);
 		}
 		//before we proceed to the next combination unmark the leaves previously used
 		root->currentcombination.clear();
 		root->currentcombination_pdgs.clear();
-		for(int l=0; l<root->usedpartsindicesflagged.size(); l++){
-			usedparts.at(root->usedpartsindicesflagged.at(l))=0;
-		}
-		root->usedpartsindicesflagged.clear();
+		
+	//	for(int l=0; l<root->usedpartsindicesflagged.size(); l++){
+	//		usedparts.at(root->usedpartsindicesflagged.at(l))=0;
+	//	}
+	//	root->usedpartsindicesflagged.clear();
 		
 	}
+	root->combinations.clear();
+	root->combinations_pdgs.clear();
 	return;
 }
 Node* testTree(string pdg, string serial, string mass, string delimiter, int TESTNUM){
 	int index = 0;
 	Node* root = new Node();
 	root = constructTree( splitString(serial,delimiter), &index);
+	theTree = root;
 	cout<<"TREE "<<TESTNUM<<endl;
 	preOrderTraverse(root);
 	cout<<endl;
@@ -494,7 +566,8 @@ Node* testTree(string pdg, string serial, string mass, string delimiter, int TES
 	populateNLeaves(root);
 	setChildrenLeaves(root);
 	printTree(root);
-        generatefitcombinations(root);
+	setmaxusedparts(root);
+        generatefitcombinations(root, recopdgs);
 
 	return root;
 	
