@@ -7,15 +7,15 @@ Node* Tree::newNode (int id){
     return temp;
 }
 
-template <class type>
-void printvector(vector<type> v){
+template <typename type>
+void Tree::printvector(vector<type> v){
 	for(int i=0; i<v.size(); i++){
 			cout<<v.at(i)<<" ";
 	}
 	//cout<<endl;
 }
-template <class type>
-void print2dvec(vector<vector<type> > v){
+template <typename type>
+void Tree::print2dvec(vector<vector<type> > v){
 	for(int i=0; i<v.size(); i++){
 		for(int j=0; j<v.at(i).size(); j++){
 			cout<<v.at(i).at(j)<<" ";
@@ -149,10 +149,25 @@ void Tree::setParents(Node* root, Node* parentptr){
 		setParents(root->children.at(i), root);
 	}
 }
-Node* Tree::getParentNextNonLeafChild(){
-
+Node* Tree::getParentNextNonLeafChild(Node* parent, int callingNodeID){
+	if(parent != NULL){
+		for(int i=0; i<parent->children.size(); i++){
+			if( !parent->children.at(i)->isLeaf && parent->children.at(i)->nodeId != callingNodeID){
+				return parent->children.at(i);
+			}	
+		}
+	}
+	return NULL;
 }
-
+void Tree::getLastNonLeafNodeId(Node* root, int* id){
+	if(!root->isLeaf){
+		//cout<<"this node "<<root->nodeId<<endl;
+		*id = root->nodeId;
+	}
+	for(int i=0; i<root->children.size(); i++){
+		getLastNonLeafNodeId(root->children.at(i), id);
+	}
+}
 //preorder print all tree information
 void Tree::printTree(Node* root){
 	cout<< "NodeId: "<< root->nodeId <<" Pdg: "<< root->pdg <<" Mass: "<< root->mass << " isLeaf= "<<root->isLeaf <<" Children { ";
@@ -164,15 +179,21 @@ void Tree::printTree(Node* root){
 	cout<< "}";//<<" childrenleaves: ";
 	//printvector(root->childrenleaves);
 	cout<< " parentID ";
-	if(root->parent != NULL){ cout<< root->parent->nodeId;
+	if(root->parent != NULL) cout<< root->parent->nodeId;
+	
+	cout<<endl;
+	cout<<" next non leaf sibling: ";
+	Node* temp = getParentNextNonLeafChild(root->parent, root->nodeId);
+	if(temp != NULL){
+	cout<< temp->nodeId;
 	}
-	else{ cout<< "NULL"; }
+	
 	cout<<endl;
 	for(int i=0; i<root->children.size(); i++){
 		printTree(root->children.at(i));
 	}
 }
-Node* Tree::treeInit(string pdg, string serial, string mass, string delimiter, int TESTNUM){
+void Tree::treeInit(string pdg, string serial, string mass, string delimiter, int TESTNUM){
 	int index = 0;
 	Node* root = new Node();
 	cout<< "Here"<<endl;
@@ -191,8 +212,13 @@ Node* Tree::treeInit(string pdg, string serial, string mass, string delimiter, i
 	markTreeLeaves(root);
 	populateNLeaves(root);
 	setParents(root,NULL);
+	int lastNonLeaf;
+	getLastNonLeafNodeId(root,&lastNonLeaf);
+	lastNonLeafNodeId = lastNonLeaf;
 	//setChildrenLeaves(root);
 	printTree(root);
-	return root;
+	cout<<"last leaf node id: "<<lastNonLeafNodeId<<endl;
+	//return root;
+	Root = root;
 }
 

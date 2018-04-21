@@ -88,8 +88,31 @@ void printParticles(vector<Particle*> parts){
 int main(){ 
 
 	Tree* tree;
+	Node* root;
 	string delimiter = " ,";
 	vector<int> recopdgs{};
+	
+	cout<<"Testing Set Operations with sets A, B "<<endl;
+	vector<int> A = { 1, 2, 3, 40, 50, 60 };
+	vector<int> B = { 3, 40, 45, 50 };
+	cout<<" A: ";
+	Tree::printvector(A);
+	cout<<endl;
+	cout<<" B: ";
+	Tree::printvector(B);
+	cout<<endl;
+
+	vector<int> solution;
+	solution = Combinatorics::addSets(A,B);
+	cout<<" A+B = ";
+	Tree::printvector(solution);
+	cout<<endl;
+	
+	solution = Combinatorics::subtractSets(A,B);
+	cout<<" A-B = ";
+	Tree::printvector(solution);
+	cout<<endl;
+	
 	
 /*	string preorder_pdg = " 443 331 321 -321 221 211 -211 111 22 22 ";
 	string preorder_key = "0 1 2 3 4 5 6 7 8 9";
@@ -153,9 +176,9 @@ int main(){
 	initializerecoparts(recopdgs);
 	printParticles(recoparts);
 
-	tree->treeInit(preorder_pdg5, preorder_serial5, preorder_mass5, delimiter, 5);
-	delete tree;
-	tree = NULL;
+	 tree->treeInit(preorder_pdg5, preorder_serial5, preorder_mass5, delimiter, 5);
+	//delete tree;
+	//tree = NULL;
 	//theTree = NULL; 
 	//recopdgs.clear();
 	//recoparts.clear();

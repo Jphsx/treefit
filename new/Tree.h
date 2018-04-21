@@ -10,8 +10,11 @@ using namespace std;
 
 class Tree{
 	public:
+	int lastNonLeafNodeId;
+	Node* Root;
 //tree construction methods
 	Node* newNode(int id);
+	
 
 	vector<double> castVector_double(vector<string> v);
 	vector<int> castVector_int(vector<string> v);
@@ -25,18 +28,20 @@ class Tree{
 	void findLeaves(Node* root, Node* originalParent);
 	void populateNLeaves(Node* root);
 	void setParents(Node* root, Node* parentptr);
+	void getLastNonLeafNodeId(Node* root, int* id);
 	void printTree(Node* root);
-	Node* treeInit(string pdg, string serial, string mass, string delimiter, int TESTNUM);
+	void treeInit(string pdg, string serial, string mass, string delimiter, int TESTNUM);
 
-	Node* getParentNextNonLeafChild();
+	Node* getParentNextNonLeafChild(Node* parent, int callingNodeID);
 
 	//TODO add deconstructor for NODE
+	template <typename type>
+	static void printvector(vector<type> v);
+	template <typename type>
+	static void print2dvec(vector<vector<type> > v);
 
 };
-//printing is generic template, so define it externally as a templated too, therefore tree is not templated
-//these methods are defined in the cpp, with no specific class attachment
-//void printvector(vector<type> v);
-//void print2dvec(vector<vector<type> > v);
+
 
 #endif
 

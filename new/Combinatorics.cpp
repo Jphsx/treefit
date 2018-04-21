@@ -1,7 +1,7 @@
 #include "Combinatorics.h"
 
 template <typename type>
-void generateSubsets(std::vector<type> v, int k, int start, int currLen, std::vector<bool> used, std::vector<std::vector<type> >& combinations){
+void Combinatorics::generateSubsets(std::vector<type> v, int k, int start, int currLen, std::vector<bool> used, std::vector<std::vector<type> >& combinations){
 	if(currLen == k) {
 		std::vector<type> items;
 		for(unsigned int i=0; i<v.size(); i++){
@@ -24,7 +24,7 @@ void generateSubsets(std::vector<type> v, int k, int start, int currLen, std::ve
 //n choose k
 //this will not work with complex objects like string
 template<typename type>
-void generateParticlesCombinations(int vectorsize, int nparticles, std::vector<std::vector<type> >& combinations, vector<type> recoset){
+void Combinatorics::generateParticlesCombinations(int vectorsize, int nparticles, std::vector<std::vector<type> >& combinations, vector<type> recoset){
 	int n = vectorsize;
 	int k = nparticles;
 
@@ -42,7 +42,7 @@ void generateParticlesCombinations(int vectorsize, int nparticles, std::vector<s
  
 // A utility function to swap two elements
 template <class type>
-void swap(type* a, type* b)
+void Combinatorics::swap(type* a, type* b)
 {
     type t = *a;
     *a = *b;
@@ -55,7 +55,7 @@ void swap(type* a, type* b)
    to left of pivot and all greater elements to right
    of pivot */
 template <class type>
-int partition (vector<type>& arr, int low, int high)
+int Combinatorics::partition (vector<type>& arr, int low, int high)
 {
     int pivot = arr.at(high);    // pivot
     int i = (low - 1);  // Index of smaller element
@@ -79,7 +79,7 @@ int partition (vector<type>& arr, int low, int high)
   low  --> Starting index,
   high  --> Ending index */
 template <class type>
-void quickSort(vector<type>& arr, int low, int high)
+void Combinatorics::quickSort(vector<type>& arr, int low, int high)
 {
     if (low < high)
     {
@@ -94,18 +94,21 @@ void quickSort(vector<type>& arr, int low, int high)
     }
 }
 //does the combo have particles in it that are not in the needed final state? input is pdgs mapped from indices
-bool containsfinalstateparticle(vector<int> fsp_pdgs, vector<int> combo){
+//TODO REVAMP THIS IT USES RECOPARTS?/////////////
+
+bool Combinatorics::containsfinalstateparticle(vector<int> fsp_pdgs, vector<int> combo){/*
 	
 	for(int i=0; i<combo.size(); i++){
 		if(std::find(fsp_pdgs.begin(), fsp_pdgs.end(), recoparts.at(combo.at(i))->recopdg) != fsp_pdgs.end()) {
-    			/* fsp contains particle */
+    			// fsp contains particle 
 		} else {
-    			/* fsp does not contain particle */
+    			// fsp does not contain particle 
 			return false;
 		}
 	}
-	//if we havent returned false yet then combo is good, return true
+	//if we havent returned false yet then combo is good, return true */
 	return true;
+
 }
 //same as containsfinal state particle, but diffrenent names for code clarity
 /*bool subsetofparentcombo(vector<int>& parentcurrentcombo,vector<int>& combination){
@@ -120,7 +123,8 @@ bool containsfinalstateparticle(vector<int> fsp_pdgs, vector<int> combo){
 	return true;
 }*/
 //combo argument is  pdgs, is the combination of pdgs the same as the required combination?
-bool finalstatepdgmatch(vector<int> fsp_pdgs, vector<int> combo){
+//TODO ALSO NEEDS REVAMPED FROM RECOPARTS USAGE
+bool Combinatorics::finalstatepdgmatch(vector<int> fsp_pdgs, vector<int> combo){/*
 
 	//create a copy of both arrays, we don't want the originals sorted because we need to preserve indices
 	vector<int> fsp_copy{};
@@ -146,11 +150,11 @@ bool finalstatepdgmatch(vector<int> fsp_pdgs, vector<int> combo){
 	for(int i=0; i< fsp_copy.size(); i++){
 		if( fsp_copy.at(i) != combo_copy.at(i) ) return false;
 	}
-	
+	*/
 	return true;
 		
 }
-void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations){//, vector<int> parentcombo ){
+void Combinatorics::filtercombinations(vector<int> fsp, vector<vector<int> >& combinations){//, vector<int> parentcombo ){
 
 	vector<vector<int> > filteredcombos;
 	//vector<vector<int> > filteredpdgcombos;
@@ -188,4 +192,30 @@ void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations){//,
 		combinations.push_back(filteredcombos.at(i));
 		//pdgcombinations.push_back(filteredpdgcombos.at(i));
 	}
+}
+/////////////set operations///////////////////////
+
+//the sets need to be sorted before being combined
+
+vector<int> Combinatorics::addSets(vector<int> a, vector<int> b){
+	
+  	vector<int> setSum(a.size()+b.size());                     
+  	std::vector<int>::iterator it;
+
+ 	it=std::set_union (a.begin(), a.end(), b.begin(), b.end(), setSum.begin());
+                                               
+	setSum.resize(it-setSum.begin());
+	return setSum;
+}
+
+vector<int> Combinatorics::subtractSets(vector<int> a, vector<int> b){
+	
+	vector<int> setDiff(a.size()+b.size());
+	std::vector<int>::iterator it;
+	
+	it=std::set_difference (a.begin(), a.end(), b.begin(), b.end(), setDiff.begin());
+                                              
+  	setDiff.resize(it-setDiff.begin()); 
+	return setDiff;
+
 }
