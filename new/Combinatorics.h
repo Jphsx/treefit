@@ -21,9 +21,9 @@ class Combinatorics{
 	static int partition (vector<type>& arr, int low, int high);
 	template<typename type>
 	static void quickSort(vector<type>& arr, int low, int high);
-	static bool containsfinalstateparticle(vector<int> fsp_pdgs, vector<int> combo);
-	static bool finalstatepdgmatch(vector<int> fsp_pdgs, vector<int> combo);
-	static void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations);
+	
+	static bool finalstatepdgmatch(vector<int> fsp_pdgs, vector<int> pdgcombo);
+	static void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> >& pdgcombinations);
 
 	//add elements of set b into a
 	static vector<int> addSets(vector<int> a, vector<int> b);

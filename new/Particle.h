@@ -13,8 +13,8 @@ class Particle{
 	//TLorentzVector MC
 	//LocalParamterization 
 	//LocalParameterization Errors
-	//used flag
-	bool used = 0;
+	
+	
 
 };
 

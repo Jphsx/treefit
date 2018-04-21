@@ -33,29 +33,39 @@ void printParticles(vector<Particle*> parts){
 		cout<<endl;
 	}
 }
-/*void generatefitcombinations(Node* root, vector<int> parentcombo, const int last_non_leaf_id){
+vector<vector<int> > makepdgcombinations(vector<vector<int> > combinations){
+	vector<vector<int> > pdgcombinations;
+	vector<int> pdgcombo;
+	for(int i=0; i<combinations.size();i++){
+		for(int j=0; j<combinations.at(i).size(); j++){
+			pdgcombo.push_back(recoparts.at(combinations.at(i).at(j))->recopdg);
+		}
+		pdgcombinations.push_back(pdgcombo);
+		pdgcombo.clear();
+	}
+	return pdgcombinations;
+}
+void generatefitcombinations(Node* root, vector<int> parentcombo, const int last_non_leaf_id){
 
 	//if(root->isLeaf) return; stop returning on leaf, generate combos at leaves (Mark used there)
 	//first generate all combinations for this node
 	//arguments(n,k,vector) n choose k and put index combos onto vector
+	//if this is a non leaf do combination stuff
+	if(root->isLeaf) return;
 
+	if(root-nodeId == last_non_leaf_id)//do fit
 	
-	generateIndicesCombinations(parentcombo.size(), root->nLeaves, root->combinations, parentcombo);
-	//filtercombinations(root->leafpdgs, root->combinations, root->combinations_pdgs, parentcombo);
-	filtercombinations(root->leafpdgs, root->combinations);//, parentcombo);
+	Combinatorics::generateParticlesCombinations(parentcombo.size(), root->nLeaves, root->combinations, parentcombo);
+	//map root combinations to a combination vector containing the pdgs instead of recoids
+	
+	Combinatorics::filtercombinations(root->leafpdgs, root->combinations, makepdgcombinations(combinations));
 	
 	//iterate through combinations and through all children recursively
-	//for(int i=0; i
-	//++*CURRENT_NON_LEAF_NODES;
+	
 	for(int i=0; i<root->combinations.size(); i++){
 		//first set the current combination
 		root->currentcombination = root->combinations.at(i);
-		//a current combination has been set, tally the global number of combinations
-		//this is contributing to the number of potenial consraints for a fit
-		//++*CURRENT_NON_LEAF_NODES;
-
-		//if(*CURRENT_NON_LEAF_NODES == TOTAL_NON_LEAF_NODES){
-		//check the node id, if its the last non leaf node id need to fit
+	
 		if(root->nodeId == last_non_leaf_id){
 			//do fit
 			//TODO: validate the fit (ancestry)
