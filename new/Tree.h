@@ -32,13 +32,22 @@ class Tree{
 	void printTree(Node* root);
 	void treeInit(string pdg, string serial, string mass, string delimiter, int TESTNUM);
 
-	Node* getParentNextNonLeafChild(Node* parent, int callingNodeID);
+
+	static Node* locateAncestorNearestNonLeafChild(Node* root);
+	//returns the pointer to the closest non leaf sibling
+	static Node* getParentNextNonLeafChild(Node* parent, int callingNodeID);
+	//gets the first child that is not a leaf
+	static Node* getFirstNonLeafChild(Node* root);
 
 	//TODO add deconstructor for NODE
 	template <typename type>
 	static void printvector(vector<type> v);
 	template <typename type>
 	static void print2dvec(vector<vector<type> > v);
+	
+	//iterate and print all non leaf current combos
+	static void printfit(Node* root);
+	
 
 };
 

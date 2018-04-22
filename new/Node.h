@@ -21,6 +21,7 @@ class Node{
 	vector<vector<int> > combinations_pdgs{};
 	
 	//place holder for current set of particles for this node
+	vector<int> currentunusedparts{};
 	vector<int> currentcombination{};
 	vector<int> currentcombination_pdgs{};
 

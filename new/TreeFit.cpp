@@ -5,13 +5,18 @@
 #include "Particle.h"
 #include "Combinatorics.h"
 
+
 using namespace std;
 
 
 
 //global set of reconstructed particles
 vector<Particle*> recoparts{};
+//ID is index of particle on recoparts
 vector<int> recoIDs{};
+int LASTNONLEAFID;
+
+Tree* globalTree;
 //this function should probably take in a TLV or ReconstructedParticle in addition to pdg array to fully populate the object
 void initializerecoparts(vector<int> recopdgs){
 	for(int i=0; i<recopdgs.size(); i++){
@@ -29,7 +34,7 @@ void printParticles(vector<Particle*> parts){
 	for(int i=0; i<parts.size(); i++){
 		cout<<"Particle Index "<<i<<endl;
 		cout<<parts.at(i)->recopdg<<endl;
-		cout<<"Status "<<parts.at(i)->used<<endl;
+		//cout<<"Status "<<parts.at(i)->used<<endl;
 		cout<<endl;
 	}
 }
@@ -45,60 +50,91 @@ vector<vector<int> > makepdgcombinations(vector<vector<int> > combinations){
 	}
 	return pdgcombinations;
 }
-void generatefitcombinations(Node* root, vector<int> parentcombo, const int last_non_leaf_id){
+vector<int> getpdgcombo(vector<int> combo){
+	vector<int> pdgcombo;
+	for(int i=0; i<combo.size(); i++){
+		pdgcombo.push_back(recoparts.at(combo.at(i))->recopdg);
+	}
+	return pdgcombo;	
+}
+void generatefitcombinations(Node* root, vector<int> parentcombo){
 
-	//if(root->isLeaf) return; stop returning on leaf, generate combos at leaves (Mark used there)
-	//first generate all combinations for this node
-	//arguments(n,k,vector) n choose k and put index combos onto vector
+	
+	//no reason to ever visit a leaf
 	//if this is a non leaf do combination stuff
 	if(root->isLeaf) return;
 
-	if(root-nodeId == last_non_leaf_id)//do fit
-	
+	//first generate all combinations for this node
+	//arguments(n,k,vector) n choose k and put index combos onto vector
 	Combinatorics::generateParticlesCombinations(parentcombo.size(), root->nLeaves, root->combinations, parentcombo);
 	//map root combinations to a combination vector containing the pdgs instead of recoids
 	
-	Combinatorics::filtercombinations(root->leafpdgs, root->combinations, makepdgcombinations(combinations));
+	Combinatorics::filtercombinations(root->leafpdgs, root->combinations, makepdgcombinations(root->combinations));
 	
 	//iterate through combinations and through all children recursively
 	
 	for(int i=0; i<root->combinations.size(); i++){
 		//first set the current combination
 		root->currentcombination = root->combinations.at(i);
-	
-		if(root->nodeId == last_non_leaf_id){
-			//do fit
-			//TODO: validate the fit (ancestry)
-			cout<<"FIT"<<endl;
-			printfit(theTree);
-			cout<<endl;
-			//--*CURRENT_NON_LEAF_NODES;
-			
+		
+		root->currentunusedparts = root->combinations.at(i);
+		Combinatorics::quickSort(root->currentcombination, 0, root->currentcombination.size()-1);
+		Combinatorics::quickSort(root->currentunusedparts,0, root->currentunusedparts.size()-1);
+
+		//do after sorting now pdgs follow sort indices
+		root->currentcombination_pdgs= getpdgcombo(root->combinations.at(i));
+
+		//modify parent unused parts
+		//these sets need to be sorted
+		if(root->parent != NULL){
+			root->parent->currentunusedparts = Combinatorics::subtractSets(root->parent->currentunusedparts, root->currentcombination);
 		}
 
 		
-	
-		for(int k=0; k<root->children.size(); k++){
-			//recurse through the children
-			//generatefitcombinations(root->children.at(k));
-			//generatefitcombinations(root->children.at(k), root->currentcombination, CURRENT_NON_LEAF_NODES, TOTAL_NON_LEAF_NODES);
-			generatefitcombinations(root->children.at(k), root->currentcombination, last_non_leaf_id);
-		}
-		//before we proceed to the next combination clear the previously used
-		root->currentcombination.clear();
-		//--*CURRENT_NON_LEAF_NODES;
+
+		//move down to first child if possible
+		if( Tree::getFirstNonLeafChild(root) != NULL){
+			generatefitcombinations(Tree::getFirstNonLeafChild(root),  root->currentcombination);
 		
-	}
-	//--*CURRENT_NON_LEAF_NODES;
+		}//if we cant move down
+		// we travel upwards toward the next
+		//ancestor non leaf //what if this is only 2 particle?
+		else if(Tree::locateAncestorNearestNonLeafChild(root) != NULL){
+			//the nearest ancestor will inherit set from its parent
+			generatefitcombinations(Tree::locateAncestorNearestNonLeafChild(root), Tree::locateAncestorNearestNonLeafChild(root)->parent->currentunusedparts);
+		}
+
+		if(root->nodeId == LASTNONLEAFID){
+			//do fit
+			cout<<"FIT"<<endl;
+			Tree::printfit(globalTree->Root);
+			cout<<endl;
+			
+		}
+		
+		//before we move to the next combination
+		//add current combo into parent set
+		if(root->parent != NULL){
+			root->parent->currentunusedparts = Combinatorics::addSets(root->parent->currentunusedparts, root->currentcombination);
+		}
+
+		
+		
+	}//end combinations loop
+		
+	////we are done back up to the previous call
+	root->currentcombination.clear();
+	root->currentcombination_pdgs.clear();
+	root->currentunusedparts.clear();
 	root->combinations.clear();
 	
 	return;
-}*/
+}
 
 int main(){ 
 
-	Tree* tree;
-	Node* root;
+	//Tree* tree;
+	//Node* root;
 	string delimiter = " ,";
 	vector<int> recopdgs{};
 	
@@ -156,9 +192,11 @@ int main(){
 	delete tree;
 	tree=NULL;
 
-/*
+*/
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	cout<<"CASE 3pi0 + photon "<<std::endl;
+	Tree* tree4;
+
 	string preorder_pdg4 = " 223 22 221 111 22 22 111 22 22 111 22 22";
 	string preorder_key4 = "0 1 2 3 4 5 6 7 8 9 10 11";
 	string preorder_serial4 = "0 1 ) 2 3 4 ) 5 ) ) 6 7 ) 8 ) ) 9 10 ) 11 ) ) ) )";
@@ -166,36 +204,46 @@ int main(){
 	//try best case
 	recopdgs = { 22, 22, 22, 22, 22, 22, 22};
 	initializerecoparts(recopdgs);
+	printParticles(recoparts);
 
-	tree = testTree(preorder_pdg4, preorder_serial4, preorder_mass4, delimiter, 4);
-	delete tree;
-	tree=NULL;
-	theTree = NULL;
+	tree4->treeInit(preorder_pdg4, preorder_serial4, preorder_mass4, delimiter, 4);
+	cout<<"tree constructed"<<endl;
+	globalTree=tree4;
+	generatefitcombinations(tree4->Root, recoIDs);
+	//delete tree;
+	//tree=NULL;
+	//theTree = NULL;
 	recopdgs.clear();
 	recoparts.clear();
 	cout<<std::endl;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-*/
+
+/*
+	Tree* tree5;
 	string preorder_pdg5 = " 221 211 -211 111 22 22";
 	string preorder_key5 = "0 1 2 3 4 5";
 	string preorder_serial5 = "0 1 ) 2 ) 3 4 ) 5 ) ) )";
 	string preorder_mass5 = "0.547 -1 -1 0.135 -1 -1";
 
 	recopdgs = { 211,-211, 13, -13,-211, 22, 22};
-	//initializeusedvector(recopdgs.size());
 	initializerecoparts(recopdgs);
-	printParticles(recoparts);
+	//printParticles(recoparts);
 
-	 tree->treeInit(preorder_pdg5, preorder_serial5, preorder_mass5, delimiter, 5);
+	 tree5->treeInit(preorder_pdg5, preorder_serial5, preorder_mass5, delimiter, 5);
+	LASTNONLEAFID = tree5->lastNonLeafNodeId;
+	globalTree=tree5;
+	generatefitcombinations(tree5->Root, recoIDs);
+
 	//delete tree;
 	//tree = NULL;
-	//theTree = NULL; 
-	//recopdgs.clear();
-	//recoparts.clear();
+	//globalTree = NULL; 
+	recopdgs.clear();
+	recoparts.clear();
 
-/*
+*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
+	Tree* tree6;
 	string preorder_pdg6 = " 221 111 22 22 211 -211";
 	string preorder_key6 = "0 1 2 3 4 5";
 	string preorder_serial6 = "0 1 2 ) 3 ) ) 4 ) 5 ) )";
@@ -208,40 +256,22 @@ int main(){
 	recopdgs = { 211, -211, 13, -13, 22, 22, 22};
 	
 	//start by setting global array for all particles unused
-	//initializeusedvector(recopdgs.size());
 	initializerecoparts(recopdgs);	
-
-	//tree fitting combination starting with simplest cases
-	tree = testTree(preorder_pdg6, preorder_serial6, preorder_mass6, delimiter, 6);
-	delete tree;
-	tree = NULL;
-	theTree = NULL; //null global tree after deleting the contents that it points to
-	recopdgs.clear(); 
-	recoparts.clear();
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//test 7 same as 6 but only eta constraint
-/////////NOTE://///////////
-// the mass = -1 nodes should be dealt with on the fit object generating level
-// eliminating and reorganizing combinations based on -1 flag in mass is too tricky at tree level
-// all combinations will still be generatated at this -1 node regardless of its constraint condition
-///////////////////////////
-	string preorder_pdg7 = " 221 111 22 22 211 -211";
-	string preorder_key7 = "0 1 2 3 4 5";
-	string preorder_serial7 = "0 1 2 ) 3 ) ) 4 ) 5 ) )";
-	string preorder_mass7 = "0.537 -1 -1 -1 -1 -1";
+	printParticles(recoparts);
 	
-	recopdgs = { 211, -211, 13, -13, 22, 22, 22};
-	
-	//start by setting global array for all particles unused
-	//initializeusedvector(recopdgs.size());
-	initializerecoparts(recopdgs);
 	//tree fitting combination starting with simplest cases
-	tree = testTree(preorder_pdg7, preorder_serial7, preorder_mass7, delimiter, 7);
-	delete tree;
-	tree = NULL;
-	theTree = NULL; 
+	tree6->treeInit(preorder_pdg6, preorder_serial6, preorder_mass6, delimiter, 6);
+	LASTNONLEAFID = tree6->lastNonLeafNodeId;
+	globalTree=tree6;
+	generatefitcombinations(tree6->Root, recoIDs);
+	
+	//delete tree;
+	//tree = NULL;
+	//globalTree = NULL; 
 	recopdgs.clear();
 	recoparts.clear();
 */
+
+
 }
 

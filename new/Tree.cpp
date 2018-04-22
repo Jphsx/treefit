@@ -152,12 +152,47 @@ void Tree::setParents(Node* root, Node* parentptr){
 Node* Tree::getParentNextNonLeafChild(Node* parent, int callingNodeID){
 	if(parent != NULL){
 		for(int i=0; i<parent->children.size(); i++){
-			if( !parent->children.at(i)->isLeaf && parent->children.at(i)->nodeId != callingNodeID){
+			if( !parent->children.at(i)->isLeaf && parent->children.at(i)->nodeId > callingNodeID){
 				return parent->children.at(i);
 			}	
 		}
 	}
 	return NULL;
+}
+Node* Tree::locateAncestorNearestNonLeafChild(Node* root){
+	if(root->parent == NULL) return NULL;
+	if(getParentNextNonLeafChild(root->parent, root->nodeId) == NULL){
+		return locateAncestorNearestNonLeafChild(root->parent);
+	}
+	else{
+		return getParentNextNonLeafChild(root->parent, root->nodeId);
+	}
+	
+}
+Node* Tree::getFirstNonLeafChild(Node* root){
+
+	for(int i=0; i<root->children.size(); i++){
+		if(!root->children.at(i)->isLeaf){
+			return root->children.at(i);
+		}
+	}
+	//this node is all leaves
+	return NULL;
+
+}
+void Tree::printfit(Node* root){
+	if(root->isLeaf) return;
+
+	cout<<"Node "<<root->nodeId;
+	cout<<" FitRecoIDs: ";
+	printvector(root->currentcombination);
+	cout<<" FitRecoPDGs: ";
+	printvector(root->currentcombination_pdgs);
+	cout<<endl;
+	for(int i=0; i< root->children.size(); i++){
+		printfit(root->children.at(i));
+	}
+	
 }
 void Tree::getLastNonLeafNodeId(Node* root, int* id){
 	if(!root->isLeaf){
@@ -184,6 +219,21 @@ void Tree::printTree(Node* root){
 	cout<<endl;
 	cout<<" next non leaf sibling: ";
 	Node* temp = getParentNextNonLeafChild(root->parent, root->nodeId);
+	if(temp != NULL){
+	cout<< temp->nodeId;
+	}
+	cout<<endl;
+
+	cout<<" nearest ancestor non leaf child: ";
+	temp = locateAncestorNearestNonLeafChild(root);
+	if(temp != NULL){
+	cout<< temp->nodeId;
+	}
+	cout<<endl;
+
+	cout<<" first non leaf child: ";
+	temp = getFirstNonLeafChild(root);
+	
 	if(temp != NULL){
 	cout<< temp->nodeId;
 	}

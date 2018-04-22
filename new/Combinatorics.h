@@ -11,8 +11,8 @@ class Combinatorics{
 	template<typename type>
 	static void generateSubsets(std::vector<type> v, int k, int start, int currLen, std::vector<bool> used, std::vector<std::vector<type> >& combinations);
 	
-	template<typename type>
-	static void generateParticlesCombinations(int vectorsize, int nparticles, std::vector<std::vector<type> >& combinations, vector<type> recoset);
+	
+	static void generateParticlesCombinations(int vectorsize, int nparticles, std::vector<std::vector<int> >& combinations, vector<int> recoset);
 
 	//sorting (quicksort)
 	template<typename type>
@@ -23,7 +23,7 @@ class Combinatorics{
 	static void quickSort(vector<type>& arr, int low, int high);
 	
 	static bool finalstatepdgmatch(vector<int> fsp_pdgs, vector<int> pdgcombo);
-	static void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> >& pdgcombinations);
+	static void filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> > pdgcombinations);
 
 	//add elements of set b into a
 	static vector<int> addSets(vector<int> a, vector<int> b);

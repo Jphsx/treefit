@@ -23,8 +23,8 @@ void Combinatorics::generateSubsets(std::vector<type> v, int k, int start, int c
 }
 //n choose k
 //this will not work with complex objects like string
-template<typename type>
-void Combinatorics::generateParticlesCombinations(int vectorsize, int nparticles, std::vector<std::vector<type> >& combinations, vector<type> recoset){
+
+void Combinatorics::generateParticlesCombinations(int vectorsize, int nparticles, std::vector<std::vector<int> >& combinations, vector<int> recoset){
 	int n = vectorsize;
 	int k = nparticles;
 
@@ -113,11 +113,9 @@ bool Combinatorics::finalstatepdgmatch(vector<int> fsp_pdgs, vector<int> pdgcomb
 		
 }
 //create a combinations vector to work alongside combinations
-void Combinatorics::filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> >& pdgcombinations){//, vector<int> parentcombo ){
+void Combinatorics::filtercombinations(vector<int> fsp, vector<vector<int> >& combinations, vector<vector<int> > pdgcombinations){
 
 	vector<vector<int> > filteredcombos;
-	//vector<vector<int> > filteredpdgcombos;
-//the three main conditions for selecting a valid combination of particles is
 
 	for(int i=0; i<combinations.size(); i++){
 
