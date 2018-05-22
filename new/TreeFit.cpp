@@ -91,9 +91,15 @@ void generatefitcombinations(Node* root, vector<int> parentcombo){
 		}
 
 		
-
+		if(root->nodeId == LASTNONLEAFID){
+			//do fit
+			cout<<"FIT"<<endl;
+			Tree::printfit(globalTree->Root);
+			cout<<endl;
+			
+		}
 		//move down to first child if possible
-		if( Tree::getFirstNonLeafChild(root) != NULL){
+		else if( Tree::getFirstNonLeafChild(root) != NULL){
 			generatefitcombinations(Tree::getFirstNonLeafChild(root),  root->currentcombination);
 		
 		}//if we cant move down
@@ -104,13 +110,7 @@ void generatefitcombinations(Node* root, vector<int> parentcombo){
 			generatefitcombinations(Tree::locateAncestorNearestNonLeafChild(root), Tree::locateAncestorNearestNonLeafChild(root)->parent->currentunusedparts);
 		}
 
-		if(root->nodeId == LASTNONLEAFID){
-			//do fit
-			cout<<"FIT"<<endl;
-			Tree::printfit(globalTree->Root);
-			cout<<endl;
-			
-		}
+		
 		
 		//before we move to the next combination
 		//add current combo into parent set
@@ -160,41 +160,98 @@ int main(){
 	cout<<endl;
 	
 	
-/*	string preorder_pdg = " 443 331 321 -321 221 211 -211 111 22 22 ";
-	string preorder_key = "0 1 2 3 4 5 6 7 8 9";
-	string preorder_serial = "0 1 2 ) 3 ) ) 4 5 ) 6 ) 7 8 ) 9 ) ) ) )";
-	string preorder_mass = " 3.096 1.0195 -1 -1 0.547 -1 -1 0.135 -1 -1 ";
 	
-	
-	tree = testTree(preorder_pdg, preorder_serial, preorder_mass, delimiter, 1);
-	delete tree;
-	tree=NULL;
-
 /*
+	Tree* tree1;
+	string preorder_pdg1 = " 443 331 321 -321 221 211 -211 111 22 22 ";
+	string preorder_key1 = "0 1 2 3 4 5 6 7 8 9";
+	string preorder_serial1 = "0 1 2 ) 3 ) ) 4 5 ) 6 ) 7 8 ) 9 ) ) ) )";
+	string preorder_mass1 = " 3.096 1.0195 -1 -1 0.547 -1 -1 0.135 -1 -1 ";
+	
+	
+	recopdgs = {211, -211, 22, 22, 321, -321, 22 , 13, -321};
+
+	
+	initializerecoparts(recopdgs);
+	printParticles(recoparts);
+
+	tree1->treeInit(preorder_pdg1, preorder_serial1, preorder_mass1, delimiter, 1);
+	tree1->printTree(tree1->Root);
+	cout<<"tree constructed"<<endl;
+	LASTNONLEAFID = tree1->lastNonLeafNodeId;
+	globalTree=tree1;
+	generatefitcombinations(tree1->Root, recoIDs);
+	//delete tree;
+	//tree=NULL;
+	//theTree = NULL;
+	recopdgs.clear();
+	recoparts.clear();
+	cout<<"DONE";
+	cout<<std::endl;
+*/
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//test tree #2
+/*
+	Tree* tree2;
 	string preorder_pdg2 = " 443 221 111 22 22 211 -211 331 321 -321";
 	string preorder_key2 = "0 1 2 3 4 5 6 7 8 9";
 	string preorder_serial2 = "0 1 2 3 ) 4 ) ) 5 ) 6 ) ) 7 8 ) 9 ) ) )";
 	string preorder_mass2 = " 3.096 0.547 0.135 -1 -1 -1 -1 1.0195 -1 -1";
 	
-	tree = testTree(preorder_pdg2, preorder_serial2, preorder_mass2, delimiter, 2);
-	delete tree;
-	tree=NULL;
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	recopdgs = {211, -211, 22, 22, 321, -321, 22 , 13, -321};
 
+	
+	initializerecoparts(recopdgs);
+	printParticles(recoparts);
+
+	tree2->treeInit(preorder_pdg2, preorder_serial2, preorder_mass2, delimiter, 2);
+	tree2->printTree(tree2->Root);
+	cout<<"tree constructed"<<endl;
+	LASTNONLEAFID = tree2->lastNonLeafNodeId;
+	globalTree=tree2;
+	generatefitcombinations(tree2->Root, recoIDs);
+	//delete tree;
+	//tree=NULL;
+	//theTree = NULL;
+	recopdgs.clear();
+	recoparts.clear();
+	cout<<"DONE";
+	cout<<std::endl;
+	
+*/
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+	Tree* tree3;
 	string preorder_pdg3 = " 223 221 111 22 22 111 22 22 111 22 22 22";
 	string preorder_key3 = "0 1 2 3 4 5 6 7 8 9 10 11";
 	string preorder_serial3 ="0 1 2 3 ) 4 ) ) 5 6 ) 7 ) ) 8 9 ) 10 ) ) ) 11 ) )";
 	string preorder_mass3 = "0.782 0.547 0.135 -1 -1 0.135 -1 -1 0.135 -1 -1 -1";
 	
-	tree = testTree(preorder_pdg3, preorder_serial3, preorder_mass3, delimiter, 3);
-	delete tree;
-	tree=NULL;
+	recopdgs = { 22, 22, 22, 22, 22, 22, 22};
+	initializerecoparts(recopdgs);
+	printParticles(recoparts);
 
+	tree3->treeInit(preorder_pdg3, preorder_serial3, preorder_mass3, delimiter, 3);
+	tree3->printTree(tree3->Root);
+	cout<<"tree constructed"<<endl;
+	LASTNONLEAFID = tree3->lastNonLeafNodeId;
+	globalTree=tree3;
+	generatefitcombinations(tree3->Root, recoIDs);
+	//delete tree;
+	//tree=NULL;
+	//theTree = NULL;
+	recopdgs.clear();
+	recoparts.clear();
+	cout<<"DONE";
+	cout<<std::endl;
 */
+//	
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	cout<<"CASE 3pi0 + photon "<<std::endl;
+/*	cout<<"CASE 3pi0 + photon "<<std::endl;
 	Tree* tree4;
 
 	string preorder_pdg4 = " 223 22 221 111 22 22 111 22 22 111 22 22";
@@ -207,7 +264,9 @@ int main(){
 	printParticles(recoparts);
 
 	tree4->treeInit(preorder_pdg4, preorder_serial4, preorder_mass4, delimiter, 4);
+	tree4->printTree(tree4->Root);
 	cout<<"tree constructed"<<endl;
+	LASTNONLEAFID = tree4->lastNonLeafNodeId;
 	globalTree=tree4;
 	generatefitcombinations(tree4->Root, recoIDs);
 	//delete tree;
@@ -216,6 +275,7 @@ int main(){
 	recopdgs.clear();
 	recoparts.clear();
 	cout<<std::endl;
+*/
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -230,6 +290,7 @@ int main(){
 	//printParticles(recoparts);
 
 	 tree5->treeInit(preorder_pdg5, preorder_serial5, preorder_mass5, delimiter, 5);
+	tree5->printTree(tree5->Root);
 	LASTNONLEAFID = tree5->lastNonLeafNodeId;
 	globalTree=tree5;
 	generatefitcombinations(tree5->Root, recoIDs);
@@ -242,7 +303,7 @@ int main(){
 
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
+
 	Tree* tree6;
 	string preorder_pdg6 = " 221 111 22 22 211 -211";
 	string preorder_key6 = "0 1 2 3 4 5";
@@ -257,10 +318,12 @@ int main(){
 	
 	//start by setting global array for all particles unused
 	initializerecoparts(recopdgs);	
-	printParticles(recoparts);
+	//printParticles(recoparts);
 	
 	//tree fitting combination starting with simplest cases
 	tree6->treeInit(preorder_pdg6, preorder_serial6, preorder_mass6, delimiter, 6);
+	std::cout<<std::endl;
+	tree6->printTree(tree6->Root);
 	LASTNONLEAFID = tree6->lastNonLeafNodeId;
 	globalTree=tree6;
 	generatefitcombinations(tree6->Root, recoIDs);
@@ -270,8 +333,10 @@ int main(){
 	//globalTree = NULL; 
 	recopdgs.clear();
 	recoparts.clear();
-*/
 
-
+if(globalTree != NULL){
+//delete globalTree;
+}
+return 0;
 }
 

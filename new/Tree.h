@@ -10,9 +10,12 @@ using namespace std;
 
 class Tree{
 	public:
+	~Tree();
+	void deletePostTraverse(Node* root);
+
 	int lastNonLeafNodeId;
 	Node* Root;
-//tree construction methods
+	//tree construction methods
 	Node* newNode(int id);
 	
 

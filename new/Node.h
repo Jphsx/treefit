@@ -5,7 +5,17 @@
 using namespace std;
 //Tree node class definition
 class Node{
+
 	public:
+	~Node(){
+	parent = NULL;
+	for(int i=0; i<children.size(); i++){
+		if(children.at(i) != NULL){
+			children.at(i)=NULL;
+		}
+	}
+	};
+
 	Node* parent = NULL;
 	vector<Node*> children{};
 	int pdg = -1;
@@ -31,4 +41,15 @@ class Node{
 	vector<int> leafpdgs{};
 	
 };
+
+/*
+Node::~Node(){
+	for(int i=0; i<children.size(); i++){
+		if(children.at(i) != NULL){
+			children.at(i)=NULL;
+		}
+	}
+}*/
+
 #endif
+

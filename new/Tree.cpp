@@ -1,6 +1,18 @@
 #include "Tree.h"
 
+Tree::~Tree(){
+	
+	deletePostTraverse(Root);
+	Root=NULL;
+}
+void Tree::deletePostTraverse(Node* root){
+	
+	for(int i=0; i<root->children.size(); i++){
+		deletePostTraverse(root->children.at(i));
+	}	
+	delete root;
 
+}
 Node* Tree::newNode (int id){
     Node* temp = new Node();
     temp->nodeId=id;
@@ -205,6 +217,7 @@ void Tree::getLastNonLeafNodeId(Node* root, int* id){
 }
 //preorder print all tree information
 void Tree::printTree(Node* root){
+	cout<<endl;
 	cout<< "NodeId: "<< root->nodeId <<" Pdg: "<< root->pdg <<" Mass: "<< root->mass << " isLeaf= "<<root->isLeaf <<" Children { ";
 	for(int i=0; i<root->children.size(); i++){
 		cout<< root->children.at(i)->nodeId << " ";
@@ -266,7 +279,7 @@ void Tree::treeInit(string pdg, string serial, string mass, string delimiter, in
 	getLastNonLeafNodeId(root,&lastNonLeaf);
 	lastNonLeafNodeId = lastNonLeaf;
 	//setChildrenLeaves(root);
-	printTree(root);
+	//printTree(root);
 	cout<<"last leaf node id: "<<lastNonLeafNodeId<<endl;
 	//return root;
 	Root = root;
