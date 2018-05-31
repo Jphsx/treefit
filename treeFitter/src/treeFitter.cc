@@ -5,7 +5,7 @@
 #include "EVENT/ReconstructedParticle.h"
 #include "gear/BField.h"
 #include "IMPL/ReconstructedParticleImpl.h"
-#include "MassConstraintFitter.h"
+#include "treeFitter.h"
 #include "CLHEP/Vector/LorentzVector.h"
 #include "CLHEP/Vector/ThreeVector.h"
 typedef CLHEP::HepLorentzVector LorentzVector ;
@@ -32,6 +32,7 @@ typedef CLHEP::Hep3Vector Vector3D ;
 
 // Tree stuff
 /**********************/
+#include "TreeFit.cpp"
 
 using namespace lcio;
 
@@ -43,7 +44,26 @@ Register processor parameters and input/output collections
 *********************/
 treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 
-//register
+	//register parameters
+
+	//tree construction parameters
+	std::vector<int> preorderPdgs;
+	registerProcessorParameter("preorderPdgs",
+				   "Preorder traversal of pdg codes in the particle tree",
+				   _preorderPdgs,
+				   preorderPdgs);
+
+	std::vector<int> preorderMass;
+	registerProcessorParameter("preorderMass",
+				   "Preorder traversal of masses [GeV] in the particle tree",
+				   _preorderMass,
+				   preorderMass);
+
+	std::string preorderSerial = " ) ";
+	registerProcessorParameter("preorderSerial",
+				   "Preorder Serialization of the tree using unique node IDs",
+				   _preorderSerial,
+				   preorderSerial); 
 
 return;
 }
@@ -55,7 +75,9 @@ event number, initialize the output TTree
 void treeFitter::init() {
   if(_printing>1)printParameters(); 
 //evtno
-//treeinit
+//treeinit TTree
+//build particle tree
+	globalTree->treeInit(preorderPdgs, preorderSerial, preorderMass, " ", 1);
   return;
 }
 /*******************
@@ -74,12 +96,20 @@ void MassConstraintFitter::processEvent( LCEvent * evt ) {
 
 	//find pfos
 	//find tracks
-
-	//find mcparticles
+	//if(FindPFOs(evt) && FindTracks(evt)){
+	//temp
+	if(true){
+		//TODO: if(using mcparticles){
+		//find mcparticles
+		//FindMCParticles(evt);
 	
-	//call fitter
+		//call fitter
+		FindMassConstraintCandidates(recparcol);
+	}
+
 
 	//add collection to event
+	evt->addCollection( recparcol, _outputParticleCollectionName.c_str() );
 
 	return;
 }
@@ -205,5 +235,9 @@ bool MassConstraintFitter::FindMCParticles( LCEvent* evt ){
   	return collectionFound;
 }
 
+void MassConstraintFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
+	//print global tree
+
+}
 
 

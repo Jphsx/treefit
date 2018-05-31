@@ -130,8 +130,8 @@ void generatefitcombinations(Node* root, vector<int> parentcombo){
 	
 	return;
 }
-
-int main(){ 
+//Testing framework////////////////
+/*int main(){ 
 
 	//Tree* tree;
 	//Node* root;
@@ -158,7 +158,7 @@ int main(){
 	cout<<" A-B = ";
 	Tree::printvector(solution);
 	cout<<endl;
-	
+*/	
 	
 	
 /*
@@ -303,7 +303,7 @@ int main(){
 
 */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 	Tree* tree6;
 	string preorder_pdg6 = " 221 111 22 22 211 -211";
 	string preorder_key6 = "0 1 2 3 4 5";
@@ -337,6 +337,8 @@ int main(){
 if(globalTree != NULL){
 //delete globalTree;
 }
+
 return 0;
 }
+*/
 
