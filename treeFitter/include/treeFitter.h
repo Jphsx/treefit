@@ -1,16 +1,26 @@
+
+
 #include "marlin/Processor.h"
 #include "EVENT/ReconstructedParticle.h"
 #include "IMPL/TrackImpl.h"
 #include "EVENT/Track.h"
 #include "EVENT/MCParticle.h"
-#include "lcio.h"
+
 #include <vector>
 #include "IMPL/LCCollectionVec.h"
 #include "TFile.h"
 #include "TTree.h"
-#include "CLHEP/Vector/LorentzVector.h"
+
+#include "EVENT/LCIO.h"
+#include "EVENT/LCRunHeader.h"
+#include "EVENT/LCCollection.h"
+#include "EVENT/LCParameters.h"
+#include "EVENT/ReconstructedParticle.h"
+#include "gear/BField.h"
+#include "IMPL/ReconstructedParticleImpl.h"
+
 #include "TLorentzVector.h"
-typedef CLHEP::HepLorentzVector LorentzVector ;
+
 #include "LeptonFitObject.h"
 #include "TrackParticleFitObject.h"
 #include "JetFitObject.h"
@@ -18,8 +28,17 @@ typedef CLHEP::HepLorentzVector LorentzVector ;
 #include "OPALFitterGSL.h"
 //#include "NewFitterGSL.h"
 #include "NewtonFitterGSL.h"
-#include "MassConstraint.h"
+
 #include "TH1D.h"
+
+// Marlin stuff
+#include <marlin/Global.h>
+// ROOT stuff
+#include "TMath.h"
+#include "TMatrixD.h"
+
+#include <cstdlib>
+#include <cmath>
 
 #include "../src/TreeFit.cpp"
 

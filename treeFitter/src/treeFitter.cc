@@ -1,38 +1,5 @@
-#include "EVENT/LCIO.h"
-#include "EVENT/LCRunHeader.h"
-#include "EVENT/LCCollection.h"
-#include "EVENT/LCParameters.h"
-#include "EVENT/ReconstructedParticle.h"
-#include "gear/BField.h"
-#include "IMPL/ReconstructedParticleImpl.h"
+
 #include "treeFitter.h"
-#include "CLHEP/Vector/LorentzVector.h"
-#include "CLHEP/Vector/ThreeVector.h"
-typedef CLHEP::HepLorentzVector LorentzVector ;
-typedef CLHEP::Hep3Vector Vector3D ;
-
-// MarlinKinfit stuff
-#include "LeptonFitObject.h"
-#include "JetFitObject.h"
-#include "OPALFitterGSL.h"
-#include "NewFitterGSL.h"
-#include "NewtonFitterGSL.h"
-#include "MassConstraint.h"
-
-// Marlin stuff
-#include <marlin/Global.h>
-// the event display
-
-// ROOT stuff
-#include "TMath.h"
-#include "TMatrixD.h"
-
-#include <cstdlib>
-#include <cmath>
-
-// Tree stuff
-/**********************/
-#include "TreeFit.cpp"
 
 using namespace lcio;
 
