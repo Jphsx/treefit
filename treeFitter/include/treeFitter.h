@@ -21,7 +21,7 @@ typedef CLHEP::HepLorentzVector LorentzVector ;
 #include "MassConstraint.h"
 #include "TH1D.h"
 
-#include "TreeFit.cpp"
+#include "../src/TreeFit.cpp"
 
 using namespace lcio ;
 
