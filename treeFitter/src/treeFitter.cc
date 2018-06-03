@@ -149,7 +149,7 @@ bool treeFitter::FindPFOs( LCEvent* evt ) {
 			collectionFound = true;
 
  			//add the collection elements to the global vector
-      			for(unsigned int i=0; i<collection->getNumberOfElements(); i++){
+      			for(int i=0; i<collection->getNumberOfElements(); i++){
 				ReconstructedParticle* recoPart = dynamic_cast<ReconstructedParticle*>(collection->getElementAt(i));
 				_pfovec.push_back(recoPart);
       			}
@@ -187,7 +187,7 @@ bool treeFitter::FindTracks( LCEvent* evt ) {
 			collectionFound = true;
 		
 			//add the collection elements to the global vector
-      			for(unsigned int i=0; i<collection->getNumberOfElements(); i++){
+      			for(int i=0; i<collection->getNumberOfElements(); i++){
 				Track* track = dynamic_cast<Track*>(collection->getElementAt(i));
 				_trackvec.push_back(track);
       			}
@@ -223,7 +223,7 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
       			collectionFound = true;
       
 			//add the collection elements to the global vector
-			for(unsigned int i=0;i<collection->getNumberOfElements();i++){
+			for(int i=0;i<collection->getNumberOfElements();i++){
 				MCParticle* mcPart = dynamic_cast<MCParticle*>(collection->getElementAt(i));
 				_mcpartvec.push_back(mcPart);
 
