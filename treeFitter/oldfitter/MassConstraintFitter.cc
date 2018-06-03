@@ -144,7 +144,7 @@ MassConstraintFitter::MassConstraintFitter() : marlin::Processor("MassConstraint
 				"Name of the MCParticle input collection" ,
 				_mcParticleCollectionName,
 				std::string("MCDecayParticles"));
-
+#include "lcio.h"
  
   std::string outputParticleCollectionName = "MassConstraintCandidates";
   registerOutputCollection( LCIO::RECONSTRUCTEDPARTICLE,
