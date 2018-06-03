@@ -44,7 +44,7 @@ void treeFitter::init() {
 //evtno
 //treeinit TTree
 //build particle tree
-	globalTree->treeInit(preorderPdgs, preorderSerial, preorderMass, " ", 1);
+	globalTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, " ", 1);
   return;
 }
 /*******************

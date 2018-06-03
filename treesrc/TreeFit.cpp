@@ -11,9 +11,9 @@ using namespace std;
 
 
 //global set of reconstructed particles
-//vector<Particle*> recoparts{};
+static vector<Particle*> recoparts{};
 //ID is index of particle on recoparts
-//vector<int> recoIDs{};
+static vector<int> recoIDs{};
 static int LASTNONLEAFID;
 
 //Tree* globalTree;
