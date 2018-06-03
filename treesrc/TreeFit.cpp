@@ -16,7 +16,7 @@ static vector<Particle*> recoparts{};
 static vector<int> recoIDs{};
 static int LASTNONLEAFID;
 
-//Tree* globalTree;
+static Tree* globalTree;
 //this function should probably take in a TLV or ReconstructedParticle in addition to pdg array to fully populate the object
 void initializerecoparts(vector<int> recopdgs){
 	for(int i=0; i<recopdgs.size(); i++){

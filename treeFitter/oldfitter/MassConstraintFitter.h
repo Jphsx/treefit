@@ -18,7 +18,7 @@ typedef CLHEP::HepLorentzVector LorentzVector ;
 #include "OPALFitterGSL.h"
 //#include "NewFitterGSL.h"
 #include "NewtonFitterGSL.h"
-#include "treeFitter.h"
+#include "MassConstraint.h"
 #include "TH1D.h"
 //#pragma link C++ class std::vector<std::vector<double> >+;
 //#pragma link C++ class vector<vector<double> >+;

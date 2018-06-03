@@ -20,7 +20,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 				   _preorderPdgs,
 				   preorderPdgs);
 
-	std::vector<int> preorderMass;
+	std::vector<double> preorderMass;
 	registerProcessorParameter("preorderMass",
 				   "Preorder traversal of masses [GeV] in the particle tree",
 				   _preorderMass,
@@ -30,7 +30,45 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 	registerProcessorParameter("preorderSerial",
 				   "Preorder Serialization of the tree using unique node IDs",
 				   _preorderSerial,
-				   preorderSerial); 
+				   preorderSerial);
+
+
+	//input collection parameters
+	std::string inputParticleCollectionName = "x";
+  	registerInputCollection( LCIO::RECONSTRUCTEDPARTICLE,
+			     	"InputParticleCollectionName" , 
+			     	"Input Particle Collection Name "  ,
+			     	_inputParticleCollectionName,
+			      	inputParticleCollectionName);
+
+ 	std::string inputTrackCollectionName = "x";
+  	registerInputCollection( LCIO::TRACK,
+				"InputTrackCollectionName" ,
+				"Input Track Collection Name " ,
+				_inputTrackCollectionName,
+				inputTrackCollectionName);
+
+	std::string inputMcParticleCollectionName = "x";
+	registerInputCollection( LCIO::MCPARTICLE,
+				"MCParticleCollection" ,
+				"Name of the MCParticle input collection" ,
+				_inputMcParticleCollectionName,
+				inputMcParticleCollectionName);
+
+	//output collection parameters this should be modified
+	std::string outputParticleCollectionName = "x";
+	registerOutputCollection( LCIO::RECONSTRUCTEDPARTICLE,
+			     	"OutputParticleCollectionName" , 
+			     	"Output Particle Collection Name "  ,
+			     	_outputParticleCollectionName,
+			     	outputParticleCollectionName);
+
+  	std::string outputTrackCollectionName = "x";
+  	registerOutputCollection( LCIO::TRACK,
+			    	"OutputTrackCollectionName",
+			    	"Output Particle Collection Name" ,
+			    	_outputTrackCollectionName,
+			    	outputTrackCollectionName);
 
 return;
 }
@@ -40,7 +78,6 @@ Print processor paramters, initalize global variables like
 event number, initialize the output TTree
 *********************/
 void treeFitter::init() {
-  if(_printing>1)printParameters(); 
 //evtno
 //treeinit TTree
 //build particle tree
@@ -57,7 +94,7 @@ void treeFitter::processRunHeader( LCRunHeader* run) {
 call supporting functions to build reconstructed particle collection
 call the fitter
 ********************/
-void MassConstraintFitter::processEvent( LCEvent * evt ) { 
+void treeFitter::processEvent( LCEvent * evt ) { 
 	// Make a new vector of particles
   	LCCollectionVec * recparcol = new LCCollectionVec(LCIO::RECONSTRUCTEDPARTICLE);
 
@@ -76,24 +113,24 @@ void MassConstraintFitter::processEvent( LCEvent * evt ) {
 
 
 	//add collection to event
-	evt->addCollection( recparcol, _outputParticleCollectionName.c_str() );
+	evt->addCollection( recparcol,  _outputParticleCollectionName.c_str() );
 
 	return;
 }
 /*****************
 finish and write out to rootfile
 ******************/
-void MassConstraintFitter::end(){
-	if(_fitAnalysis){
-		rootFile->Write();
-	}
+void treeFitter::end(){
+	//if(_fitAnalysis){
+	//	rootFile->Write();
+	//}
   	return;
 }
 /*****************
 locate the pfo collection with specified name
 populated the global pfo vectors with particles from that collection for this event
 ******************/
-bool MassConstraintFitter::FindPFOs( LCEvent* evt ) {
+bool treeFiter::FindPFOs( LCEvent* evt ) {
 
 	bool collectionFound = false;
 
@@ -108,11 +145,11 @@ bool MassConstraintFitter::FindPFOs( LCEvent* evt ) {
 		//if found print name and number of elements
     		if(*itname==_inputParticleCollectionName){ 
 			LCCollection* collection = evt->getCollection(*itname);
-			std::cout<< "Located Pfo Collection "<< *itname<< " with "<< collection->getNumberofElements() << " elements " <<std::endl;
+			std::cout<< "Located Pfo Collection "<< *itname<< " with "<< collection->getNumberOfElements() << " elements " <<std::endl;
 			collectionFound = true;
 
  			//add the collection elements to the global vector
-      			for(unsigned int i=0; i<collection->getNumberofElements(); i++){
+      			for(unsigned int i=0; i<collection->getNumberOfElements(); i++){
 				ReconstructedParticle* recoPart = dynamic_cast<ReconstructedParticle*>(collection->getElementAt(i));
 				_pfovec.push_back(recoPart);
       			}
@@ -130,7 +167,7 @@ bool MassConstraintFitter::FindPFOs( LCEvent* evt ) {
 locate the track collection with specified name
 populate the global track vectors with tracks from the collection for this event
 ******************/
-bool MassConstraintFitter::FindTracks( LCEvent* evt ) {
+bool treeFitter::FindTracks( LCEvent* evt ) {
 
 	bool collectionFound = false;
 
@@ -145,12 +182,12 @@ bool MassConstraintFitter::FindTracks( LCEvent* evt ) {
 		//if found print name and number of elements 
     		if(*itname==_inputTrackCollectionName){
       			LCCollection* collection = evt->getCollection(*itname);
-      			std::cout<< "Located Track Collection "<< *itname<< " with "<< collection->getNumberofElements() << " elements " <<std::endl;
+      			std::cout<< "Located Track Collection "<< *itname<< " with "<< collection->getNumberOfElements() << " elements " <<std::endl;
      		
 			collectionFound = true;
 		
 			//add the collection elements to the global vector
-      			for(unsigned int i=0; i<collection->getNumberofElements(); i++){
+      			for(unsigned int i=0; i<collection->getNumberOfElements(); i++){
 				Track* track = dynamic_cast<Track*>(collection->getElementAt(i));
 				_trackvec.push_back(track);
       			}
@@ -167,7 +204,7 @@ bool MassConstraintFitter::FindTracks( LCEvent* evt ) {
 locate the mcparticle collection with specified name
 populate the global mcp vector with mc particles from the collection for this event
 ******************/
-bool MassConstraintFitter::FindMCParticles( LCEvent* evt ){
+bool treeFitter::FindMCParticles( LCEvent* evt ){
    
 	bool collectionFound = false;
 
@@ -180,13 +217,13 @@ bool MassConstraintFitter::FindMCParticles( LCEvent* evt ){
   	for(StringVec::const_iterator itname=strVec->begin(); itname!=strVec->end(); itname++){    
     
 		//if found print name and number of elements 
-		if(*itname==_mcParticleCollectionName){
+		if(*itname==_inputMcParticleCollectionName){
       			LCCollection* collection = evt->getCollection(*itname);
-     			std::cout<< "Located MC Collection "<< *itname<< " with "<< collection->getNumberofElements() << " elements " <<std::endl;
+     			std::cout<< "Located MC Collection "<< *itname<< " with "<< collection->getNumberOfElements() << " elements " <<std::endl;
       			collectionFound = true;
       
 			//add the collection elements to the global vector
-			for(unsigned int i=0;i<nelem;i++){
+			for(unsigned int i=0;i<collection->getNumberOfElements();i++){
 				MCParticle* mcPart = dynamic_cast<MCParticle*>(collection->getElementAt(i));
 				_mcpartvec.push_back(mcPart);
 
@@ -196,13 +233,13 @@ bool MassConstraintFitter::FindMCParticles( LCEvent* evt ){
   	}
 
   	if(!collectionFound){
-		std::cout<<"MC Collection "<< _mcParticleCollectionName << "not found"<<std::endl;
+		std::cout<<"MC Collection "<< _inputMcParticleCollectionName << "not found"<<std::endl;
 	}
   
   	return collectionFound;
 }
 
-void MassConstraintFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
+void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//print global tree
 
 }

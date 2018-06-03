@@ -91,6 +91,15 @@ class treeFitter : public marlin::Processor {
   	std::vector<Track*> _trackvec{};
   	std::vector<MCParticle*> _mcpartvec{};
 
+	/*************
+	The strings that hold the names of the input/output LCIO collections
+	*************/
+	std::string _inputTrackCollectionName;
+	std::string _inputParticleCollectionName;
+	std::string _inputMcParticleCollectionName;
+	std::string _outputParticleCollectionName;
+	std::string _outputTrackCollectionName;
+
 	void FindMassConstraintCandidates( LCCollectionVec* recparcol);
 
 	/** Processor Parameters **/
