@@ -49,7 +49,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 				   "Preorder traversal of pdg codes in the particle tree",
 				   _preorderPdgs,
 				   preorderPdgs);
-
+/*
 	std::vector<double> preorderMass;
 	registerProcessorParameter("preorderMass",
 				   "Preorder traversal of masses [GeV] in the particle tree",
