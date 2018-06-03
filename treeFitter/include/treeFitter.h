@@ -1,5 +1,6 @@
 
-
+#ifndef _TREEFITTER_
+#define _TREEFITTER_
 #include "marlin/Processor.h"
 #include "EVENT/ReconstructedParticle.h"
 #include "IMPL/TrackImpl.h"
@@ -110,4 +111,4 @@ class treeFitter : public marlin::Processor {
 
 };
 
-
+#endif
