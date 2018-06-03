@@ -64,7 +64,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 				   _preorderSerial,
 				   preorderSerial);
 
- /*
+ 
 	//input collection parameters
 	std::string inputParticleCollectionName = "x";
   	registerInputCollection( LCIO::RECONSTRUCTEDPARTICLE,
@@ -101,7 +101,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 			    	"Output Particle Collection Name" ,
 			    	_outputTrackCollectionName,
 			    	outputTrackCollectionName);
-*/
+
 return;
 }
 
