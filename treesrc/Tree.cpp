@@ -270,10 +270,10 @@ void Tree::treeInit(vector<int> pdg, string serial, vector<double>   mass, strin
 
 	index=0;
 	//setTreeMasses(root, castVector_double(splitString(mass,delimiter)), &index);
-	setTreeMasses(root, mass);
+	setTreeMasses(root, mass, &index);
 	index=0;
 	//setTreePdgCodes(root, castVector_int(splitString(pdg,delimiter)), &index);
-	setTreeMasses(root,pdg);
+	setTreeMasses(root,pdg, &index);
 	markTreeLeaves(root);
 	populateNLeaves(root);
 	setParents(root,NULL);
