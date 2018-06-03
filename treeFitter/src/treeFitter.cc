@@ -44,7 +44,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 	//register parameters
 
 	//tree construction parameters
-	std::vector<int> preorderPdgs;
+/*	std::vector<int> preorderPdgs;
 	registerProcessorParameter("preorderPdgs",
 				   "Preorder traversal of pdg codes in the particle tree",
 				   _preorderPdgs,
@@ -99,7 +99,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 			    	"Output Particle Collection Name" ,
 			    	_outputTrackCollectionName,
 			    	outputTrackCollectionName);
-
+*/
 return;
 }
 
