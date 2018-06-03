@@ -130,7 +130,7 @@ void treeFitter::end(){
 locate the pfo collection with specified name
 populated the global pfo vectors with particles from that collection for this event
 ******************/
-bool treeFiter::FindPFOs( LCEvent* evt ) {
+bool treeFitter::FindPFOs( LCEvent* evt ) {
 
 	bool collectionFound = false;
 
