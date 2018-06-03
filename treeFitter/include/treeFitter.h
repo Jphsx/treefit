@@ -41,7 +41,7 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "../src/TreeFit.cpp"
+#include "TreeFit.h"
 
 using namespace lcio ;
 

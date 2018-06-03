@@ -1,25 +1,8 @@
-#ifndef _TREEFIT_
-#define _TREEFIT_
 
+#include "TreeFit.h"
 
-#include "Tree.h"
-#include "Particle.h"
-#include "Combinatorics.h"
-
-
-using namespace std;
-
-
-
-//global set of reconstructed particles
-static vector<Particle*> recoparts{};
-//ID is index of particle on recoparts
-static vector<int> recoIDs{};
-static int LASTNONLEAFID;
-
-static Tree* globalTree;
 //this function should probably take in a TLV or ReconstructedParticle in addition to pdg array to fully populate the object
-void initializerecoparts(vector<int> recopdgs){
+void TreeFit::initializerecoparts(vector<int> recopdgs){
 	for(int i=0; i<recopdgs.size(); i++){
 		Particle* p = new Particle();
 		p->recopdg=recopdgs.at(i);
@@ -31,7 +14,7 @@ void initializerecoparts(vector<int> recopdgs){
 		//reco parts array
 	}
 }
-void printParticles(vector<Particle*> parts){
+void TreeFit::printParticles(vector<Particle*> parts){
 	for(int i=0; i<parts.size(); i++){
 		cout<<"Particle Index "<<i<<endl;
 		cout<<parts.at(i)->recopdg<<endl;
@@ -39,7 +22,7 @@ void printParticles(vector<Particle*> parts){
 		cout<<endl;
 	}
 }
-vector<vector<int> > makepdgcombinations(vector<vector<int> > combinations){
+vector<vector<int> > TreeFit::makepdgcombinations(vector<vector<int> > combinations){
 	vector<vector<int> > pdgcombinations;
 	vector<int> pdgcombo;
 	for(int i=0; i<combinations.size();i++){
@@ -51,14 +34,14 @@ vector<vector<int> > makepdgcombinations(vector<vector<int> > combinations){
 	}
 	return pdgcombinations;
 }
-vector<int> getpdgcombo(vector<int> combo){
+vector<int> TreeFit::getpdgcombo(vector<int> combo){
 	vector<int> pdgcombo;
 	for(int i=0; i<combo.size(); i++){
 		pdgcombo.push_back(recoparts.at(combo.at(i))->recopdg);
 	}
 	return pdgcombo;	
 }
-void generatefitcombinations(Node* root, vector<int> parentcombo){
+void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 
 	
 	//no reason to ever visit a leaf
@@ -342,5 +325,5 @@ if(globalTree != NULL){
 return 0;
 }
 */
-#endif
+
 
