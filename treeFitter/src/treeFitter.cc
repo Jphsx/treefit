@@ -54,7 +54,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 	std::vector<float> preorderMass;
 	preorderMass.push_back(0.0);
 	registerProcessorParameter("preorderMass",
-				   "Preorder traversal of masses [GeV] in the particle tree",
+				   "Preorder traversal of masses GEV in the particle tree",
 				   _preorderMass,
 				   preorderMass);
 
