@@ -57,14 +57,14 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 				   "Preorder traversal of masses GEV in the particle tree",
 				   _preorderMass,
 				   preorderMass);
-*/
+
 	std::string preorderSerial = " ) ";
 	registerProcessorParameter("preorderSerial",
 				   "Preorder Serialization of the tree using unique node IDs",
 				   _preorderSerial,
 				   preorderSerial);
-
- /*
+*/
+ 
 	//input collection parameters
 	std::string inputParticleCollectionName = "x";
   	registerInputCollection( LCIO::RECONSTRUCTEDPARTICLE,
@@ -72,7 +72,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 			     	"Input Particle Collection Name "  ,
 			     	_inputParticleCollectionName,
 			      	inputParticleCollectionName);
-
+/*
  	std::string inputTrackCollectionName = "x";
   	registerInputCollection( LCIO::TRACK,
 				"InputTrackCollectionName" ,
