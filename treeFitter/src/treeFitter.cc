@@ -42,20 +42,22 @@ Register processor parameters and input/output collections
 treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 
 	//register parameters
-/*
+
 	//tree construction parameters
 	std::vector<int> preorderPdgs;
+	preorderPdgs.push_back(0);
 	registerProcessorParameter("preorderPdgs",
 				   "Preorder traversal of pdg codes in the particle tree",
 				   _preorderPdgs,
 				   preorderPdgs);
-*/
+
 	std::vector<double> preorderMass;
+	preorderMass.push_back(0.0);
 	registerProcessorParameter("preorderMass",
 				   "Preorder traversal of masses [GeV] in the particle tree",
 				   _preorderMass,
 				   preorderMass);
-/*
+
 	std::string preorderSerial = " ) ";
 	registerProcessorParameter("preorderSerial",
 				   "Preorder Serialization of the tree using unique node IDs",
