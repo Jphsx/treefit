@@ -3,7 +3,8 @@
 #define _TREEFITTER_
 #include "marlin/Processor.h"
 #include "EVENT/ReconstructedParticle.h"
-#include "IMPL/TrackImpl.h"
+//#include "IMPL/TrackImpl.h"
+#include "lcio.h"
 #include "EVENT/Track.h"
 #include "EVENT/MCParticle.h"
 
