@@ -89,7 +89,7 @@ class treeFitter : public marlin::Processor {
 	/** Processor Parameters **/
 	/** tree construction parameters **/
 	std::vector<int> _preorderPdgs{};
-	std::vector<double> _preorderMass{};
+	std::vector<float> _preorderMass{};
 	std::string _preorderSerial;
 
 	/*************
