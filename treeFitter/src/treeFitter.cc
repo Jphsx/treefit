@@ -5,7 +5,7 @@
 #include "EVENT/ReconstructedParticle.h"
 #include "gear/BField.h"
 #include "IMPL/ReconstructedParticleImpl.h"
-#include "MassConstraintFitter.h"
+
 #include "CLHEP/Vector/LorentzVector.h"
 #include "CLHEP/Vector/ThreeVector.h"
 typedef CLHEP::HepLorentzVector LorentzVector ;
