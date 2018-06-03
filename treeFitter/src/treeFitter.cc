@@ -55,7 +55,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 				   "Preorder traversal of masses [GeV] in the particle tree",
 				   _preorderMass,
 				   preorderMass);
-
+/*
 	std::string preorderSerial = " ) ";
 	registerProcessorParameter("preorderSerial",
 				   "Preorder Serialization of the tree using unique node IDs",
