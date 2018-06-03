@@ -1,4 +1,5 @@
-
+#ifndef _TREEFIT_
+#define _TREEFIT_
 
 
 #include "Tree.h"
@@ -341,4 +342,5 @@ if(globalTree != NULL){
 return 0;
 }
 */
+#endif
 
