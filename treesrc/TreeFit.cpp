@@ -78,7 +78,7 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 		if(root->nodeId == LASTNONLEAFID){
 			//do fit
 			cout<<"FIT"<<endl;
-			Tree::printfit(globalTree->Root);
+			Tree::printfit(ParticleTree->Root);
 			cout<<endl;
 			
 		}
@@ -163,7 +163,7 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 	tree1->printTree(tree1->Root);
 	cout<<"tree constructed"<<endl;
 	LASTNONLEAFID = tree1->lastNonLeafNodeId;
-	globalTree=tree1;
+	ParticleTree=tree1;
 	generatefitcombinations(tree1->Root, recoIDs);
 	//delete tree;
 	//tree=NULL;
@@ -193,7 +193,7 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 	tree2->printTree(tree2->Root);
 	cout<<"tree constructed"<<endl;
 	LASTNONLEAFID = tree2->lastNonLeafNodeId;
-	globalTree=tree2;
+	ParticleTree=tree2;
 	generatefitcombinations(tree2->Root, recoIDs);
 	//delete tree;
 	//tree=NULL;
@@ -222,7 +222,7 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 	tree3->printTree(tree3->Root);
 	cout<<"tree constructed"<<endl;
 	LASTNONLEAFID = tree3->lastNonLeafNodeId;
-	globalTree=tree3;
+	ParticleTree=tree3;
 	generatefitcombinations(tree3->Root, recoIDs);
 	//delete tree;
 	//tree=NULL;
@@ -251,7 +251,7 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 	tree4->printTree(tree4->Root);
 	cout<<"tree constructed"<<endl;
 	LASTNONLEAFID = tree4->lastNonLeafNodeId;
-	globalTree=tree4;
+	ParticleTree=tree4;
 	generatefitcombinations(tree4->Root, recoIDs);
 	//delete tree;
 	//tree=NULL;
@@ -276,12 +276,12 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 	 tree5->treeInit(preorder_pdg5, preorder_serial5, preorder_mass5, delimiter, 5);
 	tree5->printTree(tree5->Root);
 	LASTNONLEAFID = tree5->lastNonLeafNodeId;
-	globalTree=tree5;
+	ParticleTree=tree5;
 	generatefitcombinations(tree5->Root, recoIDs);
 
 	//delete tree;
 	//tree = NULL;
-	//globalTree = NULL; 
+	//ParticleTree = NULL; 
 	recopdgs.clear();
 	recoparts.clear();
 
@@ -309,17 +309,17 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 	std::cout<<std::endl;
 	tree6->printTree(tree6->Root);
 	LASTNONLEAFID = tree6->lastNonLeafNodeId;
-	globalTree=tree6;
+	ParticleTree=tree6;
 	generatefitcombinations(tree6->Root, recoIDs);
 	
 	//delete tree;
 	//tree = NULL;
-	//globalTree = NULL; 
+	//ParticleTree = NULL; 
 	recopdgs.clear();
 	recoparts.clear();
 
-if(globalTree != NULL){
-//delete globalTree;
+if(ParticleTree != NULL){
+//delete ParticleTree;
 }
 
 return 0;

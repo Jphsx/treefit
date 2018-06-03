@@ -19,13 +19,13 @@ class TreeFit{
 	//ID is index of particle on recoparts
 	vector<int> recoIDs{};
 	int LASTNONLEAFID;
-	Tree* globalTree;
+	Tree* ParticleTree;
 
 	void initializerecoparts(vector<int> recopdgs);
 	void printParticles(vector<Particle*> parts);
 	vector<vector<int> > makepdgcombinations(vector<vector<int> > combinations);
 	vector<int> getpdgcombo(vector<int> combo);
-	void generatefitcombinations(Node* root, vector<int> parentcombo)
+	void generatefitcombinations(Node* root, vector<int> parentcombo);
 		
 
 };

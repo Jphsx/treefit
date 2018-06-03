@@ -81,7 +81,8 @@ void treeFitter::init() {
 //evtno
 //treeinit TTree
 //build particle tree
-	globalTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, " ", 1);
+	TFit = new TreeFit();
+	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, " ", 1);
   return;
 }
 /*******************

@@ -109,6 +109,12 @@ class treeFitter : public marlin::Processor {
 	std::vector<double> _preorderMass{};
 	std::string _preorderSerial;
 
+	/*************
+	 object that stores/manages
+	 the tree and generates combinations
+	*************/
+	TreeFit* TFit;
+
 };
 
 #endif
