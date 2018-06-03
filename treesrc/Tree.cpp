@@ -257,10 +257,9 @@ void Tree::printTree(Node* root){
 	}
 }
 //void Tree::treeInit(string pdg, string serial, string mass, string delimiter, int TESTNUM){
-void Tree::treeInit(vector<int> pdg, string serial, vector<double> mass, string delimeter, int TESTNUM);
+void Tree::treeInit(vector<int> pdg, string serial, vector<double>   mass, string delimiter, int TESTNUM){
 	int index = 0;
 	Node* root = new Node();
-	cout<< "Here"<<endl;
 	root = constructTree( splitString(serial,delimiter), &index);
 	//theTree = root;
 	cout<<"TREE "<<TESTNUM<<endl;
