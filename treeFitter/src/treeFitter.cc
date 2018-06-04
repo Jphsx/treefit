@@ -87,7 +87,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 				_inputMcParticleCollectionName,
 				inputMcParticleCollectionName);
 
-/*
+
 	//output collection parameters this should be modified
 	std::string outputParticleCollectionName = "x";
 	registerOutputCollection( LCIO::RECONSTRUCTEDPARTICLE,
@@ -102,7 +102,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 			    	"Output Particle Collection Name" ,
 			    	_outputTrackCollectionName,
 			    	outputTrackCollectionName);
-*/
+
 return;
 }
 
