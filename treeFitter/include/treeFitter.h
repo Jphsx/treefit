@@ -57,6 +57,10 @@ class treeFitter : public marlin::Processor {
   	virtual void end() ;
 
 	private:
+	/*************
+	track the event number for printing
+	*************/
+	int evtNo;
 	
 	/**************
 	LCIO Collection gathering methods

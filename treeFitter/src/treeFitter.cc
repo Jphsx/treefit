@@ -111,7 +111,8 @@ Print processor paramters, initalize global variables like
 event number, initialize the output TTree
 *********************/
 void treeFitter::init() {
-	//evtno
+	//evtno set to 0
+	evtNo=0;
 	//print all processor input parameters
 	printParameters();
 
@@ -287,6 +288,9 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	        TLorentzVector temp(_pfovec.at(i)->getMomentum()[0], _pfovec.at(i)->getMomentum()[1], _pfovec.at(i)->getMomentum()[2], _pfovec[i]->getEnergy() );
 		std::cout<< temp.Px()<< " "<<temp.Py()<<" "<<temp.Pz()<<" "<<temp.E()<<" "<<temp.M()<<std::endl;
 	}
+
+	//advance to next event
+	evtNo++;
 	return;
 }
 
