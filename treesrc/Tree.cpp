@@ -284,11 +284,10 @@ void Tree::treeInit(vector<int> pdg, string serial, vector<float>   mass, string
 	setParents(root,NULL);
 	cout<<"made it to last non leaf"<<endl;
 	int lastNonLeaf=0;
-	getLastNonLeafNodeId(root,&lastNonLeaf);
-	lastNonLeafNodeId = lastNonLeaf;
-	//setChildrenLeaves(root);
-	//printTree(root);
-	cout<<"last leaf node id: "<<lastNonLeafNodeId<<endl;
+	//getLastNonLeafNodeId(root,&lastNonLeaf);
+	//lastNonLeafNodeId = lastNonLeaf;
+	
+	//cout<<"last leaf node id: "<<lastNonLeafNodeId<<endl;
 	//return root;
 	Root = root;
 }
