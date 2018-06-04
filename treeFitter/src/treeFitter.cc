@@ -139,12 +139,12 @@ void treeFitter::processEvent( LCEvent * evt ) {
 
 	//find pfos
 	//find tracks
-	//if(FindPFOs(evt) && FindTracks(evt)){
+	if(FindPFOs(evt) && FindTracks(evt)){
 	//temp
 	if(true){
 		//TODO: if(using mcparticles){
 		//find mcparticles
-		//FindMCParticles(evt);
+		FindMCParticles(evt);
 	
 		//call fitter
 		this->FindMassConstraintCandidates(recparcol);
