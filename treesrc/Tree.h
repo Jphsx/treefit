@@ -35,7 +35,7 @@ class Tree{
 	void getLastNonLeafNodeId(Node* root, int* id);
 	void printTree(Node* root);
 	//void treeInit(string pdg, string serial, string mass, string delimiter, int TESTNUM);
-	void treeInit(vector<int> pdg, string serial, vector<float>  mass, string delimiter, int TESTNUM);
+	void treeInit(vector<int> pdg, string serial, vector<float>  mass, string delimiter);
 
 
 	static Node* locateAncestorNearestNonLeafChild(Node* root);

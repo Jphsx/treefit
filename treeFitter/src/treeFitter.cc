@@ -82,7 +82,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 
 	std::string inputMcParticleCollectionName = "x";
 	registerInputCollection( LCIO::MCPARTICLE,
-				"MCParticleCollection" ,
+				"McParticleCollectionName" ,
 				"Name of the MCParticle input collection" ,
 				_inputMcParticleCollectionName,
 				inputMcParticleCollectionName);
@@ -111,16 +111,17 @@ Print processor paramters, initalize global variables like
 event number, initialize the output TTree
 *********************/
 void treeFitter::init() {
-//evtno
-	//print all input parameters
+	//evtno
+	//print all processor input parameters
 	printParameters();
-//treeinit TTree
-//build particle tree
+
+	//build particle tree
 	TFit = new TreeFit();
-	string delimiter = " ,";
-	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, delimiter, 1);
-	std::cout<<"printing in init"<<endl;
+	string SerialDelimiter = " ,";
+	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, SerialDelimiter);
 	TFit->ParticleTree->printTree(TFit->ParticleTree->Root);
+
+	//build TTREE
   return;
 }
 /*******************
@@ -279,9 +280,8 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
 }
 
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
-	//print global tree
-	std::cout<<"about to print tree"<<endl;
-	TFit->ParticleTree->printTree(TFit->ParticleTree->Root);
+	
+	
 	return;
 }
 

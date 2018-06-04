@@ -240,14 +240,14 @@ void Tree::printTree(Node* root){
 	}
 	cout<<endl;
 
-	cout<<" nearest ancestor non leaf child: ";
+	cout<<" Nearest ancestor non-leaf child: ";
 	temp = locateAncestorNearestNonLeafChild(root);
 	if(temp != NULL){
 	cout<< temp->nodeId;
 	}
 	cout<<endl;
 
-	cout<<" first non leaf child: ";
+	cout<<" First non-leaf child: ";
 	temp = getFirstNonLeafChild(root);
 	
 	if(temp != NULL){
@@ -259,39 +259,38 @@ void Tree::printTree(Node* root){
 		printTree(root->children.at(i));
 	}
 }
-//void Tree::treeInit(string pdg, string serial, string mass, string delimiter, int TESTNUM){
-void Tree::treeInit(vector<int> pdg, string serial, vector<float>   mass, string delimiter, int TESTNUM){
+void Tree::treeInit(vector<int> pdg, string serial, vector<float>   mass, string delimiter){
 	int index = 0;
 	Node* root = new Node();
 	root = constructTree( splitString(serial,delimiter), &index);
 	//theTree = root;
-	cout<<"TREE "<<TESTNUM<<endl;
+	cout<<"PreOrder Traversal: ";
 	preOrderTraverse(root);
 	cout<<endl;
+	cout<<"Postrder Traversal: ";
 	postOrderTraverse(root);
 	cout<<endl;
 
 	index=0;
-	//setTreeMasses(root, castVector_double(splitString(mass,delimiter)), &index);
-	cout<<"setting mass"<<endl;
+	
 	setTreeMasses(root, mass, &index);
 	index=0;
-	//setTreePdgCodes(root, castVector_int(splitString(pdg,delimiter)), &index);
-	cout<<"seting pdg"<<endl;
+	
+	
 	setTreePdgCodes(root,pdg, &index);
-	cout<<"mark leaves"<<endl;
+	
 	markTreeLeaves(root);
-	cout<<"populateLeaves"<<endl;
+	
 	populateNLeaves(root);
-	cout<<"make parents"<<endl;
+	
 	setParents(root,NULL);
-	cout<<"made it to last non leaf"<<endl;
+	
 	int lastNonLeaf=0;
 	getLastNonLeafNodeId(root,&lastNonLeaf);
 	lastNonLeafNodeId = lastNonLeaf;
 	
-	cout<<"last leaf node id: "<<lastNonLeafNodeId<<endl;
-	//return root;
+	cout<<"Last non-leaf NodeID: "<<lastNonLeafNodeId<<endl;
+	
 	Root = root;
 }
 

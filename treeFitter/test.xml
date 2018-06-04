@@ -32,7 +32,7 @@
 		<!-- input/output collection names -->
 		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
 		<parameter name="InputParticleCollectionName" value="PandoraPFOs" />
-		<parameter name="MCParticlesCollection" value="MCParticle" />
+		<parameter name="McParticleCollectionName" value="MCParticle" />
    
  	</processor>
 
