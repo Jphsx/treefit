@@ -25,7 +25,7 @@ class Tree{
 	Node* constructTree(vector<string> serial, int* serialIndex);
 	void preOrderTraverse(Node* tree);
 	void postOrderTraverse(Node* tree);
-	void setTreeMasses(Node* root, vector<double> masses, int* massptr);
+	void setTreeMasses(Node* root, vector<float> masses, int* massptr);
 	void setTreePdgCodes(Node* root, vector<int> pdgs, int* pdgptr );
 	void markTreeLeaves(Node* root);
 	void findLeaves(Node* root, Node* originalParent);

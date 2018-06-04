@@ -100,7 +100,7 @@ void Tree::postOrderTraverse(Node* tree){
 	return;
 }
 //a preorder traversal that sets the mass constraint mass for each node based on the input string
-void Tree::setTreeMasses(Node* root, vector<double> masses, int* massptr ){
+void Tree::setTreeMasses(Node* root, vector<float> masses, int* massptr ){
 	root->mass = masses.at(*massptr);
 	++*massptr;
 	for(int i=0; i< root->children.size(); i++){
