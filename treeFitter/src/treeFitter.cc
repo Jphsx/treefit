@@ -114,7 +114,8 @@ void treeFitter::init() {
 //treeinit TTree
 //build particle tree
 	TFit = new TreeFit();
-	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, " ", 1);
+	string delimiter = " ,";
+	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, delimiter, 1);
   return;
 }
 /*******************
