@@ -113,7 +113,7 @@ event number, initialize the output TTree
 void treeFitter::init() {
 //evtno
 	//print all input parameters
-	printParameters()
+	printParameters();
 //treeinit TTree
 //build particle tree
 	TFit = new TreeFit();
@@ -278,7 +278,7 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
 
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//print global tree
-	TFit->ParticleTree->PrintTree(TFit->ParticleTree->Root);
+	TFit->ParticleTree->printTree(TFit->ParticleTree->Root);
 
 }
 
