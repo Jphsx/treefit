@@ -10,6 +10,7 @@ using namespace std;
 
 class Tree{
 	public:
+	Tree();
 	~Tree();
 	void deletePostTraverse(Node* root);
 

@@ -1,6 +1,7 @@
 #include "Tree.h"
 Tree::Tree(){
 	Root = NULL;
+	lastNonLeafNodeId=-1;
 }
 Tree::~Tree(){
 	

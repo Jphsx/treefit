@@ -13,7 +13,7 @@ using namespace std;
 class TreeFit{
 
 	public:
-		
+	TreeFit();	
 	//global set of reconstructed particlesX
 	vector<Particle*> recoparts{};
 	//ID is index of particle on recoparts
