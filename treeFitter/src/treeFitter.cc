@@ -278,6 +278,7 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
 
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//print global tree
+	std::cout<<"about to print tree"<<endl;
 	TFit->ParticleTree->printTree(TFit->ParticleTree->Root);
 
 }
