@@ -120,7 +120,7 @@ void treeFitter::init() {
 	string delimiter = " ,";
 	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, delimiter, 1);
 	std::cout<<"printing in init"<<endl;
-	TFit->ParticleTree->printTree(Tfit->ParticleTree->Root);
+	TFit->ParticleTree->printTree(TFit->ParticleTree->Root);
   return;
 }
 /*******************
