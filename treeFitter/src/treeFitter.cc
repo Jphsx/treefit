@@ -141,7 +141,7 @@ void treeFitter::processEvent( LCEvent * evt ) {
 	//find tracks
 	if(FindPFOs(evt) && FindTracks(evt)){
 	//temp
-	if(true){
+	
 		//TODO: if(using mcparticles){
 		//find mcparticles
 		FindMCParticles(evt);
