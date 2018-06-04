@@ -25,9 +25,9 @@
 	
 	<processor name="MyTreeFitter" type="treeFitter">   
 		<!-- tree parameters -->
-		<parameter name="preorderPdgs" type="IntVec"> 443 331 321 -321 221 211 -211 111 22 22  </parameter>
-		<parameter name="preorderSerial" type="string" value = "0,1,2,),3,),),4,5,),6,),7,8,),9,),),),)" />
-		<parameter name="preorderMass" type="FloatVec"> 3.096 1.0195 -1 -1 0.547 -1 -1 0.135 -1 -1  </parameter>
+		<parameter name="preorderPdgs" type="IntVec"> 221 211 -211 22  </parameter>
+		<parameter name="preorderSerial" type="string" value = "0,1,),2,),3,),)" />
+		<parameter name="preorderMass" type="FloatVec"> 0.547 -1 -1 -1  </parameter>
 
 		<!-- input/output collection names -->
 		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
