@@ -119,6 +119,8 @@ void treeFitter::init() {
 	TFit = new TreeFit();
 	string delimiter = " ,";
 	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, delimiter, 1);
+	std::cout<<"printing in init"<<endl;
+	TFit->ParticleTree->printTree(Tfit->ParticleTree->Root);
   return;
 }
 /*******************
@@ -145,7 +147,7 @@ void treeFitter::processEvent( LCEvent * evt ) {
 		//FindMCParticles(evt);
 	
 		//call fitter
-		FindMassConstraintCandidates(recparcol);
+		this->FindMassConstraintCandidates(recparcol);
 	}
 
 
@@ -280,7 +282,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//print global tree
 	std::cout<<"about to print tree"<<endl;
 	TFit->ParticleTree->printTree(TFit->ParticleTree->Root);
-
+	return;
 }
 
 
