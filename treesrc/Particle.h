@@ -9,6 +9,7 @@ class Particle{
 
 	//distinguish recoparts from tracks
 	bool isTrack;
+
 	//some particle object should be in here as well
 	//ReconstructedParticle/Track*
 	//TLorentzVector RECO

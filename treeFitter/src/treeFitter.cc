@@ -289,6 +289,39 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		std::cout<< temp.Px()<< " "<<temp.Py()<<" "<<temp.Pz()<<" "<<temp.E()<<" "<<temp.M()<<std::endl;
 	}
 
+	//do some track printing
+	std::cout<<"Tracks"<<std::endl;
+	  const double c = 2.99792458e8; // m*s^-1
+  const double B = marlin::Global::GEAR->getBField().at(gear::Vector3D(0.,0.,0.)).z();;          
+  const double mm2m = 1e-3;
+  const double eV2GeV = 1e-9;
+  const double eB = B*c*mm2m*eV2GeV;
+ 
+ for(unsigned int i=0; i<_trackvec.size();i++){
+	
+		double cosLambda = 1 / std::sqrt(1 + _trackvec[i]->getTanLambda()*_trackvec[i]->getTanLambda() );
+		double P = (eB/fabs(_trackvec[i]->getOmega()))/cosLambda;
+		double sinLambda = _trackvec[i]->getTanLambda()*cosLambda;
+		double cosPhi = cos(_trackvec[i]->getPhi());
+		double sinPhi = sin(_trackvec[i]->getPhi());
+		double px = P*cosLambda*cosPhi;
+		double py = P*cosLambda*sinPhi;
+		double pz = P*sinLambda;
+		
+	std::cout<< _trackvec.at(i)->getD0() << " "
+		 << _trackvec.at(i)->getZ0() << " "
+		 << _trackvec.at(i)->getOmega() << " "
+		 << _trackvec.at(i)->getTanLambda() << " "
+		 << _trackvec.at(i)->getPhi() << std::endl;
+
+	std::cout<< px << " " << py << " "<< pz << std::endl;		
+}
+
+			
+			
+
+			
+
 	//advance to next event
 	evtNo++;
 	return;
