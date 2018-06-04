@@ -267,7 +267,7 @@ void Tree::treeInit(vector<int> pdg, string serial, vector<float>   mass, string
 	cout<<"PreOrder Traversal: ";
 	preOrderTraverse(root);
 	cout<<endl;
-	cout<<"Postrder Traversal: ";
+	cout<<"PostOrder Traversal: ";
 	postOrderTraverse(root);
 	cout<<endl;
 

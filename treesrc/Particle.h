@@ -6,6 +6,9 @@
 class Particle{
 	public:
 	int recopdg;
+
+	//distinguish recoparts from tracks
+	bool isTrack;
 	//some particle object should be in here as well
 	//ReconstructedParticle/Track*
 	//TLorentzVector RECO

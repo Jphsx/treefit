@@ -280,8 +280,13 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
 }
 
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
+	//print each particle directly 
+	for(unsigned int i=0; i<_pfovec.size();i++){
 	
-	
+		std::cout<< _pfovec.at(i)->getType()<< " ";
+	        TLorentzVector temp(_pfovec.at(i)->getMomentum()[0], _pfovec.at(i)->getMomentum()[1], _pfovec.at(i)->getMomentum()[2], _pfovec[i]->getEnergy() );
+		std::cout<< temp.Px()<< " "<<temp.Py()<<" "<<temp.Pz()<<" "<<temp.E()<<" "<<temp.M()<<std::endl;
+	}
 	return;
 }
 
