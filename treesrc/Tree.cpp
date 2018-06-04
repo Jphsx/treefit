@@ -1,5 +1,7 @@
 #include "Tree.h"
-
+Tree::Tree(){
+	Root = NULL;
+}
 Tree::~Tree(){
 	
 	deletePostTraverse(Root);

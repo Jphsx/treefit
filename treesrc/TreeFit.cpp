@@ -2,6 +2,9 @@
 #include "TreeFit.h"
 
 //this function should probably take in a TLV or ReconstructedParticle in addition to pdg array to fully populate the object
+TreeFit::TreeFit(){
+	ParticleTree = new Tree();
+}
 void TreeFit::initializerecoparts(vector<int> recopdgs){
 	for(int i=0; i<recopdgs.size(); i++){
 		Particle* p = new Particle();
