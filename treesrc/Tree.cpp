@@ -270,12 +270,17 @@ void Tree::treeInit(vector<int> pdg, string serial, vector<float>   mass, string
 
 	index=0;
 	//setTreeMasses(root, castVector_double(splitString(mass,delimiter)), &index);
+	cout<<"setting mass"<<endl;
 	setTreeMasses(root, mass, &index);
 	index=0;
 	//setTreePdgCodes(root, castVector_int(splitString(pdg,delimiter)), &index);
+	cout<<"seting pdg"<<endl;
 	setTreePdgCodes(root,pdg, &index);
+	cout<<"mark leaves"<<endl;
 	markTreeLeaves(root);
+	cout<<"populateLeaves"<<endl;
 	populateNLeaves(root);
+	cout<<"make parents"<<endl;
 	setParents(root,NULL);
 	cout<<"made it to last non leaf"<<endl;
 	int lastNonLeaf;
