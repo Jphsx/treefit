@@ -7,6 +7,7 @@
 #include "EVENT/ReconstructedParticle.h"
 #include "EVENT/Track.h"
 #include "EVENT/MCParticle.h"
+#include <math.h>
 #include <vector>
 #include <iostream>
 using namespace lcio;

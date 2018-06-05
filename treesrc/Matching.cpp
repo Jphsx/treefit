@@ -25,7 +25,7 @@ std::vector<double> getTrackPxPyPz(Track* t){
 }
 Track* MatchParticleToTrack(ReconstructedParticle* p, std::vector<Track*> tvec){
 
-	double* pxpypz = getMomentum();
+	double* pxpypz = p->getMomentum();
 	std::vector<double> txtytz;
 	double dpx,dpy,dpz;
 	for(unsigned int i=0; i< tvec.size(); i++){
@@ -37,6 +37,7 @@ Track* MatchParticleToTrack(ReconstructedParticle* p, std::vector<Track*> tvec){
 			//track is matched
 			return tvec.at(i);
 		}
+		txtytz.clear();
 	}
 	//if no match is found
 	std::cout<<"Particle "<<p->getType()<< "No Matching Track"<<std::endl;
