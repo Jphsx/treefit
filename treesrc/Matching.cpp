@@ -23,13 +23,13 @@ std::vector<double> getTrackPxPyPz(Track* t, double BField){
 	txtytz.push_back(pz);
 	return txtytz;
 }
-Track* MatchParticleToTrack(ReconstructedParticle* p, std::vector<Track*> tvec){
+Track* MatchParticleToTrack(ReconstructedParticle* p, std::vector<Track*> tvec, double BField){
 
 	double* pxpypz = p->getMomentum();
 	std::vector<double> txtytz;
 	double dpx,dpy,dpz;
 	for(unsigned int i=0; i< tvec.size(); i++){
-		txtytz = getTrackPxPyPz(tvec.at(i));
+		txtytz = getTrackPxPyPz(tvec.at(i), BField);
 		dpx = abs(pxpypz[0] - txtytz.at(0));
 		dpy = abs(pxpypz[1] - txtytz.at(1));
 		dpz = abs(pxpypz[2] - txtytz.at(2));
