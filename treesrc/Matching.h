@@ -3,7 +3,7 @@
 
 
 //class that matches particles between collections
-
+#include "lcio.h"
 #include "EVENT/ReconstructedParticle.h"
 #include "EVENT/Track.h"
 #include "EVENT/MCParticle.h"
