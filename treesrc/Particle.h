@@ -14,14 +14,24 @@ typedef lcio::ReconstructedParticle ReconstructedParticle ;
 //a general particle container that aggregates all possible information or a reconstructed particle
 class Particle{
 	public:
-	int recopdg;
+	Particle();
+	Particle(ReconstructedParticle* p, Track* t, double B);
+	//need to write a good destructor here
+	//TODO ~Particle()
+	
 
+	int recopdg;	
+	double Bfield;
 	//distinguish recoparts from tracks
 	bool isTrack;
 
-	//some particle object should be in here as well
 	//ReconstructedParticle/Track*
+	Track* track;
+	ReconstructedParticle* part;
+
 	//TLorentzVector RECO
+	TLorentzVector v;
+
 	//MCParticle
 	//TLorentzVector MC
 	//LocalParamterization 
@@ -41,6 +51,12 @@ class Particle{
 	//from the 5 track parameters return a vector of 
 	//momentum components px,py,pz
 	static std::vector<double> getTrackPxPyPz(Track* t, double BField);
+	
+	//make TLorentzVector from ReconstructedParticle/Track
+	static TLorentzVector getTLorentzVector(ReconstructedPartictle* p);
+	static TLorentzVector getTLorentzVector(Track* t, double Mass, double B);
+
+	static void printParticle(Particle* pc);
 	
 	
 

@@ -14,14 +14,19 @@ class TreeFit{
 
 	public:
 	TreeFit();	
-	//global set of reconstructed particlesX
+	//set of reconstructed particles containers
 	vector<Particle*> recoparts{};
 	//ID is index of particle on recoparts
 	vector<int> recoIDs{};
 	int LASTNONLEAFID;
 	Tree* ParticleTree;
 
-	void initializerecoparts(vector<int> recopdgs);
+	//TODO add fitTable
+
+	//void initializerecoparts(vector<int> recopdgs);
+	//update initialize to add
+	void addrecopart(Particle* pc);
+
 	void printParticles(vector<Particle*> parts);
 	vector<vector<int> > makepdgcombinations(vector<vector<int> > combinations);
 	vector<int> getpdgcombo(vector<int> combo);
