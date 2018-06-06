@@ -284,7 +284,7 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
 
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//print each particle directly 
-	cout.precision(10);
+	//cout.precision(10);
 	for(unsigned int i=0; i<_pfovec.size(); i++){
 		Particle::printReconstructedParticle(_pfovec.at(i));
 	}

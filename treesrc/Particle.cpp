@@ -16,7 +16,7 @@ void Particle::printReconstructedParticle(ReconstructedParticle* p){
 	"(Px,Py,Pz,E,M,q) "<<
 	mom[0]<< " "<<mom[1]<< " "<<mom[2]<< " "
 	<<p->getEnergy()<<" "<<p->getMass()<<" "
-	<<p->getCharge<<std::endl;
+	<<p->getCharge()<<std::endl;
 		
 	
 }
