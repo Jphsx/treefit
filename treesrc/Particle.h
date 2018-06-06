@@ -5,7 +5,9 @@
 #include <iostream>
 #include <vector>
 #include "TLorentzVector.h"
-#include "
+#include "EVENT/ReconstructedParticle.h"
+#include "EVENT/Track.h"
+#include "EVENT/MCParticle.h"
 ////////////////////
 //a general particle container that aggregates all possible information or a reconstructed particle
 class Particle{
@@ -27,6 +29,7 @@ class Particle{
 	//printing utilities
 	//print 5 track parameters
 	static void printTrack(Track* t);
+	//print track momentum only
 	static void printTrackPxPyPz(Track* t, double B);
 	//print pdg/charge/px py pz E M
 	static void printReconstructedParticle(ReconstructedParticle* p);

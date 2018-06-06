@@ -66,7 +66,7 @@ class treeFitter : public marlin::Processor {
 	/*************
 	store the Bfield
 	*************/
-	const double B;
+	double B;
 	
 	/**************
 	LCIO Collection gathering methods
