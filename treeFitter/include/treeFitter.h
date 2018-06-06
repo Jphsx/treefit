@@ -25,6 +25,8 @@ typedef CLHEP::HepLorentzVector LorentzVector ;
 
 
 #include "TreeFit.h"
+#include "Matching.h"
+#include "Particle.h"
 
 using namespace lcio ;
 
@@ -61,6 +63,10 @@ class treeFitter : public marlin::Processor {
 	track the event number for printing
 	*************/
 	int evtNo;
+	/*************
+	store the Bfield
+	*************/
+	const double B;
 	
 	/**************
 	LCIO Collection gathering methods

@@ -113,6 +113,8 @@ event number, initialize the output TTree
 void treeFitter::init() {
 	//evtno set to 0
 	evtNo=0;
+	//set the BField
+	B = marlin::Global::GEAR->getBField().at(gear::Vector3D(0.,0.,0.)).z();
 	//print all processor input parameters
 	printParameters();
 
@@ -282,42 +284,26 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
 
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//print each particle directly 
-	for(unsigned int i=0; i<_pfovec.size();i++){
 	cout.precision(10);
-		std::cout<< _pfovec.at(i)->getType()<< " ";
-	        TLorentzVector temp(_pfovec.at(i)->getMomentum()[0], _pfovec.at(i)->getMomentum()[1], _pfovec.at(i)->getMomentum()[2], _pfovec[i]->getEnergy() );
-		std::cout<< temp.Px()<< " "<<temp.Py()<<" "<<temp.Pz()<<" "<<temp.E()<<" "<<temp.M()<<std::endl;
+	for(unsigned int i=0; i<_pfovec.size(); i++){
+		Particle::printReconstructedParticle(_pfovec.at(i));
 	}
-
 	//do some track printing
-	std::cout<<"Tracks"<<std::endl;
-	  const double c = 2.99792458e8; // m*s^-1
-  const double B = marlin::Global::GEAR->getBField().at(gear::Vector3D(0.,0.,0.)).z();;          
-  const double mm2m = 1e-3;
-  const double eV2GeV = 1e-9;
-  const double eB = B*c*mm2m*eV2GeV;
- 
- for(unsigned int i=0; i<_trackvec.size();i++){
-	cout.precision(10);
-		double cosLambda = 1 / std::sqrt(1 + _trackvec[i]->getTanLambda()*_trackvec[i]->getTanLambda() );
-		double P = (eB/fabs(_trackvec[i]->getOmega()))/cosLambda;
-		double sinLambda = _trackvec[i]->getTanLambda()*cosLambda;
-		double cosPhi = cos(_trackvec[i]->getPhi());
-		double sinPhi = sin(_trackvec[i]->getPhi());
-		double px = P*cosLambda*cosPhi;
-		double py = P*cosLambda*sinPhi;
-		double pz = P*sinLambda;
+	for(unsigned int i=0; i<_trackvec.size(); i++){
+		Particle::printTrack(_trackvec.at(i));
+		//also print the 4 vector form
+		Particle::printTrackPxPyPz(_trackvec.at(i),B);
 		
-	std::cout<< _trackvec.at(i)->getD0() << " "
-		 << _trackvec.at(i)->getZ0() << " "
-		 << _trackvec.at(i)->getOmega() << " "
-		 << _trackvec.at(i)->getTanLambda() << " "
-		 << _trackvec.at(i)->getPhi() << std::endl;
-
-	std::cout<< px << " " << py << " "<< pz << std::endl;		
-}
-
+	}
+	//try to match up recos to tracks and print
+	std::cout<<"Attempting to pair particles/tracks:"<<std::endl;
+	for(unsigned int i=0; i<_pfovec.size(); i++){
+		Particle::printReconstructedParticle(_pfovec.at(i));
+		Particle::printTrackPxPyPz(Matching::MatchParticleToTrack(_pfovec.at(i),  _trackvec, B)
+	}
+	
 			
+
 			
 
 			
