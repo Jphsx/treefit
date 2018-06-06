@@ -298,8 +298,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//try to match up recos to tracks and print
 	std::cout<<"Attempting to pair particles/tracks:"<<std::endl;
 	for(unsigned int i=0; i<_pfovec.size(); i++){
-		Particle::printReconstructedParticle(_pfovec.at(i));
-		Particle::printTrackPxPyPz(Matching::MatchParticleToTrack(_pfovec.at(i),  _trackvec, B),B);
+		if(_pfovec.at(i)->getCharge() != 0){
+			Particle::printReconstructedParticle(_pfovec.at(i));
+			Particle::printTrackPxPyPz(Matching::MatchParticleToTrack(_pfovec.at(i),  _trackvec, B),B);
+		}
 	}
 	
 			
