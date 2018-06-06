@@ -3,7 +3,7 @@
 
 
 void Particle::printTrack(Track* t){
-	std::cout<"Track: (D0,Z0,ome,tanL,phi) "<< 
+	std::cout<<"Track: (D0,Z0,ome,tanL,phi) "<< 
 		t->getD0()<<" "<<
 		t->getZ0()<<" "<<
 		t->getOmega()<<" "<<
@@ -11,7 +11,7 @@ void Particle::printTrack(Track* t){
 		t->getPhi()<<std::endl;
 }
 void Particle::printReconstructedParticle(ReconstructedParticle* p){
-	const double mom = p->getMomentum();	
+	const double* mom = p->getMomentum();	
 	std::cout<<"Particle "<< p->getType() <<": "<<
 	"(Px,Py,Pz,E,M,q) "<<
 	mom[0]<< " "<<mom[1]<< " "<<mom[2]<< " "
@@ -53,7 +53,7 @@ std::vector<double> Particle::getTrackPxPyPz(Track* t, double BField){
 }
 void Particle::printTrackPxPyPz(Track* t, double B){
 	std::vector<double> txtytz = getTrackPxPyPz(t,B);
-	std::cout<<"Track: (Px,Py,Pz) "<<
+	std::cout<<"Track: (Px,Py,Pz) "
 		<<txtytz.at(0)<<" "
 		<<txtytz.at(1)<<" "
 		<<txtytz.at(2)<<std::endl;
