@@ -46,7 +46,7 @@ class Particle{
 	//print pdg/charge/px py pz E M
 	static void printReconstructedParticle(ReconstructedParticle* p);
 	//print px py pz E M
-	static void printTLorentzVector(TLorentzVector v);
+	static void printTLorentzVector(TLorentzVector* v);
 
 	//from the 5 track parameters return a vector of 
 	//momentum components px,py,pz
