@@ -53,8 +53,8 @@ class Particle{
 	static std::vector<double> getTrackPxPyPz(Track* t, double BField);
 	
 	//make TLorentzVector from ReconstructedParticle/Track
-	static TLorentzVector getTLorentzVector(ReconstructedParticle* p);
-	static TLorentzVector getTLorentzVector(Track* t, double Mass, double B);
+	static TLorentzVector* getTLorentzVector(ReconstructedParticle* p);
+	static TLorentzVector* getTLorentzVector(Track* t, double Mass, double B);
 
 	static void printParticle(Particle* pc);
 	
