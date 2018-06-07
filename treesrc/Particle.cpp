@@ -105,7 +105,7 @@ void Particle::printParticle(Particle* pc){
 	std::cout<<std::endl;
 	std::cout<<"first contents :"<< pc->recopdg << " " << pc->Bfield << " " << pc->isTrack << std::endl;
 	printReconstructedParticle(pc->part);
-	printTLorentzVector(pc->v);
+	//printTLorentzVector(pc->v);
 	if(pc->isTrack){
 		std::cout<<"this is a track "<<std::endl;
 		printTrackPxPyPz(pc->track, pc->Bfield);
