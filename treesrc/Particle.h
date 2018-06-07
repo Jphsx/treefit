@@ -18,8 +18,8 @@ class Particle{
 	Particle(ReconstructedParticle* p, Track* t, double B);
 	//need to write a good destructor here
 	//TODO ~Particle()
+	void fillParticle(ReconstructedParticle* p, Track* t, double B);
 	
-
 	int recopdg;	
 	double Bfield;
 	//distinguish recoparts from tracks
