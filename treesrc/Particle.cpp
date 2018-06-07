@@ -7,7 +7,7 @@ Particle::Particle( ){
 	isTrack = false;
 	track = NULL;
 	part = NULL;
-	v = NULL;
+	//v = NULL;
 }
 Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	//if no track this is just a neutral particle	
