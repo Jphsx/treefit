@@ -332,6 +332,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 	//advance to next event
 	evtNo++;
+	_pfovec.clear();
+	_trackvec.clear();
 	return;
 }
 
