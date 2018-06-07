@@ -4,7 +4,7 @@
 //this function should probably take in a TLV or ReconstructedParticle in addition to pdg array to fully populate the object
 TreeFit::TreeFit(){
 	ParticleTree = new Tree();
-	LASTNONLEAFID = &(ParticleTree->lastnonleafid);
+	LASTNONLEAFID = &(ParticleTree->lastNonLeafNodeId);
 }
 
 void TreeFit::addrecopart(Particle* pc){
