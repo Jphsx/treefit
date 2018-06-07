@@ -314,7 +314,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		TFit->addrecopart(pc);
 	}	
 	std::cout<<"about to print particle vector"<<std::endl;
-	TFit->printParticles(TFit->recoparts);
+	//TFit->printParticles(TFit->recoparts);
 	std::cout<<std::endl;
 	std::cout<<"checking reco indices"<<std::endl;
 	
