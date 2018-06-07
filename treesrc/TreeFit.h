@@ -26,6 +26,11 @@ class TreeFit{
 	Tree* ParticleTree;
 
 	//TODO add fitTable
+	//Fit table is a 3d vector
+	//first index is ith Node
+	//second index is the jth fit combination for that node
+	//third index is the index of the particle on recoparts in the jth combination for ith node
+	std::vector< std::vector< std::vector<int>>> fitTable; 
 
 	
 	void addrecopart(Particle* pc);
