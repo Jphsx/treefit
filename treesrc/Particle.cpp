@@ -7,6 +7,9 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	if(t==NULL){
 		isTrack = false;
 	}
+	else{
+		isTrack = true;
+	}
 	//set pdgcode
 	recopdg = p->getType();
 	part = p;
