@@ -18,13 +18,16 @@ class TreeFit{
 	vector<Particle*> recoparts{};
 	//ID is index of particle on recoparts
 	vector<int> recoIDs{};
+
+	//when moving to a new event clear the old reco particles
+	void clearEvent();
+
 	int LASTNONLEAFID;
 	Tree* ParticleTree;
 
 	//TODO add fitTable
 
-	//void initializerecoparts(vector<int> recopdgs);
-	//update initialize to add
+	
 	void addrecopart(Particle* pc);
 
 	void printParticles(vector<Particle*> parts);

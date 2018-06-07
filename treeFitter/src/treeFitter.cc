@@ -283,50 +283,19 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
 }
 
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
+	std::cout<<"EVENT "<<evtNo<<std::endl;
 	//print each particle directly 
-	//cout.precision(10);
-	for(unsigned int i=0; i<_pfovec.size(); i++){
-		Particle::printReconstructedParticle(_pfovec.at(i));
-	}
-	//do some track printing
-	for(unsigned int i=0; i<_trackvec.size(); i++){
-		Particle::printTrack(_trackvec.at(i));
-		//also print the 4 vector form
-		Particle::printTrackPxPyPz(_trackvec.at(i),B);
-		
-	}
-	//try to match up recos to tracks and print
-	std::cout<<"Attempting to pair particles/tracks:"<<std::endl;
-	for(unsigned int i=0; i<_pfovec.size(); i++){
-		if(_pfovec.at(i)->getCharge() != 0){
-			Particle::printReconstructedParticle(_pfovec.at(i));
-			Particle::printTrackPxPyPz(Matching::MatchParticleToTrack(_pfovec.at(i),  _trackvec, B),B);
-		}
-	}
-	
-		
+	//cout.precision(10);	
 	//start populating the Particle* structure in TFit
 	for(unsigned int i=0; i<_pfovec.size(); i++){
 		Particle* pc = new Particle(_pfovec.at(i), Matching::MatchParticleToTrack(_pfovec.at(i), _trackvec,B),B);
-		//Particle* pc = new Particle();
-		//pc->part = _pfovec.at(i);
-		//pc->track = Matching::MatchParticleToTrack(_pfovec.at(i), _trackvec,B);
-	//	pc->fillParticle(_pfovec.at(i), NULL, B);
-	//	std::cout<<"adding this"<<std::endl;
-	//	Particle::printReconstructedParticle(_pfovec.at(i));
-	//	Particle::printParticle(pc);
+		
 		TFit->addrecopart(pc);
 	}	
-	std::cout<<std::endl;
-	std::cout<<"about to print particle vector"<<std::endl;
+	
 	TFit->printParticles(TFit->recoparts);
 	std::cout<<std::endl;
-	std::cout<<"checking reco indices"<<std::endl;
-	
-	for(int i=0; i< TFit->recoIDs.size(); i++){
-		std::cout<<TFit->recoIDs.at(i)<<" ";
-	}		
-	std::cout<<std::endl;
+		
 
 			
 
@@ -335,8 +304,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	_pfovec.clear();
 	_trackvec.clear();
 	//might need to run a destructor here first
-	TFit->recoparts.clear();
-	TFit->recoIDs.clear();
+	TFit->clearEvent();
 	return;
 }
 

@@ -6,30 +6,14 @@ TreeFit::TreeFit(){
 	ParticleTree = new Tree();
 	LASTNONLEAFID = -1;
 }
-/*
-void TreeFit::initializerecoparts(vector<int> recopdgs){
-	for(int i=0; i<recopdgs.size(); i++){
-		Particle* p = new Particle();
-		p->recopdg=recopdgs.at(i);
-		recoparts.push_back(p);
-		//also creat a vector of unique 
-		//recoparticle id's
-		recoIDs.push_back(i);
-		//the unique ID is just the index on the 
-		//reco parts array
-	}
-}
-*/
+
 void TreeFit::addrecopart(Particle* pc){
 	recoparts.push_back(pc);
 	recoIDs.push_back(recoparts.size()-1);
 }
 void TreeFit::printParticles(vector<Particle*> parts){
 	for(int i=0; i<parts.size(); i++){
-		cout<<"Particle Index "<<i<<endl;
-		//cout<<parts.at(i)->recopdg<<endl;
-		//cout<<"Status "<<parts.at(i)->used<<endl;
-		//cout<<endl;
+		cout<<"Particle Index/recoID "<<i<<endl;
 		Particle::printParticle(parts.at(i));
 	}
 }
@@ -124,6 +108,10 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 	root->combinations.clear();
 	
 	return;
+}
+void TreeFit::clearEvent(){
+	recoparts.clear();
+	recoIDs.clear();
 }
 //Testing framework////////////////
 /*int main(){ 

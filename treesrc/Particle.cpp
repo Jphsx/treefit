@@ -1,14 +1,7 @@
 #include "Particle.h"
 
 
-Particle::Particle( ){
-	recopdg = -1;
-	Bfield = -1;
-	isTrack = false;
-	track = NULL;
-	part = NULL;
-	//v = NULL;
-}
+Particle::Particle( ){}
 Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	//if no track this is just a neutral particle	
 	if(t==NULL){
@@ -31,28 +24,6 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	}
 
 }
-/*void Particle::fillParticle(ReconstructedParticle* p, Track* t, double B){
-		//if no track this is just a neutral particle	
-	if(t==NULL){
-		isTrack = false;
-	}
-	else{
-		isTrack = true;
-	}
-	//set pdgcode
-	recopdg = p->getType();
-	//part = p;
-	//track = t;// t can be null
-	Bfield = B;
-	//if its a track populate tlv from track not reco
-	/*if(isTrack){
-		v = getTLorentzVector(t,p->getMass(),B);
-	}
-	else{
-		v = getTLorentzVector(p);
-	}
-
-}*/
 void Particle::printTrack(Track* t){
 	std::cout<<"Track: (D0,Z0,ome,tanL,phi) "<< 
 		t->getD0()<<" "<<
@@ -62,8 +33,6 @@ void Particle::printTrack(Track* t){
 		t->getPhi()<<std::endl;
 }
 void Particle::printReconstructedParticle(ReconstructedParticle* p){
-	if(p !=NULL) std::cout<<p<<std::endl;
-	if(p == NULL) std::cout<<"p is null"<<std::endl;
 	const double* mom = p->getMomentum();	
 	std::cout<<"Particle "<< p->getType() <<": "<<
 	"(Px,Py,Pz,E,M,q) "<<
@@ -124,14 +93,14 @@ TLorentzVector* Particle::getTLorentzVector(Track* t, double Mass, double B){
 	return tlv;
 }
 void Particle::printParticle(Particle* pc){
-	std::cout<<"first contents :"<< pc->recopdg << " " << pc->Bfield << " " << pc->isTrack << std::endl;
+
 	printReconstructedParticle(pc->part);
 	printTLorentzVector(pc->v);
 
 	if(pc->isTrack){
-		std::cout<<"this is a track "<<std::endl;
 		printTrackPxPyPz(pc->track, pc->Bfield);
 		printTrack(pc->track);	
 	}
+	std::cout<<std::endl;
 	
 }
