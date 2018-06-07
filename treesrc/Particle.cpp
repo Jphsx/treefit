@@ -42,7 +42,7 @@ void Particle::printReconstructedParticle(ReconstructedParticle* p){
 		
 	
 }
-void Particle::printTLorentzVector(TLorentzVector v){
+void Particle::printTLorentzVector(TLorentzVector* v){
 
 	std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
 		v.Px()<< " " <<
@@ -83,13 +83,13 @@ void Particle::printTrackPxPyPz(Track* t, double B){
 TLorentzVector* Particle::getTLorentzVector(ReconstructedParticle* p){
 	TLorentzVector* tlv = new TLorentzVector();
 	const double* mom = p->getMomentum();
-	tlv.SetXYZM(mom[0],mom[1],mom[2],p->getMass());
+	tlv->SetXYZM(mom[0],mom[1],mom[2],p->getMass());
 	return tlv;
 }
 TLorentzVector* Particle::getTLorentzVector(Track* t, double Mass, double B){
 	TLorentzVector* tlv = new TLorentzVector();
 	std::vector<double> txtytz = getTrackPxPyPz(t, B);
-	tlv.SetXYZM(txtytz.at(0),txtytz.at(1),txtytz.at(2), Mass);
+	tlv->SetXYZM(txtytz.at(0),txtytz.at(1),txtytz.at(2), Mass);
 	return tlv;
 }
 void Particle::printParticle(Particle* pc){
