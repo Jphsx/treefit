@@ -4,6 +4,7 @@ using namespace lcio;
 
 Track* Matching::MatchParticleToTrack(ReconstructedParticle* p, std::vector<Track*> tvec, double BField){
 
+	if(p->getCharge() == 0) return NULL;
 	const double* pxpypz = p->getMomentum();
 	std::vector<double> txtytz;
 	double dpx,dpy,dpz;
