@@ -308,6 +308,9 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//start populating the Particle* structure in TFit
 	for(unsigned int i=0; i<_pfovec.size(); i++){
 		Particle* pc = new Particle(_pfovec.at(i), Matching::MatchParticleToTrack(_pfovec.at(i), _trackvec,B),B);
+		std::cout<<"adding this"<<std::endl;
+		Particle::printReconstructedParticle(_pfovec.at(i));
+		Particle::printParticle(pc);
 		TFit->addrecopart(pc);
 	}	
 	std::cout<<"about to print particle vector"<<std::endl;
