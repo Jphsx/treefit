@@ -33,6 +33,8 @@ void Particle::printTrack(Track* t){
 		t->getPhi()<<std::endl;
 }
 void Particle::printReconstructedParticle(ReconstructedParticle* p){
+	if(p !=NULL) std::cout<<p<<std::endl;
+	if(p == NULL) std::cout<<"p is null"<<std::endl;
 	const double* mom = p->getMomentum();	
 	std::cout<<"Particle "<< p->getType() <<": "<<
 	"(Px,Py,Pz,E,M,q) "<<
