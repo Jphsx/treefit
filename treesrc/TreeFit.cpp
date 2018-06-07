@@ -4,7 +4,7 @@
 //this function should probably take in a TLV or ReconstructedParticle in addition to pdg array to fully populate the object
 TreeFit::TreeFit(){
 	ParticleTree = new Tree();
-	LASTNONLEAFID = -1;
+	LASTNONLEAFID = &(ParticleTree->lastnonleafid);
 }
 
 void TreeFit::addrecopart(Particle* pc){
@@ -70,7 +70,7 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 		}
 
 		
-		if(root->nodeId == LASTNONLEAFID){
+		if(root->nodeId == *LASTNONLEAFID){
 			//do fit
 			cout<<"FIT"<<endl;
 			Tree::printfit(ParticleTree->Root);

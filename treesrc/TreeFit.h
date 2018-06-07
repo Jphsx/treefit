@@ -22,7 +22,7 @@ class TreeFit{
 	//when moving to a new event clear the old reco particles
 	void clearEvent();
 
-	int LASTNONLEAFID;
+	int* LASTNONLEAFID;
 	Tree* ParticleTree;
 
 	//TODO add fitTable
