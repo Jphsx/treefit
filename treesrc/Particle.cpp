@@ -31,7 +31,7 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	}
 
 }
-void Particle::fillParticle(ReconstructedParticle* p, Track* t, double B){
+/*void Particle::fillParticle(ReconstructedParticle* p, Track* t, double B){
 		//if no track this is just a neutral particle	
 	if(t==NULL){
 		isTrack = false;
@@ -52,7 +52,7 @@ void Particle::fillParticle(ReconstructedParticle* p, Track* t, double B){
 		v = getTLorentzVector(p);
 	}*/
 
-}
+}*/
 void Particle::printTrack(Track* t){
 	std::cout<<"Track: (D0,Z0,ome,tanL,phi) "<< 
 		t->getD0()<<" "<<
