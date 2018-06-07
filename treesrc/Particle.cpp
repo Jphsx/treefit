@@ -96,9 +96,10 @@ TLorentzVector* Particle::getTLorentzVector(Track* t, double Mass, double B){
 }
 void Particle::printParticle(Particle* pc){
 	std::cout<<std::endl;
-	printReconstructedParticle(pc->part);
+	//printReconstructedParticle(pc->part);
 	printTLorentzVector(pc->v);
 	if(pc->isTrack){
+		std::cout<<"this is a track "<<std::endl;
 		printTrackPxPyPz(pc->track, pc->Bfield);
 		printTrack(pc->track);	
 	}
