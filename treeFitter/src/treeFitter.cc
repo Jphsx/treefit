@@ -334,6 +334,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	evtNo++;
 	_pfovec.clear();
 	_trackvec.clear();
+	//might need to run a destructor here first
+	TFit->recoparts.clear();
 	return;
 }
 
