@@ -87,7 +87,7 @@ TLorentzVector* Particle::getTLorentzVector(ReconstructedParticle* p){
 	return tlv;
 }
 TLorentzVector* Particle::getTLorentzVector(Track* t, double Mass, double B){
-	TLorentzVector tlv = new TLorentzVector();
+	TLorentzVector* tlv = new TLorentzVector();
 	std::vector<double> txtytz = getTrackPxPyPz(t, B);
 	tlv.SetXYZM(txtytz.at(0),txtytz.at(1),txtytz.at(2), Mass);
 	return tlv;

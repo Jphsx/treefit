@@ -30,7 +30,7 @@ class Particle{
 	ReconstructedParticle* part;
 
 	//TLorentzVector RECO
-	TLorentzVector v;
+	TLorentzVector* v;
 
 	//MCParticle
 	//TLorentzVector MC
