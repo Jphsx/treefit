@@ -297,7 +297,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<std::endl;
 
 	//Do the fits (print them)
-	TFit->initTable()
+	TFit->initTable();
 	TFit->generatefitcombinations(TFit->ParticleTree->Root, TFit->recoIDs);
 	//print the fit table	
 
