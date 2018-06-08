@@ -125,6 +125,7 @@ void TreeFit::addFitToTable(Node* root){
 	cout<<endl;
 	*/
 	fitTable.at(root->nodeId).push_back(root->currentcombination);
+	fitPdgs.at(root->nodeId).push_back(root->currentcombination_pdgs);
 	
 	for(int i=0; i< root->children.size(); i++){
 		addFitToTable(root->children.at(i));
@@ -132,8 +133,11 @@ void TreeFit::addFitToTable(Node* root){
 
 }
 void TreeFit::initTable(){
-	std::vector< std::vector< std::vector<int>>> table(*LASTNONLEAFID + 1); 
-	fitTable = table;
+	std::vector< std::vector< std::vector<int>>> idtable(*LASTNONLEAFID + 1); 
+	std::vector< std::vector< std::vector<int>>> pdgtable(*LASTNONLEAFID + 1);
+
+	fitTable = idtable;
+	fitPdgs = pdgtable;
 	std::cout<<fitTable.size()<<" size "<<std::endl;
 }
 void TreeFit::printTable(){
@@ -146,12 +150,17 @@ void TreeFit::printTable(){
 			if(fitTable.at(i).size() > 0){
 				//this is not a leaf node
 				Tree::getNodePdg(ParticleTree->Root, i, &tpdg);
-				std::cout<<"Node: "<< i<<" Pdg: "<< tpdg <<std::endl;
+				std::cout<<"Node: "<< i<<" Pdg: "<< tpdg <<" ";
 				
-				std::cout<<"Particles RecoIDs: { ";
+				std::cout<<"Final State RecoIDs: { ";
 				for(int k=0; k<fitTable.at(i).at(j).size(); k++){
-					std::cout<<fitTable.at(i).at(j).at(k)<<", ";
+					std::cout<<fitTable.at(i).at(j).at(k)<<" ";
 				}	
+				std::cout<<"} Pdgs: {";
+				
+				for(int k=0; k<fitPdgs.at(i).at(j).size(); k++){
+					std::cout<<fitPdgs.at(i).at(j).at(k)<<" ";
+				}
 				std::cout<<"}"<<std::endl;
 			}
 			
