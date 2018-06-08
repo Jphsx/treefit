@@ -74,6 +74,7 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 			//do fit
 			//cout<<"FIT"<<endl;
 			Tree::printfit(ParticleTree->Root);
+			addFitToTable(ParticleTree->Root);
 			cout<<endl;
 			
 		}
@@ -114,24 +115,49 @@ void TreeFit::clearEvent(){
 	recoIDs.clear();
 }
 void TreeFit::addFitToTable(Node* root){
-/*	if(root->isLeaf) return;
-
+	if(root->isLeaf) return;
+/*
 	//cout<<"Node "<<root->nodeId;
 	//cout<<" FitRecoIDs: ";
 	printvector(root->currentcombination);
 	cout<<" FitRecoPDGs: ";
 	printvector(root->currentcombination_pdgs);
 	cout<<endl;
+	*/
+	fitTable.at(root->nodeId).push_back(root->currentcombination);
+	
 	for(int i=0; i< root->children.size(); i++){
-		printfit(root->children.at(i));
+		addFitToTable(root->children.at(i));
 	}
-*/
+
 }
 void TreeFit::initTable(){
-	//fitTable.reserve(*LASTNONLEAFID +1);
 	std::vector< std::vector< std::vector<int>>> table(*LASTNONLEAFID + 1); 
 	fitTable = table;
 	std::cout<<fitTable.size()<<" size "<<std::endl;
+}
+void printTable(){
+
+	for(int j=0; i<fitTable().at(0).size(); j++){
+		std::cout<<" FIT: "<<j <<std::endl;
+		for(int i=0; i<fitTable().size(); i++){
+		//we require at least 1 node to fit (node 0)
+			
+			if(fitTable.at(j).size() > 0){
+				//this is not a leaf node
+				std::cout<<"Node: " i<<" Pdg: "<< Tree::getNodePdg(ParticleTree->Root, i)<<std::endl;
+				std::cout<<"Particles RecoIDs: { ";
+				for(int k=0; k<fitTable.at(i).at(j).size(); k++){
+					std::cout<<fitTable.at(i).at(j).at(k)<<", ";
+				}	
+				std::cout<<"}"<<std::endl;
+			}
+			
+		}
+		std::cout<<std::endl;				
+	}
+	
+
 }
 //Testing framework////////////////
 /*int main(){ 

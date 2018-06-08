@@ -53,6 +53,8 @@ class Tree{
 	//iterate and print all non leaf current combos
 	static void printfit(Node* root);
 	
+	//search the tree for node# and return its corresponding pdg
+	static int getNodePdg(Node* root, int id);
 
 };
 
