@@ -209,13 +209,16 @@ void Tree::printfit(Node* root){
 	}
 	
 }
-int Tree::getNodePdg(Node* root, int id){
+void Tree::getNodePdg(Node* root, int id, int* pdg){
 	
-	if(root->nodeId == id) return root->pdg;
-	for(int i=0; i<root->children.size(); i++){
-		getNodePdg(root->children.at(i));
+	if(root->nodeId == id){
+		*pdg = root->pdg;
+		return;
 	}
-	return;
+	for(int i=0; i<root->children.size(); i++){
+		getNodePdg(root->children.at(i), id, pdg);
+	}
+	return ;
 }
 void Tree::getLastNonLeafNodeId(Node* root, int* id){
 	if(!root->isLeaf){

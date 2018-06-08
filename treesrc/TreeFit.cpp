@@ -137,7 +137,7 @@ void TreeFit::initTable(){
 	std::cout<<fitTable.size()<<" size "<<std::endl;
 }
 void printTable(){
-
+	int tpdg=0;
 	for(int j=0; i<fitTable().at(0).size(); j++){
 		std::cout<<" FIT: "<<j <<std::endl;
 		for(int i=0; i<fitTable().size(); i++){
@@ -145,7 +145,7 @@ void printTable(){
 			
 			if(fitTable.at(j).size() > 0){
 				//this is not a leaf node
-				std::cout<<"Node: " i<<" Pdg: "<< Tree::getNodePdg(ParticleTree->Root, i)<<std::endl;
+				std::cout<<"Node: " i<<" Pdg: "<< Tree::getNodePdg(ParticleTree->Root, i, tpdg)<<std::endl;
 				std::cout<<"Particles RecoIDs: { ";
 				for(int k=0; k<fitTable.at(i).at(j).size(); k++){
 					std::cout<<fitTable.at(i).at(j).at(k)<<", ";

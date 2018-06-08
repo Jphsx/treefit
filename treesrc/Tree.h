@@ -54,7 +54,7 @@ class Tree{
 	static void printfit(Node* root);
 	
 	//search the tree for node# and return its corresponding pdg
-	static int getNodePdg(Node* root, int id);
+	static void getNodePdg(Node* root, int id, int* pdg);
 
 };
 
