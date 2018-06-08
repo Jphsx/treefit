@@ -30,8 +30,8 @@ class TreeFit{
 	//first index is ith Node
 	//second index is the jth fit combination for that node
 	//third index is the index of the particle on recoparts in the jth combination for ith node
-	std::vector< std::vector< std::vector<int>>> fitTable; 
-
+	std::vector< std::vector< std::vector<int>>> fitTable{}; //this may not work in initialization (probably not)
+	void initTable();
 	
 	void addrecopart(Particle* pc);
 
@@ -39,6 +39,8 @@ class TreeFit{
 	vector<vector<int> > makepdgcombinations(vector<vector<int> > combinations);
 	vector<int> getpdgcombo(vector<int> combo);
 	void generatefitcombinations(Node* root, vector<int> parentcombo);
+
+	void addFitToTable(Node* root);
 		
 
 };

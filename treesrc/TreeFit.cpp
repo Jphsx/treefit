@@ -72,7 +72,7 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 		
 		if(root->nodeId == *LASTNONLEAFID){
 			//do fit
-			cout<<"FIT"<<endl;
+			//cout<<"FIT"<<endl;
 			Tree::printfit(ParticleTree->Root);
 			cout<<endl;
 			
@@ -112,6 +112,24 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 void TreeFit::clearEvent(){
 	recoparts.clear();
 	recoIDs.clear();
+}
+void TreeFit::addFitToTable(Node* root){
+	if(root->isLeaf) return;
+
+	//cout<<"Node "<<root->nodeId;
+	//cout<<" FitRecoIDs: ";
+	printvector(root->currentcombination);
+	cout<<" FitRecoPDGs: ";
+	printvector(root->currentcombination_pdgs);
+	cout<<endl;
+	for(int i=0; i< root->children.size(); i++){
+		printfit(root->children.at(i));
+	}
+	
+}
+void TreeFit::initTable(){
+	fitTable.reserve(LASTNONLEAFID+1);
+	std::cout<<fitTable.size()<<" size "<<std::endl;
 }
 //Testing framework////////////////
 /*int main(){ 
