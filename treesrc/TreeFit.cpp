@@ -143,7 +143,7 @@ void TreeFit::printTable(){
 		for(int i=0; i< fitTable.size(); i++){
 		//we require at least 1 node to fit (node 0)
 			
-			if(fitTable.at(j).size() > 0){
+			if(fitTable.at(i).size() > 0){
 				//this is not a leaf node
 				Tree::getNodePdg(ParticleTree->Root, i, &tpdg);
 				std::cout<<"Node: "<< i<<" Pdg: "<< tpdg <<std::endl;
