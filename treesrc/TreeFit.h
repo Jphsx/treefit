@@ -31,7 +31,7 @@ class TreeFit{
 	//second index is the jth fit combination for that node
 	//third index is the index of the particle on recoparts in the jth combination for ith node
 	std::vector< std::vector< std::vector<int>>> fitTable{};
-	std::vector<  
+	 
 	void initTable();
 	void printTable();
 	
