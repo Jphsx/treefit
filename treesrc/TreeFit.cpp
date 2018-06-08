@@ -129,7 +129,7 @@ void TreeFit::addFitToTable(Node* root){
 }
 void TreeFit::initTable(){
 	//fitTable.reserve(*LASTNONLEAFID +1);
-	std::vector< std::vector< std::vector<int>>> table(*LastNONLEAFID + 1); 
+	std::vector< std::vector< std::vector<int>>> table(*LASTNONLEAFID + 1); 
 	fitTable = table;
 	std::cout<<fitTable.size()<<" size "<<std::endl;
 }
