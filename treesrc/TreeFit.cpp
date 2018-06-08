@@ -114,7 +114,7 @@ void TreeFit::clearEvent(){
 	recoIDs.clear();
 }
 void TreeFit::addFitToTable(Node* root){
-	if(root->isLeaf) return;
+/*	if(root->isLeaf) return;
 
 	//cout<<"Node "<<root->nodeId;
 	//cout<<" FitRecoIDs: ";
@@ -125,10 +125,10 @@ void TreeFit::addFitToTable(Node* root){
 	for(int i=0; i< root->children.size(); i++){
 		printfit(root->children.at(i));
 	}
-	
+*/
 }
 void TreeFit::initTable(){
-	fitTable.reserve(LASTNONLEAFID+1);
+	fitTable.reserve(*LASTNONLEAFID +1);
 	std::cout<<fitTable.size()<<" size "<<std::endl;
 }
 //Testing framework////////////////
