@@ -238,8 +238,8 @@ void Tree::printTree(Node* root){
 	}
 	cout<< "}"<<" nLeaves= "<< root->nLeaves << " Leaf Pdgs: { " ;
 	printvector(root->leafpdgs);
-	cout<< "}";//<<" childrenleaves: ";
-	//printvector(root->childrenleaves);
+	cout<< "}";
+	
 	cout<< " parentID ";
 	if(root->parent != NULL) cout<< root->parent->nodeId;
 	
