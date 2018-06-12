@@ -281,6 +281,64 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
   
   	return collectionFound;
 }
+//input a fit from the fit table 
+OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
+		//general procedure
+		OPALFitterGSL *  fitter = new OPALFitterGSL();
+
+		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit
+ 		std::vector<ParticleFitObject*> FO_vec(TFit->recoparts.size());
+		//use the first node it populate all the FOs
+		//do this assignment at the end
+		// FitObjects = FO_vec;
+
+		//adding this index var for readability
+		int recoindex=-1;
+		//iterate over the tree roots combination (node 0)
+		for(int i=0; i<fit.at(0).size(); j++){
+			//make an object at index
+			//fit.at(0).at(j) this is index on reco part
+			recoindex = fit.at(0).at(j)
+			if(TFit->recoparts.at(recoindex)->isTrack){
+				//this is a track make LFO
+				FO_vec.at(recoindex) = new LeptonFitObject(
+				TFit->recoparts.at(recoindex)->track, 
+				TFit->recoparts.at(recoindex)->Bfield, 
+				TFit->recoparts.at(recoindex)->part->getMass()); 
+			}
+			else{
+				//this is not a track make JFO
+				FO->vec.at(recoindex) = new JetFitObject(
+				TFit->recoparts.at(recoindex)->localParams.at(0), 
+ 				TFit->recoparts.at(recoindex)->localParams.at(1), 
+				TFit->recoparts.at(recoindex)->localParams.at(2),  
+				TFit->recoparts.at(recoindex)->localErrors.at(0), 
+				TFit->recoparts.at(recoindex)->localErrors.at(1), 
+				TFit->recoparts.at(recoindex)->localErrors.at(2), 
+				TFit->recoparts.at(recoindex)->part->getMass() );
+				
+			}
+			
+			
+		}
+		for(unsigned int i=0; i< recoparts.size(); i++){
+			//iterate over the fit table to 
+
+		}
+		
+		//make mass constraint objects
+		
+		
+		//have to make local parameterizations for errors on jfo
+		//make arrays of JFOs and LFO
+
+		//add corresponding FOs to MC objects
+
+		//add all FOs to fitter
+
+		//add all mc constraints to fitter
+		return fitter;
+}
 
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"EVENT "<<evtNo<<std::endl;

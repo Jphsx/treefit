@@ -33,8 +33,11 @@ class Particle{
 
 	//MCParticle
 	//TLorentzVector MC
+
 	//LocalParamterization 
-	//LocalParameterization Errors
+	std::vector<double> localParams{};
+	//LocalParameterization Errors sigma _not_ sigma^2
+	std::vector<double> localErrors{};
 
 
 	//printing utilities
@@ -46,6 +49,10 @@ class Particle{
 	static void printReconstructedParticle(ReconstructedParticle* p);
 	//print px py pz E M
 	static void printTLorentzVector(TLorentzVector* v);
+	//print whatever the local parameters are
+	static void printLocalParameters(std::vector<double> params);
+	//print whatever the local errors are (sigmas)
+	static void printLocalErrors(std::vector<double> errors);
 
 	//from the 5 track parameters return a vector of 
 	//momentum components px,py,pz

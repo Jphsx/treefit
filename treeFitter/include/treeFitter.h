@@ -94,6 +94,18 @@ class treeFitter : public marlin::Processor {
 	std::string _outputParticleCollectionName;
 	std::string _outputTrackCollectionName;
 
+	/*************
+	Creates the fit objects and performs the fit with all
+	specified constraints
+	*************/
+	OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit);
+	/*************
+	Global vector to store all fit objects for post fit
+	easy access
+	*************/
+	std::vector<ParticleFitObject*> FitObjects{};
+	
+
 	void FindMassConstraintCandidates( LCCollectionVec* recparcol);
 
 	/** Processor Parameters **/

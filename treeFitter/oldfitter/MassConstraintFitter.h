@@ -224,7 +224,30 @@ private:
  // LeptonFitObject* part2;
    std::vector<LeptonFitObject*> TrackFO{}; 
  //   std::vector<TrackParticleFitObject*> TrackFO;
- //  OPALFitterGSL* fitter{};
+ //  OPALFitterGSL*  const double c = 2.99792458e8; // m*s^-1
+  const double B = marlin::Global::GEAR->getBField().at(gear::Vector3D(0.,0.,0.)).z();;          
+  const double mm2m = 1e-3;
+  const double eV2GeV = 1e-9;
+  const double eB = B*c*mm2m*eV2GeV;
+ //
+ for(unsigned int i=0; i<_trackvec.size();i++){
+	for(unsigned int j=0; j<_daughterChargedMass.size(); j++){
+	
+		double cosLambda = 1 / std::sqrt(1 + _trackvec[i]->getTanLambda()*_trackvec[i]->getTanLambda() );
+		double P = (eB/fabs(_trackvec[i]->getOmega()))/cosLambda;
+		double sinLambda = _trackvec[i]->getTanLambda()*cosLambda;
+		double cosPhi = cos(_trackvec[i]->getPhi());
+		double sinPhi = sin(_trackvec[i]->getPhi());
+		double px = P*cosLambda*cosPhi;
+		double py = P*cosLambda*sinPhi;
+		double pz = P*sinLambda;
+		double E = std::sqrt( _daughterChargedMass[j]*_daughterChargedMass[j] + px*px + py*py + pz*pz );
+		
+
+			
+			pTrackVec.push_back(_trackvec[i]);
+
+			TLorentzVector trk(px,py,pz,E); fitter{};
 //    BaseFitter* ftest;
 
   std::vector<ReconstructedParticle*>_pfovec{};

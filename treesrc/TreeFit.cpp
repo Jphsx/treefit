@@ -108,6 +108,8 @@ void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
 void TreeFit::clearEvent(){
 	recoparts.clear();
 	recoIDs.clear();
+	fitTable.clear();
+	fitPdgs.clear();
 }
 void TreeFit::addFitToTable(Node* root){
 	if(root->isLeaf) return;
@@ -126,7 +128,6 @@ void TreeFit::initTable(){
 
 	fitTable = idtable;
 	fitPdgs = pdgtable;
-	std::cout<<fitTable.size()<<" size "<<std::endl;
 }
 void TreeFit::printTable(){
 	int tpdg=0;
