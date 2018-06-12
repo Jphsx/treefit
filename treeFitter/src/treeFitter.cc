@@ -295,7 +295,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//adding this index var for readability
 		int recoindex=-1;
 		//iterate over the tree roots combination (node 0)
-		for(int i=0; i<fit.at(0).size(); j++){
+		for(int j=0; j<fit.at(0).size(); j++){
 			//make an object at index
 			//fit.at(0).at(j) this is index on reco part
 			recoindex = fit.at(0).at(j)
@@ -308,7 +308,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			}
 			else{
 				//this is not a track make JFO
-				FO->vec.at(recoindex) = new JetFitObject(
+				FO_vec.at(recoindex) = new JetFitObject(
 				TFit->recoparts.at(recoindex)->localParams.at(0), 
  				TFit->recoparts.at(recoindex)->localParams.at(1), 
 				TFit->recoparts.at(recoindex)->localParams.at(2),  
@@ -321,10 +321,10 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			
 			
 		}
-		for(unsigned int i=0; i< recoparts.size(); i++){
+		//for(unsigned int i=0; i< recoparts.size(); i++){
 			//iterate over the fit table to 
 
-		}
+		//}
 		
 		//make mass constraint objects
 		

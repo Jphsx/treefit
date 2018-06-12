@@ -98,7 +98,7 @@ class treeFitter : public marlin::Processor {
 	Creates the fit objects and performs the fit with all
 	specified constraints
 	*************/
-	OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit);
+	OPALFitterGSL* fitParticles(std::vector< std::vector<int>> fit);
 	/*************
 	Global vector to store all fit objects for post fit
 	easy access
