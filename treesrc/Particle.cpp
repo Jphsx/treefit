@@ -32,7 +32,7 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	}
 	else{
 		v = getTLorentzVector(p);
-		localParams.push_back(p->E());//E
+		localParams.push_back(p->getEnergy());//E
 		localParams.push_back(v->Theta());//theta
 		localParams.push_back(v->Phi());//phi
 		//reconstructed particle covmatrix must be modified 
