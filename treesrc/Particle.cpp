@@ -33,8 +33,8 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	else{
 		v = getTLorentzVector(p);
 		localParams.push_back(p->getEnergy());//E
-		localParams.push_back(v.getTheta());//theta
-		localParams.push_back(v.getPhi());//phi
+		localParams.push_back(v->getTheta());//theta
+		localParams.push_back(v->getPhi());//phi
 		//reconstructed particle covmatrix must be modified 
 		//to use the E,theta,phi error model
 		localErrors.push_back(std::sqrt(p->getCovMatrix()[0]));//dE
@@ -101,15 +101,15 @@ void Particle::printTrackPxPyPz(Track* t, double B){
 		<<txtytz.at(2)<<std::endl;
 }
 void Particle::printLocalParameters(std::vector<double> params){
-	std::cout<<"Local Params: "<<
-	for(int i=0; i<localParams.size(); i++){
+	std::cout<<"Local Params: ";
+	for(int i=0; i<params.size(); i++){
 		std::cout<< params.at(i) <<" ";
 	}
 	std::cout<<std::endl;
 }
 void Particle::printLocalErrors(std::vector<double> errors){
-	std::cout<<"Local Errors: "<<
-	for(int i=0; i<localErrors.size(); i++){
+	std::cout<<"Local Errors: ";
+	for(int i=0; i<errors.size(); i++){
 		std::cout<< errors.at(i) <<" ";
 	}
 	std::cout<<std::endl;
