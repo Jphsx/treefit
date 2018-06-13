@@ -11,6 +11,7 @@
 
 <marlin>
 	<execute>
+	<processor name="MyPhotonResponseAdjuster"/>
    	<processor name="MyTreeFitter"/>  
  	</execute>
 
