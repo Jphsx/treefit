@@ -25,10 +25,10 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 		localParams.push_back(t->getZ0());
 		localParams.push_back(t->getTanLambda());
 		localErrors.push_back(std::sqrt(t->getCovMatrix()[0]));//d0 
-            localErrors.push_back(std::sqrt(t->getCovMatrix()[2]));//phi
-            localErrors.push_back(std::sqrt(t->getCovMatrix()[5]));//ome
-             localErrors.push_back(std::sqrt(t->getCovMatrix()[9]));//z0
-            localErrors.push_back(std::sqrt(t->getCovMatrix()[14]));//tanL
+            	localErrors.push_back(std::sqrt(t->getCovMatrix()[2]));//phi
+            	localErrors.push_back(std::sqrt(t->getCovMatrix()[5]));//ome
+            	localErrors.push_back(std::sqrt(t->getCovMatrix()[9]));//z0
+            	localErrors.push_back(std::sqrt(t->getCovMatrix()[14]));//tanL
 	}
 	else{
 		v = getTLorentzVector(p);
