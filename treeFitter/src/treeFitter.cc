@@ -302,10 +302,16 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			recoindex = fit.at(0).at(j);
 			if(TFit->recoparts.at(recoindex)->isTrack){
 				//this is a track make LFO
-				FO_vec.at(recoindex) = new LeptonFitObject(
+				/*FO_vec.at(recoindex) = new LeptonFitObject(
 				TFit->recoparts.at(recoindex)->track, 
 				TFit->recoparts.at(recoindex)->Bfield, 
-				TFit->recoparts.at(recoindex)->part->getMass()); 
+				TFit->recoparts.at(recoindex)->part->getMass()); */
+				//testing track particle fit object
+				FO_vec.at(recoindex) = new TrackParticleFitObject(
+				TFit->recoparts.at(recoindex)->track,
+				TFit->recoparts.at(recoindex)->part->getMass());
+				// have to set the bfield?
+				FO_vec.at(recoindex)->setBfield(TFit->recoparts.at(recoindex)->Bfield);
 			}
 			else{
 				//this is not a track make JFO
