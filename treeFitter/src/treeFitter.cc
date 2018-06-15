@@ -289,6 +289,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit	
 		std::cout<<"Traces for seg 1"<<std::endl;
 		
+		//this array should match reco parts in size, but only the final particles
+		//used will be populated into the array
  		std::vector<ParticleFitObject*> FO_vec(TFit->recoparts.size());
 		//use the first node it populate all the FOs
 		//adding this index var for readability
@@ -327,6 +329,21 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 
 		//}
 		
+		std::cout<<"checkingout FO_vec"<<std::endl;
+		for(int i=0; i<FO_vec.size(); i++){
+			std::cout<<" recopart/FO i "<< i<<std::endl;
+			if(FO_vec.at(i) != NULL){
+				std::cout<<"NPARS "<< FO_vec.at(i)->getNPar()<<std::endl;
+				//loop over the pars and print
+				for(int j=0; j< FO_vec.at(i)->getNPar(); j++){
+					std::cout<< FO_vec.at(i)->getParamName(j) << " ";
+					std::cout<< FO_vec.at(i)->getParam(j) << " " << std::endl;
+				}
+			std::cout<<std::endl;
+			}
+		}
+		
+		std::cout<<std::endl;
 		//make mass constraint objects for each node in the tree
 		//that has a specified mass constraint
 		//std::vector::<MassConstraint*> massconstraintvec;
