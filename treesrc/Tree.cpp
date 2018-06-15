@@ -221,7 +221,7 @@ void Tree::getNodePdg(Node* root, int id, int* pdg){
 	}
 	return ;
 }
-static Node* getNode(Node* root, int id){
+Node* getNode(Node* root, int id){
 	//bubble up the node ptr through returns
 	Node* node = NULL;
 	if(root->nodeId == id){
