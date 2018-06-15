@@ -311,7 +311,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				TFit->recoparts.at(recoindex)->track,
 				TFit->recoparts.at(recoindex)->part->getMass());
 				// have to set the bfield?
-				FO_vec.at(recoindex)->setBfield(TFit->recoparts.at(recoindex)->Bfield);
+				(TrackParticleFitObject*)FO_vec.at(recoindex)->setBfield(TFit->recoparts.at(recoindex)->Bfield);
 			}
 			else{
 				//this is not a track make JFO
