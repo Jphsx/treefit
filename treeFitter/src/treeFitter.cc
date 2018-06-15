@@ -286,7 +286,9 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//general procedure
 		OPALFitterGSL *  fitter = new OPALFitterGSL();
 
-		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit
+		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit	
+		std::cout<<"Traces for seg 1"<<std::endl;
+		
  		std::vector<ParticleFitObject*> FO_vec(TFit->recoparts.size());
 		//use the first node it populate all the FOs
 		//adding this index var for readability
@@ -319,6 +321,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			fitter->addFitObject( FO_vec.at(recoindex) );
 			
 		}
+				std::cout<<"Traces for seg 2"<<std::endl;
 		//for(unsigned int i=0; i< recoparts.size(); i++){
 			//iterate over the fit table to 
 
@@ -350,7 +353,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				fitter->addConstraint(mc);
 			}//end if
 		}//end i
-		
+				std::cout<<"Traces for seg 3"<<std::endl;
 		//save he FOs globally so we can easily
 		//access/print the fitted particles
 		 FitObjects = FO_vec;
