@@ -330,6 +330,16 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//make mass constraint objects for each node in the tree
 		//that has a specified mass constraint
 		//std::vector::<MassConstraint*> massconstraintvec;
+		std::cout<<std::endl;
+		std::cout<<"the fit : "<<std::endl;
+		for(int i=0; i< fit.size(); i++){
+			std::cout<<i<< " , ";
+			for(int j=0; j< fit.at(i).size(); j++){
+				std::cout<<fit.at(i).at(j)<<" ";			
+			}
+			std::cout<<std::endl;
+		}
+		std::cout<<std::endl;
 
 		//iterate through the fit, get mass and combination
 		//and add them to the corresponding constraint
@@ -343,9 +353,11 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			if(node->mass != -1){
 				//make a new constraint
 				MassConstraint* mc = new MassConstraint(node->mass);
+				std::cout<<"made a new massconstraint with mass" << node->mass <<std::endl;
 				//get the FOs by iterating over j
 				std::vector<ParticleFitObject*>* mcFitObjects;
 
+				//iterating over the combo in fit i
 				for(int j=0; j<fit.at(i).size(); j++){
 					//add to the array of FOs
 					//we have to use an array because ParticleConstraint  is weird
