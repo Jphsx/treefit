@@ -372,7 +372,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				MassConstraint* mc = new MassConstraint(node->mass);
 				std::cout<<"made a new massconstraint with mass" << node->mass <<std::endl;
 				//get the FOs by iterating over j
-				std::vector<ParticleFitObject*>* mcFitObjects{};//= new vector<int>(10)
+				std::vector<ParticleFitObject*>* mcFitObjects = new vector<ParticleFitObject*>();
 				std::cout<<"mcFitObjectsSize "<< std::endl;
 				std::cout<<mcFitObjects->size()<<std::endl;
 
