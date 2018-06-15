@@ -316,7 +316,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				
 			}
 			//add all FOs to the fitter
-			fitter->addFitObject( FO_vect.at(recoindex) );
+			fitter->addFitObject( FO_vec.at(recoindex) );
 			
 		}
 		//for(unsigned int i=0; i< recoparts.size(); i++){
@@ -332,7 +332,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//and add them to the corresponding constraint
 		for(int i=0; i<fit.size(); i++){
 			//find the node for the current fit
-			Node* node = TFit->ParticleTree->getNode(i);
+			Node* node = TFit->ParticleTree->getNode(TFit->ParticleTree->Root, i);
 			if(node->mass != -1){
 				//make a new constraint
 				MassConstraint* mc = new MassConstraint(node->mass);
@@ -342,15 +342,13 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				for(int j=0; j<fit.at(i).size(); j++){
 					//add to the array of FOs
 					//we have to use an array because ParticleConstraint  is weird
-					mcFitOjbects->push_back(FO_vec.at( fit.at(i).at(j) ));
+					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
 				}//end j
+				//add FOs to constraint
+				mc->setFOList( mcFitObjects );
+				//instead of using a mcvector try just immediately pushing onto the fitter
+				fitter->addConstraint(mc);
 			}//end if
-			//add FOs to constraint
-			mc->setFOList( mcFitObjects );
-			//push the constraint onto the list of costraints
-			//massconstraintvec.push_back(mc);
-			//instead of using a mcvector try just immediately pushing onto the fitter
-			fitter->addConstraint(mc);
 		}//end i
 		
 		//save he FOs globally so we can easily
@@ -383,14 +381,15 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	TFit->printTable();
 
 	//do the fits
+	OPALFitterGSL*  fitter; 
 	//extract each fit onto a 2d fit vector
 	//this is a single fit from the fit table
-	for(int j = 0; j<fitTable.at(0).size(); j++){
-		std::vector<std::vector<int> > fit(fitTable.size());
-		for(int i=0; i<fitTable.size(); i++){
+	for(int j = 0; j<TFit->fitTable.at(0).size(); j++){
+		std::vector<std::vector<int> > fit(TFit->fitTable.size());
+		for(int i=0; i<TFit->fitTable.size(); i++){
 			//if it has particles to fit then proceed
-			if(fitTable.at(i).size() != 0){
-				fit.at(i).push_back(fit.at(j));
+			if(TFit->fitTable.at(i).size() != 0){
+				fit.at(i).push_back(TFit->fitTable.at(i).at(j));
 			}
 		}
 		fitter = fitParticles(fit);
