@@ -372,7 +372,9 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				MassConstraint* mc = new MassConstraint(node->mass);
 				std::cout<<"made a new massconstraint with mass" << node->mass <<std::endl;
 				//get the FOs by iterating over j
-				std::vector<ParticleFitObject*>* mcFitObjects{};
+				std::vector<ParticleFitObject*>* mcFitObjects{};//= new vector<int>(10)
+				std::cout<<"mcFitObjectsSize "<< std::endl;
+				std::cout<<mcFitObjects->size()<<std::endl;
 
 				std::cout<<"fit.at(i).size() "<<fit.at(i).size()<<std::endl;
 				//iterating over the combo in fit i
@@ -381,6 +383,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 					//we have to use an array because ParticleConstraint  is weird
 					std::cout<<"about to push on a FO"<<std::endl;
 					std::cout<<"ij "<<i<< " "<< j<<std::endl;
+					std::cout<<"fit.at(i).at(j) "<< fit.at(i).at(j) <<std::endl;
 					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
 					std::cout<<"pushed on the FO"<<std::endl;
 				}//end j
