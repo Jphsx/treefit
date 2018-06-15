@@ -336,6 +336,10 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		for(int i=0; i<fit.size(); i++){
 			//find the node for the current fit
 			Node* node = TFit->ParticleTree->getNode(TFit->ParticleTree->Root, i);
+			if(node == NULL){
+				std::cout<<"null node :( "<<std::endl;
+			}
+			std::cout<<" got a node with mass and pdg "<< node->mass <<" "<< node->pdg << std::endl;
 			if(node->mass != -1){
 				//make a new constraint
 				MassConstraint* mc = new MassConstraint(node->mass);
@@ -395,6 +399,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 				fit.at(i) = TFit->fitTable.at(i).at(j);
 			}
 		}
+		//segfault is here 
 		fitter = fitParticles(fit);
 		//before we move on to the next set of combinations
 		//clear the fit
