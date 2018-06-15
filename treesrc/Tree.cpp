@@ -209,6 +209,7 @@ void Tree::printfit(Node* root){
 	}
 	
 }
+//this method should be removed later
 void Tree::getNodePdg(Node* root, int id, int* pdg){
 	
 	if(root->nodeId == id){
@@ -219,6 +220,26 @@ void Tree::getNodePdg(Node* root, int id, int* pdg){
 		getNodePdg(root->children.at(i), id, pdg);
 	}
 	return ;
+}
+static Node* getNode(Node* root, int id){
+	//bubble up the node ptr through returns
+	Node* node = NULL;
+	if(root->nodeId == id){
+		node = root;
+		return node;
+	}
+	else{
+		//this isnt the node so keep searching
+		for(int i=0; i<root->children.size();i++){
+			node = getNode(root->children.at(i), id);
+			//if we end up finding it in a child
+			// break out, dont iterate through children
+			if(node != NULL) return node;
+		}
+	}
+	//worst case here, we cant find it
+	//null will get returned
+	return node;
 }
 void Tree::getLastNonLeafNodeId(Node* root, int* id){
 	if(!root->isLeaf){

@@ -289,9 +289,6 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit
  		std::vector<ParticleFitObject*> FO_vec(TFit->recoparts.size());
 		//use the first node it populate all the FOs
-		//do this assignment at the end
-		// FitObjects = FO_vec;
-
 		//adding this index var for readability
 		int recoindex=-1;
 		//iterate over the tree roots combination (node 0)
@@ -318,7 +315,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				TFit->recoparts.at(recoindex)->part->getMass() );
 				
 			}
-			
+			//add all FOs to the fitter
+			fitter->addFitObject( FO_vect.at(recoindex) );
 			
 		}
 		//for(unsigned int i=0; i< recoparts.size(); i++){
@@ -326,17 +324,41 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 
 		//}
 		
-		//make mass constraint objects
+		//make mass constraint objects for each node in the tree
+		//that has a specified mass constraint
+		//std::vector::<MassConstraint*> massconstraintvec;
+
+		//iterate through the fit, get mass and combination
+		//and add them to the corresponding constraint
+		for(int i=0; i<fit.size(); i++){
+			//find the node for the current fit
+			Node* node = TFit->ParticleTree->getNode(i);
+			if(node->mass != -1){
+				//make a new constraint
+				MassConstraint* mc = new MassConstraint(node->mass);
+				//get the FOs by iterating over j
+				std::vector<ParticleFitObject*>* mcFitObjects;
+
+				for(int j=0; j<fit.at(i).size(); j++){
+					//add to the array of FOs
+					//we have to use an array because ParticleConstraint  is weird
+					mcFitOjbects->push_back(FO_vec.at( fit.at(i).at(j) ));
+				}//end j
+			}//end if
+			//add FOs to constraint
+			mc->setFOList( mcFitObjects );
+			//push the constraint onto the list of costraints
+			//massconstraintvec.push_back(mc);
+			//instead of using a mcvector try just immediately pushing onto the fitter
+			fitter->addConstraint(mc);
+		}//end i
 		
-		
-		//have to make local parameterizations for errors on jfo
-		//make arrays of JFOs and LFO
-
-		//add corresponding FOs to MC objects
-
-		//add all FOs to fitter
-
-		//add all mc constraints to fitter
+		//save he FOs globally so we can easily
+		//access/print the fitted particles
+		 FitObjects = FO_vec;
+		//do the fit
+		fitter->fit();
+		std::cout<<"DID A FIT :O wow"<<std::endl;
 		return fitter;
 }
 
@@ -359,6 +381,23 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	TFit->generatefitcombinations(TFit->ParticleTree->Root, TFit->recoIDs);
 	//print the fit table	
 	TFit->printTable();
+
+	//do the fits
+	//extract each fit onto a 2d fit vector
+	//this is a single fit from the fit table
+	for(int j = 0; j<fitTable.at(0).size(); j++){
+		std::vector<std::vector<int> > fit(fitTable.size());
+		for(int i=0; i<fitTable.size(); i++){
+			//if it has particles to fit then proceed
+			if(fitTable.at(i).size() != 0){
+				fit.at(i).push_back(fit.at(j));
+			}
+		}
+		fitter = fitParticles(fit);
+		//before we move on to the next set of combinations
+		//clear the fit
+		fit.clear();
+	}
 			
 
 	//advance to next event

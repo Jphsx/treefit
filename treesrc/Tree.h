@@ -55,6 +55,9 @@ class Tree{
 	
 	//search the tree for node# and return its corresponding pdg
 	static void getNodePdg(Node* root, int id, int* pdg);
+	
+	//getNodePdg usage should be completely replaced by this
+	static Node* getNode(Node* root, int id);
 
 };
 
