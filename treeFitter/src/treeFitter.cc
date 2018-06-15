@@ -389,7 +389,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		for(int i=0; i<TFit->fitTable.size(); i++){
 			//if it has particles to fit then proceed
 			if(TFit->fitTable.at(i).size() != 0){
-				fit.at(i).push_back(TFit->fitTable.at(i).at(j));
+				fit.at(i) = TFit->fitTable.at(i).at(j);
 			}
 		}
 		fitter = fitParticles(fit);
