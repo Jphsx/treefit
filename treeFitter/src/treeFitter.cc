@@ -357,11 +357,14 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				//get the FOs by iterating over j
 				std::vector<ParticleFitObject*>* mcFitObjects;
 
+				std::cout<<"fit.at(i).size() "<<fit.at(i).size()<<std::endl;
 				//iterating over the combo in fit i
 				for(int j=0; j<fit.at(i).size(); j++){
 					//add to the array of FOs
 					//we have to use an array because ParticleConstraint  is weird
+					std::cout<<"about to push on a FO"<<std::endl;
 					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
+					std::cout<<"pushed on the FO"<<std::endl;
 				}//end j
 				//add FOs to constraint
 				mc->setFOList( mcFitObjects );
