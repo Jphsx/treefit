@@ -400,6 +400,22 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//do the fit
 		fitter->fit();
 		std::cout<<"DID A FIT :O wow"<<std::endl;
+		std::cout<<"prob "<<fitter->getProbability()<<std::endl;
+		std::cout<<std::endl;
+		std::cout<<"checkingout FO_vec post fit"<<std::endl;
+		for(int i=0; i<FO_vec.size(); i++){
+			std::cout<<" recopart/FO i "<< i<<std::endl;
+			if(FO_vec.at(i) != NULL){
+				std::cout<<"NPARS "<< FO_vec.at(i)->getNPar()<<std::endl;
+				//loop over the pars and print
+				for(int j=0; j< FO_vec.at(i)->getNPar(); j++){
+					std::cout<< FO_vec.at(i)->getParamName(j) << " ";
+					std::cout<< FO_vec.at(i)->getParam(j) << " " << std::endl;
+				}
+			std::cout<<std::endl;
+			}
+		}
+		
 		return fitter;
 }
 
