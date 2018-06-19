@@ -16,6 +16,10 @@ class TreeFit{
 	TreeFit();	
 	//set of reconstructed particles containers
 	vector<Particle*> recoparts{};
+
+	//set of fit particles containers
+	vector<Particle*> fitparts{};
+
 	//ID is index of particle on recoparts
 	vector<int> recoIDs{};
 
@@ -32,13 +36,14 @@ class TreeFit{
 	//third index is the index of the particle on recoparts in the jth combination for ith node
 	std::vector< std::vector< std::vector<int>>> fitTable{};
 	//duplicate vector, but instead of indices it holds pdgs
-	//good for debugging purposes
+	//good for debugging purposes (printing out)
 	std::vector< std::vector< std::vector<int>>> fitPdgs{};
 	 
 	void initTable();
 	void printTable();
 	
 	void addrecopart(Particle* pc);
+	void addfitpart(Particle* pc){
 
 	void printParticles(vector<Particle*> parts);
 	vector<vector<int> > makepdgcombinations(vector<vector<int> > combinations);

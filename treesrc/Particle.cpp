@@ -44,6 +44,74 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	
 
 }
+Particle(JetFitObject* jfo, TrackParticleFitObject tpfo, int pdg, float mass ){
+	//can either be jfo or tfo only
+	if(tpfo==NULL){
+		isTrack = false;
+		//this is not a track, make ReconstructedParticle
+		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
+		ParticleIDImpl* newPDG = new ParticleIDImpl();
+		newPDG->setPDG(pdg);
+		newPDG->setLikelihood(1.0);
+		//for readability add local param variables
+		float E = jfo->getParam(0);
+		float Theta = jfo->getParam(1);
+		float Phi = jfo->getParam(2);
+		//calculate px,py,pz
+		float* mom = new float[3];
+		mom[0] = sqrt( E*E - mass*mass)*cos(Theta)*sin(Phi);
+		mom[1] = sqrt( E*E - mass*mass)*sin(Theta)*sin(Phi);
+ 		mom[2] = sqrt( E*E - mass*mass)*cos(Theta);	
+		
+		p->setMomentum(mom);
+		p->setEnergy(E);
+		//give the reco part an E,theta,phi cov matrix
+		//we need to construct the lower diagonal manually
+		float* cov = new float[6];
+		int index = 0;
+		for(int i=0; i<=2; i++){
+			for(int j=0; j<=i; j++){
+				cov[index]=jfo->getCov(i,j);
+				index++;	
+			}
+		}
+		p->setCovMatrix(cov);
+		p->setMass(mass);
+		p->setCharge(0.0);
+		p->addParticleID(newPDG);
+		p->setParticleIDUsed(newPDG);
+		p->setType(pdg);
+
+		part = p;
+	}
+	else{
+		isTrack = true;
+		//this is a track, make a Track*
+		TrackImpl* t = new TrackImpl();
+
+		t->setD0(tpfo->getParam(0)); //Impact parameter in r-phi
+		t->setPhi(tpfo->getParam(1)); //phi of track at reference point (primary vertex)
+		t->setOmega(tpfo->getParam(2));// signed curvature in 1/mm 
+		t->setZ0(tpfo->getParam(3)); //Impact parameter in r-z
+		t->setTanLambda(tpfo->getParam(4));// dip of the track in r-z at primary vertex
+		//manually make the lower diagonal covariance matrix 
+		float* cov = new float[15];	
+	
+		t->setCovMatrix(cov);
+
+		//TODO also create a reco part from the track? would be useful for final LCIO collection
+		//yes do this
+/*
+		d0d0				0
+		phd0 phph			1 2	
+		omd0 omph omom			3 4 5
+		z0d0 z0ph z0om z0z0		6 7 8 9
+		tld0 tlph tlom tlz0 tltl	10 11 12 13 14
+*/
+	}
+
+
+}
 void Particle::printTrack(Track* t){
 	std::cout<<"Track: (D0,phi,ome,tanL,phi) "<< 
 		t->getD0()<<" "<<

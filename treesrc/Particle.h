@@ -8,6 +8,8 @@
 #include "EVENT/ReconstructedParticle.h"
 #include "EVENT/Track.h"
 #include "EVENT/MCParticle.h"
+#include "TrackParticleFitObject.h"
+#include "JetFitObject.h"
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
 ////////////////////
@@ -15,7 +17,12 @@ typedef lcio::ReconstructedParticle ReconstructedParticle ;
 class Particle{
 	public:
 	Particle();
+	//build from recos/tracks
 	Particle(ReconstructedParticle* p, Track* t, double B);
+
+	//build from fitobjects
+	Particle(JetFitObject* jfo, TrackParticleFitObject tpfo, int pdg, float mass);
+
 	//need to write a good destructor here?
 	//TODO ~Particle()
 	

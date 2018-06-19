@@ -346,7 +346,14 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 					std::cout<< FO_vec.at(i)->getParamName(j) << " ";
 					std::cout<< FO_vec.at(i)->getParam(j) << " " << std::endl;
 				}
-			std::cout<<std::endl;
+				//print cov
+				std::cout<<"cov"<<std::endl;
+				for(int q=0; q<FO_vec.at(i)->getNPar(); q++){
+					for( int r=0; r<=q; r++){
+						std::cout<< FO_vec.at(i)->getCov(q,r) << " " << q << " " << r <<std::endl;
+					}
+				}
+				std::cout<<std::endl;
 			}
 		}
 		
@@ -418,6 +425,13 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				for(int j=0; j< FO_vec.at(i)->getNPar(); j++){
 					std::cout<< FO_vec.at(i)->getParamName(j) << " ";
 					std::cout<< FO_vec.at(i)->getParam(j) << " " << std::endl;
+				}
+				//print cov
+				std::cout<<"cov"<<std::endl;
+				for(int q=0; q<FO_vec.at(i)->getNPar(); q++){
+					for( int r=0; r<=q; r++){
+						std::cout<< FO_vec.at(i)->getCov(q,r) << " " << q << " " << r <<std::endl;
+					}
 				}
 			std::cout<<std::endl;
 			}

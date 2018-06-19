@@ -11,6 +11,9 @@ void TreeFit::addrecopart(Particle* pc){
 	recoparts.push_back(pc);
 	recoIDs.push_back(recoparts.size()-1);
 }
+void TreeFit::addfitpart(Particle* pc){
+	recoparts.push_back(pc);
+}
 void TreeFit::printParticles(vector<Particle*> parts){
 	for(int i=0; i<parts.size(); i++){
 		cout<<"Particle Index/recoID "<<i<<endl;
