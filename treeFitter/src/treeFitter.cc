@@ -34,7 +34,7 @@
 //using namespace lcio ;
  
 treeFitter atreeFitter;
-using namespace lcio ;
+//using namespace lcio ;
 
 /********************
 Register processor parameters and input/output collections
