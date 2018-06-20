@@ -22,13 +22,14 @@ typedef CLHEP::HepLorentzVector LorentzVector ;
 #include "TH1D.h"
 
 
-
+typedef lcio::Track Track ;
+typedef lcio::ReconstructedParticle ReconstructedParticle ;
 
 #include "TreeFit.h"
 #include "Matching.h"
 #include "Particle.h"
 
-using namespace lcio ;
+//using namespace lcio ;
 
 class treeFitter : public marlin::Processor {
   
