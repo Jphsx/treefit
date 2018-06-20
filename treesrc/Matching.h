@@ -11,9 +11,9 @@
 #include <vector>
 #include <iostream>
 #include "Particle.h"
-//typedef lcio::Track Track ;
-//typedef lcio::ReconstructedParticle ReconstructedParticle ;
-using namespace lcio ;
+typedef lcio::Track Track ;
+typedef lcio::ReconstructedParticle ReconstructedParticle ;
+
 class Matching{
 	
 

@@ -22,10 +22,10 @@
 #include "TH1D.h"
 
 
-//typedef lcio::Track Track ;
-//typedef lcio::ReconstructedParticle ReconstructedParticle ;
+typedef lcio::Track Track ;
+typedef lcio::ReconstructedParticle ReconstructedParticle ;
 
-using namespace lcio ;
+//using namespace lcio ;
 #include "TreeFit.h"
 #include "Matching.h"
 #include "Particle.h"

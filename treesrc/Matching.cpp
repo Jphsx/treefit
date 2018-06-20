@@ -1,6 +1,6 @@
 #include "Matching.h"
 
-using namespace lcio;
+
 
 Track* Matching::MatchParticleToTrack(ReconstructedParticle* p, std::vector<Track*> tvec, double BField){
 

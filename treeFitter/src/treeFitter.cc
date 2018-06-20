@@ -31,7 +31,7 @@
 #include <cmath>
 #include "treeFitter.h"
 
-using namespace lcio ;
+//using namespace lcio ;
  
 treeFitter atreeFitter;
 

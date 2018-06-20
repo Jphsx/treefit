@@ -10,9 +10,9 @@
 #include "EVENT/MCParticle.h"
 //#include "TrackParticleFitObject.h"
 //#include "JetFitObject.h"
-using namespace lcio ;
-//typedef lcio::Track Track ;
-//typedef lcio::ReconstructedParticle ReconstructedParticle ;
+
+typedef lcio::Track Track ;
+typedef lcio::ReconstructedParticle ReconstructedParticle ;
 ////////////////////
 //a general particle container that aggregates all possible information or a reconstructed particle
 class Particle{
