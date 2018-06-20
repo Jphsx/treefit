@@ -7,7 +7,7 @@
 #include "Combinatorics.h"
 
 
-using namespace std;
+//using namespace std;
 
 
 class TreeFit{
@@ -15,13 +15,13 @@ class TreeFit{
 	public:
 	TreeFit();	
 	//set of reconstructed particles containers
-	vector<Particle*> recoparts{};
+	std::vector<Particle*> recoparts{};
 
 	//set of fit particles containers
-	vector<Particle*> fitparts{};
+	std::vector<Particle*> fitparts{};
 
 	//ID is index of particle on recoparts
-	vector<int> recoIDs{};
+	std::vector<int> recoIDs{};
 
 	//when moving to a new event clear the old reco particles
 	//and old fit combinations
@@ -43,12 +43,12 @@ class TreeFit{
 	void printTable();
 	
 	void addrecopart(Particle* pc);
-	void addfitpart(Particle* pc){
+	void addfitpart(Particle* pc);
 
-	void printParticles(vector<Particle*> parts);
-	vector<vector<int> > makepdgcombinations(vector<vector<int> > combinations);
-	vector<int> getpdgcombo(vector<int> combo);
-	void generatefitcombinations(Node* root, vector<int> parentcombo);
+	void printParticles(std::vector<Particle*> parts);
+	std::vector<std::vector<int> > makepdgcombinations(std::vector<std::vector<int> > combinations);
+	std::vector<int> getpdgcombo(std::vector<int> combo);
+	void generatefitcombinations(Node* root, std::vector<int> parentcombo);
 
 	void addFitToTable(Node* root);
 		

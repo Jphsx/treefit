@@ -14,15 +14,15 @@ void TreeFit::addrecopart(Particle* pc){
 void TreeFit::addfitpart(Particle* pc){
 	recoparts.push_back(pc);
 }
-void TreeFit::printParticles(vector<Particle*> parts){
+void TreeFit::printParticles(std::vector<Particle*> parts){
 	for(int i=0; i<parts.size(); i++){
-		cout<<"Particle Index/recoID "<<i<<endl;
+		std::cout<<"Particle Index/recoID "<<i<<std::endl;
 		Particle::printParticle(parts.at(i));
 	}
 }
-vector<vector<int> > TreeFit::makepdgcombinations(vector<vector<int> > combinations){
-	vector<vector<int> > pdgcombinations;
-	vector<int> pdgcombo;
+std::vector<std::vector<int> > TreeFit::makepdgcombinations(std::vector<std::vector<int> > combinations){
+	std::vector<std::vector<int> > pdgcombinations;
+	std::vector<int> pdgcombo;
 	for(int i=0; i<combinations.size();i++){
 		for(int j=0; j<combinations.at(i).size(); j++){
 			pdgcombo.push_back(recoparts.at(combinations.at(i).at(j))->recopdg);
@@ -32,14 +32,14 @@ vector<vector<int> > TreeFit::makepdgcombinations(vector<vector<int> > combinati
 	}
 	return pdgcombinations;
 }
-vector<int> TreeFit::getpdgcombo(vector<int> combo){
-	vector<int> pdgcombo;
+std::vector<int> TreeFit::getpdgcombo(std::vector<int> combo){
+	std::vector<int> pdgcombo;
 	for(int i=0; i<combo.size(); i++){
 		pdgcombo.push_back(recoparts.at(combo.at(i))->recopdg);
 	}
 	return pdgcombo;	
 }
-void TreeFit::generatefitcombinations(Node* root, vector<int> parentcombo){
+void TreeFit::generatefitcombinations(Node* root, std::vector<int> parentcombo){
 
 	
 	//no reason to ever visit a leaf
