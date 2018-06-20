@@ -435,7 +435,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				}
 			std::cout<<std::endl;
 			}
-		}
+		} 
 		
 		return fitter;
 }

@@ -22,4 +22,4 @@ Track* Matching::MatchParticleToTrack(ReconstructedParticle* p, std::vector<Trac
 	//if no match is found
 	std::cout<<"Particle "<<p->getType()<< " No Matching Track"<<std::endl;
 	return NULL;	
-}
+};
