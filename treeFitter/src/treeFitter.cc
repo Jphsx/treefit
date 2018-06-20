@@ -8,8 +8,8 @@
 
 #include "CLHEP/Vector/LorentzVector.h"
 #include "CLHEP/Vector/ThreeVector.h"
-typedef CLHEP::HepLorentzVector LorentzVector ;
-typedef CLHEP::Hep3Vector Vector3D ;
+//typedef CLHEP::HepLorentzVector LorentzVector ;
+//typedef CLHEP::Hep3Vector Vector3D ;
 
 // MarlinKinfit stuff
 #include "LeptonFitObject.h"

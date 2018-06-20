@@ -10,7 +10,7 @@
 #include "TTree.h"
 #include "CLHEP/Vector/LorentzVector.h"
 #include "TLorentzVector.h"
-typedef CLHEP::HepLorentzVector LorentzVector ;
+//typedef CLHEP::HepLorentzVector LorentzVector ;
 #include "LeptonFitObject.h"
 #include "TrackParticleFitObject.h"
 #include "JetFitObject.h"
@@ -25,11 +25,11 @@ typedef CLHEP::HepLorentzVector LorentzVector ;
 //typedef lcio::Track Track ;
 //typedef lcio::ReconstructedParticle ReconstructedParticle ;
 
+using namespace lcio ;
 #include "TreeFit.h"
 #include "Matching.h"
 #include "Particle.h"
 
-using namespace lcio ;
 
 class treeFitter : public marlin::Processor {
   
