@@ -31,10 +31,10 @@
 #include <cmath>
 #include "treeFitter.h"
 
-//using namespace lcio ;
+
  
 treeFitter atreeFitter;
-//using namespace lcio ;
+
 
 /********************
 Register processor parameters and input/output collections
@@ -285,7 +285,7 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
 OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//general procedure
 		OPALFitterGSL *  fitter = new OPALFitterGSL();
-/*
+
 		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit	
 		std::cout<<"Traces for seg 1"<<std::endl;
 		
@@ -307,7 +307,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				TFit->recoparts.at(recoindex)->Bfield, 
 				TFit->recoparts.at(recoindex)->part->getMass()); */
 				//testing track particle fit object
-/*				FO_vec.at(recoindex) = new TrackParticleFitObject(
+				FO_vec.at(recoindex) = new TrackParticleFitObject(
 				TFit->recoparts.at(recoindex)->track,
 				TFit->recoparts.at(recoindex)->part->getMass());
 				// have to set the bfield?
@@ -436,7 +436,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			std::cout<<std::endl;
 			}
 		} 
-		*/
+		
 		return fitter;
 }
 

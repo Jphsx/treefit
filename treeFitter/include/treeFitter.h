@@ -25,7 +25,7 @@
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
 
-//using namespace lcio ;
+
 #include "TreeFit.h"
 #include "Matching.h"
 #include "Particle.h"
