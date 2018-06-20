@@ -29,7 +29,7 @@ typedef lcio::ReconstructedParticle ReconstructedParticle ;
 #include "Matching.h"
 #include "Particle.h"
 
-//using namespace lcio ;
+using namespace lcio ;
 
 class treeFitter : public marlin::Processor {
   
