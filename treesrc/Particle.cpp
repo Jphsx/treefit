@@ -44,7 +44,8 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	
 
 }
-Particle(JetFitObject* jfo, TrackParticleFitObject tpfo, int pdg, float mass ){
+
+Particle::Particle(JetFitObject* jfo, TrackParticleFitObject tpfo, int pdg, float mass ){
 	//can either be jfo or tfo only
 	if(tpfo==NULL){
 		isTrack = false;
