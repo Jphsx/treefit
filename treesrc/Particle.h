@@ -8,8 +8,8 @@
 #include "EVENT/ReconstructedParticle.h"
 #include "EVENT/Track.h"
 #include "EVENT/MCParticle.h"
-//#include "TrackParticleFitObject.h"
-//#include "JetFitObject.h"
+#include "TrackParticleFitObject.h"
+#include "JetFitObject.h"
 
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
