@@ -22,7 +22,7 @@ class Particle{
 	Particle(ReconstructedParticle* p, Track* t, double B);
 
 	//build from fitobjects
-	Particle(JetFitObject* jfo, TrackParticleFitObject tpfo, int pdg, float mass);
+	Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, float mass);
 
 	//need to write a good destructor here?
 	//TODO ~Particle()
