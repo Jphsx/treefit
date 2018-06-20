@@ -1,5 +1,5 @@
 #include "Particle.h"
-
+using namespace lcio;
 
 Particle::Particle( ){}
 Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
