@@ -104,7 +104,7 @@ class treeFitter : public marlin::Processor {
 	Global vector to store all fit objects for post fit
 	easy access
 	*************/
-	//std::vector<ParticleFitObject*> FitObjects{};
+	std::vector<ParticleFitObject*> FitObjects{};
 	
 
 	void FindMassConstraintCandidates( LCCollectionVec* recparcol);
