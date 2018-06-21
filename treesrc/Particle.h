@@ -11,6 +11,10 @@
 #include "TrackParticleFitObject.h"
 #include "JetFitObject.h"
 
+#include "IMPL/ParticleIDImpl.h"
+#include "IMPL/ReconstructedParticleImpl.h"
+#include "IMPL/TrackImpl.h"
+
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
 ////////////////////
