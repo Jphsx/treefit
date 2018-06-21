@@ -17,6 +17,8 @@
 
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
+typedef lcio::TrackImpl TrackImpl ;
+typedef lcio::ReconstructedParticleImpl ReconstructedParticleImpl ;
 ////////////////////
 //a general particle container that aggregates all possible information or a reconstructed particle
 class Particle{
