@@ -239,7 +239,7 @@ void Particle::printLocalErrors(std::vector<double> errors){
 	}
 	std::cout<<std::endl;
 }
-void Particle::printCovarianceMatrix(float* cov, int npar){
+void Particle::printCovarianceMatrix(std::vector<float> cov, int npar){
 	//the number of elements in the lower diagonal is
 	//sum( i ) where i= 0->npar
 	int nelem = 0;

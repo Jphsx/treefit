@@ -70,7 +70,7 @@ class Particle{
 	static void printLocalErrors(std::vector<double> errors);
 
 	//prints the lower diagonal matrix with n parameters
-	static void printCovarianceMatrix(float* cov, int npar);
+	static void printCovarianceMatrix(std::vector<float> cov, int npar);
 
 	//from the 5 track parameters return a vector of 
 	//momentum components px,py,pz
