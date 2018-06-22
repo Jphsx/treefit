@@ -112,7 +112,7 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		t->setCovMatrix(cov);
 		track = t;
 		//also set bfield
-		Bfield = tpfo->getBfield();
+		Bfield = tpfo->bfield;
 		//TODO all these quantities will need rescaled
 		//now make a reconstructed particle to go with
 		//with the track and store additional details
@@ -122,7 +122,7 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		newPDG->setLikelihood(1.0);
 		
 		float* mom = new float[3];
-		std::vector<double> mom_vec = getTrackPxPyPz( t, tpfo->getBfield());
+		std::vector<double> mom_vec = getTrackPxPyPz( t, tpfo->bfield);
 		mom[0] = mom_vec.at(0);
 		mom[1] = mom_vec.at(1);
  		mom[2] = mom_vec.at(2);	
