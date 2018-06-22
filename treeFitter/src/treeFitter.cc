@@ -287,7 +287,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		OPALFitterGSL *  fitter = new OPALFitterGSL();
 
 		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit	
-		std::cout<<"Traces for seg 1"<<std::endl;
+		
 		
 		//this array should match reco parts in size, but only the final particles
 		//used will be populated into the array
@@ -310,7 +310,6 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				FO_vec.at(recoindex) = new TrackParticleFitObject(
 				TFit->recoparts.at(recoindex)->track,
 				TFit->recoparts.at(recoindex)->part->getMass());
-				// have to set the bfield?
 				TrackParticleFitObject* tpfo = (TrackParticleFitObject*) FO_vec.at(recoindex);
 				tpfo->setBfield(TFit->recoparts.at(recoindex)->Bfield);
 			}
@@ -330,76 +329,31 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			fitter->addFitObject( FO_vec.at(recoindex) );
 			
 		}
-				std::cout<<"Traces for seg 2"<<std::endl;
-		//for(unsigned int i=0; i< recoparts.size(); i++){
-			//iterate over the fit table to 
-
-		//}
+			
 		
-		std::cout<<"checkingout FO_vec"<<std::endl;
-		for(int i=0; i<FO_vec.size(); i++){
-			std::cout<<" recopart/FO i "<< i<<std::endl;
-			if(FO_vec.at(i) != NULL){
-				std::cout<<"NPARS "<< FO_vec.at(i)->getNPar()<<std::endl;
-				//loop over the pars and print
-				for(int j=0; j< FO_vec.at(i)->getNPar(); j++){
-					std::cout<< FO_vec.at(i)->getParamName(j) << " ";
-					std::cout<< FO_vec.at(i)->getParam(j) << " " << std::endl;
-				}
-				//print cov
-				std::cout<<"cov"<<std::endl;
-				for(int q=0; q<FO_vec.at(i)->getNPar(); q++){
-					for( int r=0; r<=q; r++){
-						std::cout<< FO_vec.at(i)->getCov(q,r) << " " << q << " " << r <<std::endl;
-					}
-				}
-				std::cout<<std::endl;
-			}
-		}
 		
-		std::cout<<std::endl;
 		//make mass constraint objects for each node in the tree
 		//that has a specified mass constraint
-		//std::vector::<MassConstraint*> massconstraintvec;
-		std::cout<<std::endl;
-		std::cout<<"the fit : "<<std::endl;
-		for(int i=0; i< fit.size(); i++){
-			std::cout<<i<< " , ";
-			for(int j=0; j< fit.at(i).size(); j++){
-				std::cout<<fit.at(i).at(j)<<" ";			
-			}
-			std::cout<<std::endl;
-		}
-		std::cout<<std::endl;
-
+		
 		//iterate through the fit, get mass and combination
 		//and add them to the corresponding constraint
 		for(int i=0; i<fit.size(); i++){
 			//find the node for the current fit
 			Node* node = TFit->ParticleTree->getNode(TFit->ParticleTree->Root, i);
-			if(node == NULL){
-				std::cout<<"null node :( "<<std::endl;
-			}
-			std::cout<<" got a node with mass and pdg "<< node->mass <<" "<< node->pdg << std::endl;
+			
+			
 			if(node->mass != -1){
 				//make a new constraint
 				MassConstraint* mc = new MassConstraint(node->mass);
-				std::cout<<"made a new massconstraint with mass" << node->mass <<std::endl;
+
 				//get the FOs by iterating over j
 				std::vector<ParticleFitObject*>* mcFitObjects = new vector<ParticleFitObject*>();
-				std::cout<<"mcFitObjectsSize "<< std::endl;
-				std::cout<<mcFitObjects->size()<<std::endl;
-
-				std::cout<<"fit.at(i).size() "<<fit.at(i).size()<<std::endl;
+				
 				//iterating over the combo in fit i
 				for(int j=0; j<fit.at(i).size(); j++){
 					//add to the array of FOs
 					//we have to use an array because ParticleConstraint  is weird
-					std::cout<<"about to push on a FO"<<std::endl;
-					std::cout<<"ij "<<i<< " "<< j<<std::endl;
-					std::cout<<"fit.at(i).at(j) "<< fit.at(i).at(j) <<std::endl;
 					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
-					std::cout<<"pushed on the FO"<<std::endl;
 				}//end j
 				//add FOs to constraint
 				mc->setFOList( mcFitObjects );
@@ -407,35 +361,14 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				fitter->addConstraint(mc);
 			}//end if
 		}//end i
-				std::cout<<"Traces for seg 3"<<std::endl;
+		
 		//save he FOs globally so we can easily
 		//access/print the fitted particles
 		 FitObjects = FO_vec;
 		//do the fit
 		fitter->fit();
-		std::cout<<"DID A FIT :O wow"<<std::endl;
-		std::cout<<"prob "<<fitter->getProbability()<<std::endl;
-		std::cout<<std::endl;
-		std::cout<<"checkingout FO_vec post fit"<<std::endl;
-		for(int i=0; i<FO_vec.size(); i++){
-			std::cout<<" recopart/FO i "<< i<<std::endl;
-			if(FO_vec.at(i) != NULL){
-				std::cout<<"NPARS "<< FO_vec.at(i)->getNPar()<<std::endl;
-				//loop over the pars and print
-				for(int j=0; j< FO_vec.at(i)->getNPar(); j++){
-					std::cout<< FO_vec.at(i)->getParamName(j) << " ";
-					std::cout<< FO_vec.at(i)->getParam(j) << " " << std::endl;
-				}
-				//print cov
-				std::cout<<"cov"<<std::endl;
-				for(int q=0; q<FO_vec.at(i)->getNPar(); q++){
-					for( int r=0; r<=q; r++){
-						std::cout<< FO_vec.at(i)->getCov(q,r) << " " << q << " " << r <<std::endl;
-					}
-				}
-			std::cout<<std::endl;
-			}
-		} 
+		
+		std::cout<<"Fit Probability: "<<fitter->getProbability()<<std::endl;
 		
 		return fitter;
 }
@@ -460,6 +393,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//print the fit table	
 	TFit->printTable();
 
+	//use these variables to save the jth fit with the
+	//highest fit probability
+	int bestfit;
+	double bestfitprob=0.0;
 	//do the fits
 	OPALFitterGSL*  fitter; 
 	//extract each fit onto a 2d fit vector
@@ -472,13 +409,17 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 				fit.at(i) = TFit->fitTable.at(i).at(j);
 			}
 		}
-		//segfault is here 
+		
 		fitter = fitParticles(fit);
+		//check and see if this is the best fit
+		if(fitter->getProbability() > bestfitProb){
+			bestfit = j;
+			bestfitprob = fiter->getProbability();
+ 		}
 
 		//make the fit particles from the FOs
 		for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
-				std::cout<<"FO IS NULL HERE"<<std::endl;
 				continue;
 			} 
 			
@@ -493,12 +434,17 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 		//print every fit
 		TFit->printParticles(TFit->fitparts);
+		//TODO save each fit passing a certain probability
+		//cut to output collection
+		//For local plots save the best fit probability fit
+		//this is the event we will plot
+		
 		//before we move on to the next set of combinations
 		//clear the fit (fit is the fit combo from the fit table)
 		fit.clear();
 		//also clear fitparts after each fit
 		TFit->fitparts.clear();
-	}
+	}//fitTable iteration
 			
 
 	//advance to next event
