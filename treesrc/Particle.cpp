@@ -91,7 +91,7 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		TrackImpl* t = new TrackImpl();
 		//we need to rescale all the parameters
 		//in TrackParticleFitObject*
-		std::vector<double> scaleFactors{1.e-2, 1., 1.e-3, 1.e-2, 1., 1., 1.};
+		std::vector<double> scaleFactor{1.e-2, 1., 1.e-3, 1.e-2, 1., 1., 1.};
 
 		t->setD0(tpfo->getParam(0)*scaleFactor.at(0)); //Impact parameter in r-phi
 		t->setPhi(tpfo->getParam(1)*scaleFactor.at(1)); //phi of track at reference point (primary vertex)
