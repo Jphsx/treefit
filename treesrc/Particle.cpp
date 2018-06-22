@@ -286,7 +286,7 @@ void Particle::printParticle(Particle* pc){
 
 	printLocalParameters(pc->localParams);
 	printLocalErrors(pc->localErrors);
-	
+	std::cout<<"Covariance Matrix: "<<std::endl;
 	if(pc->isTrack){
 		printCovarianceMatrix(pc->track->getCovMatrix(),pc->localParams.size());
 	}

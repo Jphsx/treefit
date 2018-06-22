@@ -383,7 +383,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		
 		TFit->addrecopart(pc);
 	}	
-	
+	std::cout<<"Reconstructed Particles "<<std::endl;
 	TFit->printParticles(TFit->recoparts);
 	std::cout<<std::endl;
 
@@ -433,6 +433,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			
 		}
 		//print every fit
+		std::cout<<"Fitted Particles in Fit "<< j <<std::endl;
 		TFit->printParticles(TFit->fitparts);
 		//TODO save each fit passing a certain probability
 		//cut to output collection
