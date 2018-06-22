@@ -412,9 +412,9 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		
 		fitter = fitParticles(fit);
 		//check and see if this is the best fit
-		if(fitter->getProbability() > bestfitProb){
+		if(fitter->getProbability() > bestfitprob){
 			bestfit = j;
-			bestfitprob = fiter->getProbability();
+			bestfitprob = fitter->getProbability();
  		}
 
 		//make the fit particles from the FOs
