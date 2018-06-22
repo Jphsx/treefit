@@ -474,9 +474,27 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 		//segfault is here 
 		fitter = fitParticles(fit);
+
+		//make the fit particles from the FOs
+		for(int k=0; k<FitObjects.size(); k++){
+			if(FitObjects.at(k)==NULL) continue;
+			
+			if(TFit->recoparts->isTrack){
+				TFit->addfitpart( new Particle(NULL, FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				
+			}
+			if(!TFit->recoparts->isTrack){
+				TFit->addfitpart( new Particle( FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+			}
+			
+		}
+		//print every fit
+		TFit->printParticles(TFit->fitparts);
 		//before we move on to the next set of combinations
-		//clear the fit
+		//clear the fit (fit is the fit combo from the fit table)
 		fit.clear();
+		//also clear fitparts after each fit
+		TFit->fitparts.clear();
 	}
 			
 
