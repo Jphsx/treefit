@@ -69,6 +69,9 @@ class Particle{
 	//print whatever the local errors are (sigmas)
 	static void printLocalErrors(std::vector<double> errors);
 
+	//prints the lower diagonal matrix with n parameters
+	static void printCovarianceMatrix(float* cov, int npar);
+
 	//from the 5 track parameters return a vector of 
 	//momentum components px,py,pz
 	static std::vector<double> getTrackPxPyPz(Track* t, double BField);

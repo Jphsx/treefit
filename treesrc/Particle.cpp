@@ -239,6 +239,29 @@ void Particle::printLocalErrors(std::vector<double> errors){
 	}
 	std::cout<<std::endl;
 }
+void Particle::printCovarianceMatrix(float* cov, int npar){
+	//the number of elements in the lower diagonal is
+	//sum( i ) where i= 0->npar
+	int nelem = 0;
+	int k=0;
+	while(k<=npar){
+		nelem = nelem + k;
+		k++;
+	}
+	//reuse k for linebreaking
+	k=0;
+	int kinc=2;
+	for(int i=0; i<nelem; i++){
+		std::cout<<cov[i]<<" ";
+		if(i==k){
+			std::cout<<std::endl;
+			k = k + kinc;
+			kinc++;
+		}
+	}
+	std::cout<<std::endl;
+	
+}
 TLorentzVector* Particle::getTLorentzVector(ReconstructedParticle* p){
 	TLorentzVector* tlv = new TLorentzVector();
 	const double* mom = p->getMomentum();
@@ -264,6 +287,12 @@ void Particle::printParticle(Particle* pc){
 	printLocalParameters(pc->localParams);
 	printLocalErrors(pc->localErrors);
 	
+	if(pc->isTrack){
+		printCovarianceMatrix(pc->track->getCovMatrix(),pc->localParams.size());
+	}
+	else{
+		printCovarianceMatrix(pc->part->getCovMatrix(),\pc->localParams.size());
+	}
 	std::cout<<std::endl;
 	
 }
