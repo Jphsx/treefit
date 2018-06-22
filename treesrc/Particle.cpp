@@ -144,7 +144,7 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 
 	//do tlv and error arrays
 	if(isTrack){
-		v = getTLorentzVector(track,p->getMass(),B);
+		v = getTLorentzVector(track,part->getMass(),Bfield);
 		localParams.push_back(track->getD0());
 		localParams.push_back(track->getPhi());
 		localParams.push_back(track->getOmega());
@@ -157,7 +157,7 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
             	localErrors.push_back(std::sqrt(track->getCovMatrix()[14]));//tanL
 	}
 	else{
-		v = getTLorentzVector(p);
+		v = getTLorentzVector(part);
 		localParams.push_back(part->getEnergy());//E
 		localParams.push_back(v->Theta());//theta
 		localParams.push_back(v->Phi());//phi
