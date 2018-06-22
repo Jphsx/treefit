@@ -89,31 +89,30 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		isTrack = true;
 		//this is a track, make a Track*
 		TrackImpl* t = new TrackImpl();
+		//we need to rescale all the parameters
+		//in TrackParticleFitObject*
+		std::vector<double> scaleFactors{1.e-2, 1., 1.e-3, 1.e-2, 1., 1., 1.};
 
-		t->setD0(tpfo->getParam(0)); //Impact parameter in r-phi
-		t->setPhi(tpfo->getParam(1)); //phi of track at reference point (primary vertex)
-		t->setOmega(tpfo->getParam(2));// signed curvature in 1/mm 
-		t->setZ0(tpfo->getParam(3)); //Impact parameter in r-z
-		t->setTanLambda(tpfo->getParam(4));// dip of the track in r-z at primary vertex
+		t->setD0(tpfo->getParam(0)*scaleFactor.at(0)); //Impact parameter in r-phi
+		t->setPhi(tpfo->getParam(1)*scaleFactor.at(1)); //phi of track at reference point (primary vertex)
+		t->setOmega(tpfo->getParam(2)*scaleFactor.at(2));// signed curvature in 1/mm 
+		t->setZ0(tpfo->getParam(3)*scaleFactor.at(3)); //Impact parameter in r-z
+		t->setTanLambda(tpfo->getParam(4)*scaleFactor.at(4));// dip of the track in r-z at primary vertex
 		//manually make the lower diagonal covariance matrix 
 		float* cov = new float[15];	
 		int index = 0;
 		for(int i=0; i<=4; i++){
 			for(int j=0; j<=i; j++){
-				cov[index]=tpfo->getCov(i,j);
+				cov[index]=tpfo->getCov(i,j)*scaleFactor.at(i)*scaleFactor.at(j);
 				index++;	
 			}
 		}
-		//if we use TrackParticleFitObject
-		//all ilocal parameters are scaled by array:
-		//{1.e-2, 1., 1.e-3, 1.e-2, 1., 1., 1.}
-		//TODO figure out if covariance is scaled
-		//TODO rescale the cov matrix
+	
 		t->setCovMatrix(cov);
 		track = t;
 		//also set bfield
 		Bfield = tpfo->bfield;
-		//TODO all these quantities will need rescaled
+
 		//now make a reconstructed particle to go with
 		//with the track and store additional details
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
