@@ -477,7 +477,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 		//make the fit particles from the FOs
 		for(int k=0; k<FitObjects.size(); k++){
-			if(FitObjects.at(k)==NULL) continue;
+			if(FitObjects.at(k)==NULL){
+				std::cout<<"FO IS NULL HERE"<<std::endl;
+				continue;
+			} 
 			
 			if(TFit->recoparts.at(k)->isTrack){
 				TFit->addfitpart( new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
