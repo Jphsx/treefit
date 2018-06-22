@@ -395,8 +395,9 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 	//use these variables to save the jth fit with the
 	//highest fit probability
-	int bestfit;
 	double bestfitprob=0.0;
+	std::vector<std::vector<int> > bestfit{};
+
 	//do the fits
 	OPALFitterGSL*  fitter; 
 	//extract each fit onto a 2d fit vector
@@ -413,7 +414,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		fitter = fitParticles(fit);
 		//check and see if this is the best fit
 		if(fitter->getProbability() > bestfitprob){
-			bestfit = j;
+			bestfit = fit;
 			bestfitprob = fitter->getProbability();
  		}
 
