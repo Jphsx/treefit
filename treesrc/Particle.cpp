@@ -291,7 +291,7 @@ void Particle::printParticle(Particle* pc){
 		printCovarianceMatrix(pc->track->getCovMatrix(),pc->localParams.size());
 	}
 	else{
-		printCovarianceMatrix(pc->part->getCovMatrix(),\pc->localParams.size());
+		printCovarianceMatrix(pc->part->getCovMatrix(),pc->localParams.size());
 	}
 	std::cout<<std::endl;
 	
