@@ -144,28 +144,28 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 
 	//do tlv and error arrays
 	if(isTrack){
-		v = getTLorentzVector(t,p->getMass(),B);
-		localParams.push_back(t->getD0());
-		localParams.push_back(t->getPhi());
-		localParams.push_back(t->getOmega());
-		localParams.push_back(t->getZ0());
-		localParams.push_back(t->getTanLambda());
-		localErrors.push_back(std::sqrt(t->getCovMatrix()[0]));//d0 
-            	localErrors.push_back(std::sqrt(t->getCovMatrix()[2]));//phi
-            	localErrors.push_back(std::sqrt(t->getCovMatrix()[5]));//ome
-            	localErrors.push_back(std::sqrt(t->getCovMatrix()[9]));//z0
-            	localErrors.push_back(std::sqrt(t->getCovMatrix()[14]));//tanL
+		v = getTLorentzVector(track,p->getMass(),B);
+		localParams.push_back(track->getD0());
+		localParams.push_back(track->getPhi());
+		localParams.push_back(track->getOmega());
+		localParams.push_back(track->getZ0());
+		localParams.push_back(track->getTanLambda());
+		localErrors.push_back(std::sqrt(track->getCovMatrix()[0]));//d0 
+            	localErrors.push_back(std::sqrt(track->getCovMatrix()[2]));//phi
+            	localErrors.push_back(std::sqrt(track->getCovMatrix()[5]));//ome
+            	localErrors.push_back(std::sqrt(track->getCovMatrix()[9]));//z0
+            	localErrors.push_back(std::sqrt(track->getCovMatrix()[14]));//tanL
 	}
 	else{
 		v = getTLorentzVector(p);
-		localParams.push_back(p->getEnergy());//E
+		localParams.push_back(part->getEnergy());//E
 		localParams.push_back(v->Theta());//theta
 		localParams.push_back(v->Phi());//phi
 		//reconstructed particle covmatrix must be modified 
 		//to use the E,theta,phi error model
-		localErrors.push_back(std::sqrt(p->getCovMatrix()[0]));//dE
-		localErrors.push_back(std::sqrt(p->getCovMatrix()[2]));//dtheta
-		localErrors.push_back(std::sqrt(p->getCovMatrix()[5]));//dphi
+		localErrors.push_back(std::sqrt(part->getCovMatrix()[0]));//dE
+		localErrors.push_back(std::sqrt(part->getCovMatrix()[2]));//dtheta
+		localErrors.push_back(std::sqrt(part->getCovMatrix()[5]));//dphi
 	}
 
 }
