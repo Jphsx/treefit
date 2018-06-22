@@ -479,11 +479,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL) continue;
 			
-			if(TFit->recoparts->isTrack){
+			if(TFit->recoparts.at(k)->isTrack){
 				TFit->addfitpart( new Particle(NULL, FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
 				
 			}
-			if(!TFit->recoparts->isTrack){
+			if(!TFit->recoparts.at(k)->isTrack){
 				TFit->addfitpart( new Particle( FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
 			}
 			
