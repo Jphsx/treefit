@@ -97,20 +97,76 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		t->setTanLambda(tpfo->getParam(4));// dip of the track in r-z at primary vertex
 		//manually make the lower diagonal covariance matrix 
 		float* cov = new float[15];	
-	
+		int index = 0;
+		for(int i=0; i<=4; i++){
+			for(int j=0; j<=i; j++){
+				cov[index]=tpfo->getCov(i,j);
+				index++;	
+			}
+		}
+		//if we use TrackParticleFitObject
+		//all ilocal parameters are scaled by array:
+		//{1.e-2, 1., 1.e-3, 1.e-2, 1., 1., 1.}
+		//TODO figure out if covariance is scaled
+		//TODO rescale the cov matrix
 		t->setCovMatrix(cov);
+		track = t;
+		//also set bfield
+		Bfield = tpfo->getBfield();
+		//TODO all these quantities will need rescaled
+		//now make a reconstructed particle to go with
+		//with the track and store additional details
+		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
+		ParticleIDImpl* newPDG = new ParticleIDImpl();
+		newPDG->setPDG(pdg);
+		newPDG->setLikelihood(1.0);
+		
+		float* mom = new float[3];
+		std::vector<double> mom_vec = getTrackPxPyPz( t, tpfo->getBfield());
+		mom[0] = mom_vec.at(0);
+		mom[1] = mom_vec.at(1);
+ 		mom[2] = mom_vec.at(2);	
+		
+		float P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
+		p->setMomentum(mom);
+		p->setEnergy( sqrt(P*P + mass*mass ) );
 
-		//TODO also create a reco part from the track? would be useful for final LCIO collection
-		//yes do this
-/*
-		d0d0				0
-		phd0 phph			1 2	
-		omd0 omph omom			3 4 5
-		z0d0 z0ph z0om z0z0		6 7 8 9
-		tld0 tlph tlom tlz0 tltl	10 11 12 13 14
-*/
+		p->setMass(mass);
+		p->setCharge(tpfo->getCharge());
+		p->addParticleID(newPDG);
+		p->setParticleIDUsed(newPDG);
+		p->setType(pdg);
+		//dont worry about setting the cov in the 
+		//reconstructedparticle, just only use the
+		//track covariance matrix
+		part = p;	
 	}
 
+	//do tlv and error arrays
+	if(isTrack){
+		v = getTLorentzVector(t,p->getMass(),B);
+		localParams.push_back(t->getD0());
+		localParams.push_back(t->getPhi());
+		localParams.push_back(t->getOmega());
+		localParams.push_back(t->getZ0());
+		localParams.push_back(t->getTanLambda());
+		localErrors.push_back(std::sqrt(t->getCovMatrix()[0]));//d0 
+            	localErrors.push_back(std::sqrt(t->getCovMatrix()[2]));//phi
+            	localErrors.push_back(std::sqrt(t->getCovMatrix()[5]));//ome
+            	localErrors.push_back(std::sqrt(t->getCovMatrix()[9]));//z0
+            	localErrors.push_back(std::sqrt(t->getCovMatrix()[14]));//tanL
+	}
+	else{
+		v = getTLorentzVector(p);
+		localParams.push_back(p->getEnergy());//E
+		localParams.push_back(v->Theta());//theta
+		localParams.push_back(v->Phi());//phi
+		//reconstructed particle covmatrix must be modified 
+		//to use the E,theta,phi error model
+		localErrors.push_back(std::sqrt(p->getCovMatrix()[0]));//dE
+		localErrors.push_back(std::sqrt(p->getCovMatrix()[2]));//dtheta
+		localErrors.push_back(std::sqrt(p->getCovMatrix()[5]));//dphi
+	}
 
 }
 void Particle::printTrack(Track* t){
