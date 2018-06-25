@@ -362,7 +362,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			}//end if
 		}//end i
 		
-		//save he FOs globally so we can easily
+		//save the FOs globally so we can easily
 		//access/print the fitted particles
 		 FitObjects = FO_vec;
 		//do the fit
@@ -447,7 +447,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//also clear fitparts after each fit
 		TFit->fitparts.clear();
 	}//fitTable iteration
-			
+	
+	//redo the best fit, and send the particles to the TTrees in the Rootfiles
+	fitter = fitParticles(bestfit);
+
+
 
 	//advance to next event
 	evtNo++;

@@ -29,6 +29,7 @@ typedef lcio::ReconstructedParticle ReconstructedParticle ;
 #include "TreeFit.h"
 #include "Matching.h"
 #include "Particle.h"
+#include "RootFileFactory.h"
 
 
 class treeFitter : public marlin::Processor {
