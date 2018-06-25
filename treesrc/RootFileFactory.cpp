@@ -4,7 +4,7 @@
 RootFileFactory::RootFileFactory(int nodeId, int pdg){
 	
 	//to_string is c++11
-	string filename = std::to_string(pdg) + "resonance_node" + std::tostring(nodeId);
+	std::string filename = std::to_string(pdg) + "resonance_node" + std::tostring(nodeId);
 	
 	rootFile = new TFile(filename.c_str(),"RECREATE");
 	tree = new TTree("tree", "tree");
