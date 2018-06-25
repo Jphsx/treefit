@@ -6,6 +6,7 @@
 
 #include "TTree.h"
 #include "TFile.h"
+#include "TLorentzVector.h"
 
 class RootFileFactory{
 
@@ -34,8 +35,8 @@ class RootFileFactory{
 	double RecoEnergy{};
 	double FitEnergy{};
 	
-	void addFittedParticles(Particle* fitcontainer);
-	void addReconstructedParticles(Particle* recocontainer);
+	void addFittedParticle(Particle* fitcontainer);
+	void addReconstructedParticle(Particle* recocontainer);
 	void addParticleSets(std::vector<Particle*> fitcontainer, std::vector<Particle*> recocontainer);
 	void addpdg( int pdg );
 	void addFitDetails(double fitprob, double chisq); 

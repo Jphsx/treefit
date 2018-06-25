@@ -4,7 +4,7 @@
 RootFileFactory::RootFileFactory(int nodeId, int pdg){
 	
 	//to_string is c++11
-	std::string filename = std::to_string(pdg) + "resonance_node" + std::tostring(nodeId);
+	std::string filename = std::to_string(pdg) + "resonance_node" + std::to_string(nodeId);
 	
 	rootFile = new TFile(filename.c_str(),"RECREATE");
 	tree = new TTree("tree", "tree");
@@ -34,7 +34,7 @@ void RootFileFactory::addReconstructedParticle(Particle* recocontainer){
 	
 }
 void RootFileFactory::addpdg( int pdg){
-	pdgs.pushback(pdg);
+	pdgs.push_back(pdg);
 }
 
 void RootFileFactory::addFitDetails(double fitprob, double chisq){
@@ -49,8 +49,8 @@ void RootFileFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::
 		addReconstructedParticle(recocontainer.at(i));
 		addpdg(recocontainer.at(i)->part->getType());
 		RecoMass = recocontainer.at(i)->part->getMass();
-		fitsum += fitcontainer->v;
-		recosum += recocontainer->v;
+		fitsum += fitcontainer.at(i)->v;
+		recosum += recocontainer.at(i)->v;
 	}
 	RecoEnergy = recosum.E();
 	FitEnergy = fitsum.E();
