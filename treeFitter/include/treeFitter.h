@@ -29,7 +29,7 @@ typedef lcio::ReconstructedParticle ReconstructedParticle ;
 #include "TreeFit.h"
 #include "Matching.h"
 #include "Particle.h"
-#include "RootFileFactory.h"
+#include "TTreeFactory.h"
 
 
 class treeFitter : public marlin::Processor {
@@ -121,6 +121,14 @@ class treeFitter : public marlin::Processor {
 	 the tree and generates combinations
 	*************/
 	TreeFit* TFit;
+
+	/*************
+	File to store all the TTrees from the treefit
+	And vector to store all the tree containers
+	*************/
+	TFile* rootfile;
+	//all trees created in init
+	std::vector<TTreeFactory*> ttrees{};
 
 };
 

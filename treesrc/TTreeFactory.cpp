@@ -1,14 +1,13 @@
-#include "RootFileFactory.h"
+#include "TTreeFactory.h"
 
 
-RootFileFactory::RootFileFactory(int nodeId, int pdg){
+TTreeFactory::TTreeFactory(int nodeId, int pdg, TFile* f){
 	
 	//to_string is c++11
-	std::string filename = std::to_string(pdg) + "resonance_node" + std::to_string(nodeId);
+	std::string treeid = std::to_string(pdg) + "resonance_node" + std::to_string(nodeId);
 	
-	rootFile = new TFile(filename.c_str(),"RECREATE");
-	tree = new TTree("tree", "tree");
-  	tree->SetDirectory(rootFile);
+	tree = new TTree(treeid.c_str(), treeid.c_str());
+  	tree->SetDirectory(f);
 	
 
 	tree->Branch("RecoEnergy", &RecoEnergy);
@@ -22,26 +21,26 @@ RootFileFactory::RootFileFactory(int nodeId, int pdg){
         tree->Branch("fitLocalErrors.", &fitLocalErrors);
 
 }
-void RootFileFactory::addFittedParticle(Particle* fitcontainer){
+void TTreeFactory::addFittedParticle(Particle* fitcontainer){
 	fitLocalParams.push_back(fitcontainer->localParams);
 	fitLocalErrors.push_back(fitcontainer->localErrors);
 	//TODO fit pulls
 	
 }
-void RootFileFactory::addReconstructedParticle(Particle* recocontainer){
+void TTreeFactory::addReconstructedParticle(Particle* recocontainer){
 	recoLocalParams.push_back(recocontainer->localParams);
 	recoLocalErrors.push_back(recocontainer->localErrors);
 	
 }
-void RootFileFactory::addpdg( int pdg){
+void TTreeFactory::addpdg( int pdg){
 	pdgs.push_back(pdg);
 }
 
-void RootFileFactory::addFitDetails(double fitprob, double chisq){
+void TTreeFactory::addFitDetails(double fitprob, double chisq){
 	FitProbability = fitprob ;
 	Chisq = chisq ;
 }
-void RootFileFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vector<Particle*> recocontainer){
+void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vector<Particle*> recocontainer){
 	//containers better be the same size, so just loop once
 	TLorentzVector fitsum, recosum;
 	for(unsigned int i=0; i< fitcontainer.size(); i++){
@@ -56,7 +55,7 @@ void RootFileFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::
 	FitEnergy = fitsum.E();
 
 }
-void RootFileFactory::TreeFillAndClear(){
+void TTreeFactory::TreeFillAndClear(){
 	//fill the tree
 	tree->Fill();
 	//clear out all the vectors for the next event

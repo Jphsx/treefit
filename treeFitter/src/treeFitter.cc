@@ -124,7 +124,19 @@ void treeFitter::init() {
 	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, SerialDelimiter);
 	TFit->ParticleTree->printTree(TFit->ParticleTree->Root);
 
-	//build TTREE
+	//build TTREE from non leaf nodes
+	//iterate through the tree by retrieving each node, then create a treefactory at each nonleaf
+	f = new TFile("rootFile.root","RECREATE");
+	Node* nonleafnode;
+	for(int i=0; i<= *(TFit->LASTNONLEAFID); i++){
+		nonleafnode = getNode(TFit->Root, i);
+		if(!nonleafnode->isLeaf){
+			//get naming details for this node
+			ttrees.push_back(new TTreeFactory(i, nonleafnode->pdg, f));
+		}
+	}		
+	
+
   return;
 }
 /*******************
@@ -450,6 +462,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	
 	//redo the best fit, and send the particles to the TTrees in the Rootfiles
 	fitter = fitParticles(bestfit);
+	
 
 
 

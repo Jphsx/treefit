@@ -8,14 +8,14 @@
 #include "TFile.h"
 #include "TLorentzVector.h"
 
-class RootFileFactory{
+class TTreeFactory{
 
 
 	public:
 	//initialize the TTree with constructor
-	RootFileFactory(int nodeId, int pdg);
+	TTreeFactory(int nodeId, int pdg, TFile* f);
 	
-	TFile* rootFile{};	
+		
 	TTree* tree{};
 
 	std::vector<std::vector<double> > recoLocalParams{};
