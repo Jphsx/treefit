@@ -481,7 +481,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//nodeId should by construction match fit index with ttrees index
 			//iterate over the fit particles
 			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
-				std:::cout<<"is it in here??"<<std::endl;
+				std::cout<<"is it in here??"<<std::endl;
 				recop.push_back(TFit->recoparts.at( bestfit.at(i).at(k) ));
 				fitp.push_back(TFit->fitparts.at( bestfit.at(i).at(k) ));
 			}
