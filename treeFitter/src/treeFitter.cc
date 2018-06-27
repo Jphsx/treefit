@@ -485,10 +485,13 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 				recop.push_back(TFit->recoparts.at( bestfit.at(i).at(k) ));
 				fitp.push_back(TFit->fitparts.at( bestfit.at(i).at(k) ));
 			}
-			
+			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->addParticleSets(fitp,recop);
+			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
+			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->TreeFillAndClear();
+			std::cout<<"weve went past trees"<<std::endl;
 			index++;	
 		
 		
