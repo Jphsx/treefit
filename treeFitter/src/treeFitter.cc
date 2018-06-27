@@ -507,10 +507,13 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			std::cout<<"where is fault????"<<std::endl;
 			//nodeId should by construction match fit index with ttrees index
 			//iterate over the fit particles
+			std::cout<<"best fit size "<< bestfit.size() << std::endl;
 			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
 				std::cout<<"is it in here??"<<std::endl;
+				std::cout<<"size at i "<<bestfit.at(i).size() <<std::endl;
 				recop.push_back(TFit->recoparts.at( bestfit.at(i).at(k) ));
 				fitp.push_back(TFit->fitparts.at( bestfit.at(i).at(k) ));
+				
 			}
 			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->addParticleSets(fitp,recop);
