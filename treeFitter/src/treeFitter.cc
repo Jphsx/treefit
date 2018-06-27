@@ -179,6 +179,7 @@ void treeFitter::end(){
 	//if(_fitAnalysis){
 	//	rootFile->Write();
 	//}
+	file->Write();
   	return;
 }
 /*****************
@@ -444,6 +445,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 				TFit->addfitpart( new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
 			}
 			
+						
 		}
 		//print every fit
 		std::cout<<"Fitted Particles in Fit "<< j <<std::endl;
@@ -456,12 +458,35 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//before we move on to the next set of combinations
 		//clear the fit (fit is the fit combo from the fit table)
 		fit.clear();
-		//also clear fitparts after each fit
+		//also clear fitparts after each fit and FOs
 		TFit->fitparts.clear();
+		FitObjects.clear();//this vector will not change capacity when cleared
 	}//fitTable iteration
 	
 	//redo the best fit, and send the particles to the TTrees in the Rootfiles
 	fitter = fitParticles(bestfit);
+	//iterate through the fit, create the needed fit particles
+	//put the particles on new vectors, now indexed by a pdg vector
+	//re-vectoring will get rid of gaps in used reco/fit particle vector
+	std::vector<Particle*> recop,fitp;
+	//populate reco and fit at the same time
+	//iterate over each nodeId in fit
+	int index;
+	//use index for iterating over treefactory vector, since we cant have gaps in its array
+	for(int i=0; i<bestfit.size(); i++){
+		//if this node is non leaf, we can populate its tree
+		if(bestfit.at(i) != NULL){
+			//iterate over the fit particles
+			for(int k=0; k<bestfit.at(i).size(); k++){
+				reco.push_back(TFit->recoparts.at( bestfit.at(i).at(j) ));
+				fit.push_back(TFit->fitparts.at( bestfit.at(i).at(j) ));
+			}
+			ttrees.at(index)->addParticleSets(fitp,recop);
+			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
+			ttrees.at(index)->TreeFillAndClear();
+			index++;	
+		}
+	}
 	
 
 
@@ -472,6 +497,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	_trackvec.clear();
 	//might need to run a destructor here first
 	TFit->clearEvent();
+	FitObjects.clear();//clear the bestfit
 	return;
 }
 

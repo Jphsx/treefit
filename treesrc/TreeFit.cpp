@@ -113,6 +113,7 @@ void TreeFit::clearEvent(){
 	recoIDs.clear();
 	fitTable.clear();
 	fitPdgs.clear();
+	fitparts.clear();
 }
 void TreeFit::addFitToTable(Node* root){
 	if(root->isLeaf) return;
