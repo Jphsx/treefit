@@ -475,7 +475,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//use index for iterating over treefactory vector, since we cant have gaps in its array
 	for(unsigned int i=0; i<bestfit.size(); i++){
 		//if this node is non leaf, we can populate its tree
-		if(bestfit.at(i) == NULL) continue;
+		if(bestfit.at(i).size() == 0) continue;
 			//iterate over the fit particles
 			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
 				reco.push_back(TFit->recoparts.at( bestfit.at(i).at(j) ));
