@@ -410,10 +410,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//highest fit probability
 	double bestfitprob=0.0;
 	std::vector<std::vector<int> > bestfit{};
-	std::vector<std::vector<int> > fit(TFit->fitTable.size());
+
 	//do the fits
 	OPALFitterGSL*  fitter; 
 	//extract each fit onto a 2d fit vector
+	std::vector<std::vector<int> > fit(TFit->fitTable.size());
 	//this is a single fit from the fit table
 	for(int j = 0; j<TFit->fitTable.at(0).size(); j++){
 		//std::vector<std::vector<int> > fit(TFit->fitTable.size());
@@ -467,6 +468,15 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"is fault here"<<std::endl;
 	fitter = fitParticles(bestfit);
 	std::cout<<"nothere "<<std::endl;
+
+	std::cout<<"print bestfit"<<std::endl;
+	for(int i=0; i<bestfit.size(); i++){
+		std::cout<< i <<"     ";
+		for(int k=0; k<bestfit.at(i).size(); k++){
+			std::cout<<bestfit.at(i).at(k)<<" ";
+		}
+		std::cout<std::endl;	
+	}
 	//iterate through the fit, create the needed fit particles
 	//put the particles on new vectors, now indexed by a pdg vector
 	//re-vectoring will get rid of gaps in used reco/fit particle vector
