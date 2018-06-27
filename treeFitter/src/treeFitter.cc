@@ -129,7 +129,7 @@ void treeFitter::init() {
 	file = new TFile("rootFile.root","RECREATE");
 	Node* nonleafnode;
 	for(int i=0; i<= *(TFit->LASTNONLEAFID); i++){
-		nonleafnode = getNode(TFit->ParticleTree->Root, i);
+		nonleafnode = Tree::getNode(TFit->ParticleTree->Root, i);
 		if(!nonleafnode->isLeaf){
 			//get naming details for this node
 			ttrees.push_back(new TTreeFactory(i, nonleafnode->pdg, file));
