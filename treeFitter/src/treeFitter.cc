@@ -469,6 +469,23 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	fitter = fitParticles(bestfit);
 	std::cout<<"nothere "<<std::endl;
 
+	//remake fitparticles
+	for(int k=0; k<FitObjects.size(); k++){
+			if(FitObjects.at(k)==NULL){
+				continue;
+			} 
+			
+			if(TFit->recoparts.at(k)->isTrack){
+				TFit->addfitpart( new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				
+			}
+			if(!TFit->recoparts.at(k)->isTrack){
+				TFit->addfitpart( new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+			}
+			
+						
+		}
+
 	std::cout<<"print bestfit"<<std::endl;
 	for(int i=0; i<bestfit.size(); i++){
 		std::cout<< i <<"     ";
