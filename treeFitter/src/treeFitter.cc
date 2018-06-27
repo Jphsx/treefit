@@ -475,7 +475,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		for(int k=0; k<bestfit.at(i).size(); k++){
 			std::cout<<bestfit.at(i).at(k)<<" ";
 		}
-		std::cout<std::endl;	
+		std::cout<<std::endl;	
 	}
 	//iterate through the fit, create the needed fit particles
 	//put the particles on new vectors, now indexed by a pdg vector
