@@ -410,13 +410,13 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//highest fit probability
 	double bestfitprob=0.0;
 	std::vector<std::vector<int> > bestfit{};
-
+	std::vector<std::vector<int> > fit(TFit->fitTable.size());
 	//do the fits
 	OPALFitterGSL*  fitter; 
 	//extract each fit onto a 2d fit vector
 	//this is a single fit from the fit table
 	for(int j = 0; j<TFit->fitTable.at(0).size(); j++){
-		std::vector<std::vector<int> > fit(TFit->fitTable.size());
+		//std::vector<std::vector<int> > fit(TFit->fitTable.size());
 		for(int i=0; i<TFit->fitTable.size(); i++){
 			//if it has particles to fit then proceed
 			if(TFit->fitTable.at(i).size() != 0){
@@ -474,8 +474,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	int index;
 	//use index for iterating over treefactory vector, since we cant have gaps in its array
 	for(unsigned int i=0; i<bestfit.size(); i++){
-		//if this node is non leaf, we can populate its tree
-		if(bestfit.at(i).size() == 0) continue;
+			//nodeId should by construction match fit index with ttrees index
 			//iterate over the fit particles
 			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
 				recop.push_back(TFit->recoparts.at( bestfit.at(i).at(k) ));
@@ -485,6 +484,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
 			ttrees.at(index)->TreeFillAndClear();
 			index++;	
+		
 		
 	}
 	
