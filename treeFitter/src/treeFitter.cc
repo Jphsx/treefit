@@ -126,13 +126,13 @@ void treeFitter::init() {
 
 	//build TTREE from non leaf nodes
 	//iterate through the tree by retrieving each node, then create a treefactory at each nonleaf
-	f = new TFile("rootFile.root","RECREATE");
+	file = new TFile("rootFile.root","RECREATE");
 	Node* nonleafnode;
 	for(int i=0; i<= *(TFit->LASTNONLEAFID); i++){
-		nonleafnode = getNode(TFit->Root, i);
+		nonleafnode = getNode(TFit->ParticleTree->Root, i);
 		if(!nonleafnode->isLeaf){
 			//get naming details for this node
-			ttrees.push_back(new TTreeFactory(i, nonleafnode->pdg, f));
+			ttrees.push_back(new TTreeFactory(i, nonleafnode->pdg, file));
 		}
 	}		
 	

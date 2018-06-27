@@ -126,7 +126,7 @@ class treeFitter : public marlin::Processor {
 	File to store all the TTrees from the treefit
 	And vector to store all the tree containers
 	*************/
-	TFile* rootfile;
+	TFile* file;
 	//all trees created in init
 	std::vector<TTreeFactory*> ttrees{};
 
