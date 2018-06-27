@@ -478,8 +478,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		if(bestfit.at(i).size() == 0) continue;
 			//iterate over the fit particles
 			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
-				reco.push_back(TFit->recoparts.at( bestfit.at(i).at(j) ));
-				fit.push_back(TFit->fitparts.at( bestfit.at(i).at(j) ));
+				recop.push_back(TFit->recoparts.at( bestfit.at(i).at(k) ));
+				fitp.push_back(TFit->fitparts.at( bestfit.at(i).at(k) ));
 			}
 			ttrees.at(index)->addParticleSets(fitp,recop);
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
