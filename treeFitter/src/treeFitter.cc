@@ -473,11 +473,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//iterate over each nodeId in fit
 	int index;
 	//use index for iterating over treefactory vector, since we cant have gaps in its array
-	for(int i=0; i<bestfit.size(); i++){
+	for(unsigned int i=0; i<bestfit.size(); i++){
 		//if this node is non leaf, we can populate its tree
-		if(bestfit.at(i) != NULL){
+		if(bestfit.at(i) == NULL) continue;
 			//iterate over the fit particles
-			for(int k=0; k<bestfit.at(i).size(); k++){
+			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
 				reco.push_back(TFit->recoparts.at( bestfit.at(i).at(j) ));
 				fit.push_back(TFit->fitparts.at( bestfit.at(i).at(j) ));
 			}
@@ -485,7 +485,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
 			ttrees.at(index)->TreeFillAndClear();
 			index++;	
-		}
+		
 	}
 	
 
