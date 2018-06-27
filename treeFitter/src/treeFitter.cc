@@ -464,16 +464,20 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	}//fitTable iteration
 	
 	//redo the best fit, and send the particles to the TTrees in the Rootfiles
+	std::cout<<"is fault here"<<std::endl;
 	fitter = fitParticles(bestfit);
+	std::cout<<"nothere "<<std::endl;
 	//iterate through the fit, create the needed fit particles
 	//put the particles on new vectors, now indexed by a pdg vector
 	//re-vectoring will get rid of gaps in used reco/fit particle vector
-	std::vector<Particle*> recop,fitp;
+	std::vector<Particle*> recop{};
+	std::vector<Partilce*> fitp{};
 	//populate reco and fit at the same time
 	//iterate over each nodeId in fit
 	int index;
 	//use index for iterating over treefactory vector, since we cant have gaps in its array
 	for(unsigned int i=0; i<bestfit.size(); i++){
+			std::cout<<"where is fault????"<<std::endl;;
 			//nodeId should by construction match fit index with ttrees index
 			//iterate over the fit particles
 			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
@@ -487,6 +491,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		
 		
 	}
+	recop.clear();
+	fitp.clear();
 	
 
 
