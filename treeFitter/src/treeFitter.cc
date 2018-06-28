@@ -472,7 +472,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"is fault here"<<std::endl;
 	fitter = fitParticles(bestfit);
 	std::cout<<"nothere "<<std::endl;
-
+	std::cout<<FitObjects.size()<<" FO size "<<std::endl;
 	//remake fitparticles
 	for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){

@@ -13,8 +13,10 @@ void TreeFit::addrecopart(Particle* pc){
 }
 void TreeFit::printParticles(std::vector<Particle*> parts){
 	for(int i=0; i<parts.size(); i++){
-		std::cout<<"Particle Index/recoID "<<i<<std::endl;
-		Particle::printParticle(parts.at(i));
+		if(parts.at(i) != NULL){
+			std::cout<<"Particle Index/recoID "<<i<<std::endl;
+			Particle::printParticle(parts.at(i));
+		}
 	}
 }
 std::vector<std::vector<int> > TreeFit::makepdgcombinations(std::vector<std::vector<int> > combinations){
