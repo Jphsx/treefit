@@ -443,11 +443,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			} 
 			
 			if(TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
 				
 			}
 			if(!TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
 			}
 			
 						
@@ -480,11 +480,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			} 
 			
 			if(TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
 				
 			}
 			if(!TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
 			}
 			
 						
