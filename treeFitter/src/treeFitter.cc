@@ -305,6 +305,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//this array should match reco parts in size, but only the final particles
 		//used will be populated into the array
  		std::vector<ParticleFitObject*> FO_vec(TFit->recoparts.size());
+		
 		//use the first node it populate all the FOs
 		//adding this index var for readability
 		int recoindex=-1;
@@ -397,8 +398,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		TFit->addrecopart(pc);
 	}	
 	//prep fitparticles to match the size of recoparts
-	std::vector<Particle*>  fitparts(TFit->recoparts.size());
-	TFit->fitparts = fitparts;
+	//std::vector<Particle*>  fitparts(TFit->recoparts.size());
+	//TFit->fitparts = fitparts;
 
 	std::cout<<"Reconstructed Particles "<<std::endl;
 	TFit->printParticles(TFit->recoparts);
@@ -437,7 +438,9 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
  		}
 
 		//make the fit particles from the FOs
-		std::cout<<FitObjects.size()<<" "<<TFit->fitparts.size()<< "SIZES IN FIRST IT"<<std::endl;
+		//make a temp vec to give to tfit, to make sure fitparts in synchronized in size
+		std::vector<Particle*> fit_vec(TFit->recoparts.size());
+		TFit->fitparts = fit_vec;
 		for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
 				continue;
@@ -453,6 +456,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			
 						
 		}
+		
 		//print every fit
 		std::cout<<"Fitted Particles in Fit "<< j <<std::endl;
 		TFit->printParticles(TFit->fitparts);
@@ -466,8 +470,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		fit.clear();
 		//also clear fitparts after each fit and FOs
 		TFit->fitparts.clear();
-		std::cout<<"size after CLEAR "<<TFit->fitparts.size();
-		FitObjects.clear();//this vector will not change capacity when cleared
+		FitObjects.clear();//this vector will not change capacity when cleared size will be 0 though
 	}//fitTable iteration
 	
 	//redo the best fit, and send the particles to the TTrees in the Rootfiles
@@ -478,6 +481,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<TFit->fitparts.size()<<" fitparts size"<<std::endl;
 	std::cout<<"edit"<<std::endl;
 	//remake fitparticles
+	std::vector<Particle*> fit_vec(TFit->recoparts.size());
+	TFit->fitparts = fit_vec;
 	for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
 				continue;
