@@ -466,6 +466,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		fit.clear();
 		//also clear fitparts after each fit and FOs
 		TFit->fitparts.clear();
+		std::cout<<"size after CLEAR "<<TFit->fitparts.size();
 		FitObjects.clear();//this vector will not change capacity when cleared
 	}//fitTable iteration
 	
