@@ -396,6 +396,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		
 		TFit->addrecopart(pc);
 	}	
+	//prep fitparticles to match the size of recoparts
+	std::vector<Particle*>  fitparts(TFit->recoparts.size());
+	TFit->fitparts = fitparts;
+
 	std::cout<<"Reconstructed Particles "<<std::endl;
 	TFit->printParticles(TFit->recoparts);
 	std::cout<<std::endl;
@@ -439,11 +443,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			} 
 			
 			if(TFit->recoparts.at(k)->isTrack){
-				TFit->addfitpart( new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
 				
 			}
 			if(!TFit->recoparts.at(k)->isTrack){
-				TFit->addfitpart( new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
 			}
 			
 						
@@ -476,11 +480,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			} 
 			
 			if(TFit->recoparts.at(k)->isTrack){
-				TFit->addfitpart( new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
 				
 			}
 			if(!TFit->recoparts.at(k)->isTrack){
-				TFit->addfitpart( new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
+				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) );
 			}
 			
 						
@@ -510,9 +514,12 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			std::cout<<"best fit size "<< bestfit.size() << std::endl;
 			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
 				std::cout<<"is it in here??"<<std::endl;
-				std::cout<<"size at i "<<bestfit.at(i).size() <<std::endl;
+				std::cout<<"size at i "<<i<<" "<<bestfit.at(i).size() <<std::endl;
+				std::cout<<"getting recop"<<std::endl;
 				recop.push_back(TFit->recoparts.at( bestfit.at(i).at(k) ));
+				std::cout<<"getting fitp"<<std::endl;
 				fitp.push_back(TFit->fitparts.at( bestfit.at(i).at(k) ));
+				std::cout<<"got p's "<<std::endl;
 				
 			}
 			std::cout<<"is the fault at trees"<<std::endl;

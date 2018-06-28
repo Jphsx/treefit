@@ -43,7 +43,6 @@ class TreeFit{
 	void printTable();
 	
 	void addrecopart(Particle* pc);
-	void addfitpart(Particle* pc);
 
 	void printParticles(std::vector<Particle*> parts);
 	std::vector<std::vector<int> > makepdgcombinations(std::vector<std::vector<int> > combinations);
