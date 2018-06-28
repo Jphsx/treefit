@@ -421,7 +421,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 	//use these variables to save the jth fit with the
 	//highest fit probability
-	double bestfitprob=0.0;
+	double bestfitprob=-1.0;
 	std::vector<std::vector<int> > bestfit{};
 
 	//do the fits
@@ -483,15 +483,17 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	
 	//redo the best fit, and send the particles to the TTrees in the Rootfiles
 	std::cout<<"is fault here"<<std::endl;
-	fitter = fitParticles(bestfit);
+	//make sure there was at least 1 fit
+	if(bestfitprob != -1.0){
+		fitter = fitParticles(bestfit);
 	std::cout<<"nothere "<<std::endl;
-	std::cout<<FitObjects.size()<<" FO size "<<std::endl;
-	std::cout<<TFit->fitparts.size()<<" fitparts size"<<std::endl;
+		std::cout<<FitObjects.size()<<" FO size "<<std::endl;
+		std::cout<<TFit->fitparts.size()<<" fitparts size"<<std::endl;
 	std::cout<<"edit"<<std::endl;
 	//remake fitparticles
-	std::vector<Particle*> fit_vec(TFit->recoparts.size());
-	TFit->fitparts = fit_vec;
-	for(int k=0; k<FitObjects.size(); k++){
+		std::vector<Particle*> fit_vec(TFit->recoparts.size());
+		TFit->fitparts = fit_vec;
+		for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
 				continue;
 			} 
@@ -508,8 +510,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 
 	std::cout<<"print bestfit"<<std::endl;
-	for(int i=0; i<bestfit.size(); i++){
-		std::cout<< i <<"     ";
+		for(int i=0; i<bestfit.size(); i++){
+			std::cout<< i <<"     ";
 		for(int k=0; k<bestfit.at(i).size(); k++){
 			std::cout<<bestfit.at(i).at(k)<<" ";
 		}
@@ -552,7 +554,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	}
 	recop.clear();
 	fitp.clear();
-	
+	}//end bestfit
 
 
 
