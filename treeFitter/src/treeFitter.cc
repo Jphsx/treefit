@@ -474,6 +474,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"nothere "<<std::endl;
 	std::cout<<FitObjects.size()<<" FO size "<<std::endl;
 	std::cout<<TFit->fitparts.size()<<" fitparts size"<<std::endl;
+	std::cout<<"edit"<<std::endl;
 	//remake fitparticles
 	for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
