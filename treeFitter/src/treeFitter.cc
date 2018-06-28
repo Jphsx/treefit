@@ -426,11 +426,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 	//do the fits
 	OPALFitterGSL*  fitter; 
-	//extract each fit onto a 2d fit vector
-	std::vector<std::vector<int> > fit(TFit->fitTable.size());
-	//this is a single fit from the fit table
+	
 	for(int j = 0; j<TFit->fitTable.at(0).size(); j++){
-		//std::vector<std::vector<int> > fit(TFit->fitTable.size());
+		//extract each fit onto a 2d fit vector
+		std::vector<std::vector<int> > fit(TFit->fitTable.size());
+		//this is a single fit from the fit table
 		for(int i=0; i<TFit->fitTable.size(); i++){
 			//if it has particles to fit then proceed
 			if(TFit->fitTable.at(i).size() != 0){
