@@ -4,7 +4,7 @@
 TTreeFactory::TTreeFactory(int nodeId, int pdg, TFile* f){
 	
 	//to_string is c++11
-	std::string treeid = std::to_string(pdg) + "resonance_node" + std::to_string(nodeId);
+	std::string treeid = "resonance" + std::to_string(pdg) + "_node" + std::to_string(nodeId);
 	
 	tree = new TTree(treeid.c_str(), treeid.c_str());
   	tree->SetDirectory(f);
