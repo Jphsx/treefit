@@ -56,7 +56,7 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 	}
 	RecoEnergy = recosum.E();
 	FitEnergy = fitsum.E();
-	RecoMass = recosum.Mass();
+	RecoMass = recosum.M();
 
 }
 void TTreeFactory::TreeFillAndClear(){
