@@ -76,7 +76,7 @@ void TTreeFactory::TreeFillAndClear(){
 }
 void TTreeFactory::printParams(std::vector<double> params){
 	for(int i=0; i<params.size(); i++){
-		std::cout<<params.at(i)<" ";
+		std::cout<<params.at(i)<<" ";
 	}
 	std::cout<<std::endl;
 }
