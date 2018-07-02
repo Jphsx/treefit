@@ -30,6 +30,8 @@ void TTreeFactory::addFittedParticle(Particle* fitcontainer){
 void TTreeFactory::addReconstructedParticle(Particle* recocontainer){
 	recoLocalParams.push_back(recocontainer->localParams);
 	recoLocalErrors.push_back(recocontainer->localErrors);
+	printParams(recocontainer->localParams);
+	printParams(recocontainer->localErrors);
 	
 }
 void TTreeFactory::addpdg( int pdg){
@@ -71,5 +73,11 @@ void TTreeFactory::TreeFillAndClear(){
 	fitLocalErrors.clear();
 	pdgs.clear();
 	
+}
+void TTreeFactory::printParams(std::vector<double> params){
+	for(int i=0; i<params.size(); i++){
+		std::cout<<params.at(i)<" ";
+	}
+	std::cout<<std::endl;
 }
 
