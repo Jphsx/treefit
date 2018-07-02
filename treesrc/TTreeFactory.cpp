@@ -19,6 +19,7 @@ TTreeFactory::TTreeFactory(int nodeId, int pdg, TFile* f){
 	tree->Branch("recoLocalErrors.", &recoLocalErrors);
 	tree->Branch("fitLocalParams.",&fitLocalParams);
         tree->Branch("fitLocalErrors.", &fitLocalErrors);
+	tree->Branch("pdgs.",&pdgs);
 
 }
 void TTreeFactory::addFittedParticle(Particle* fitcontainer){
