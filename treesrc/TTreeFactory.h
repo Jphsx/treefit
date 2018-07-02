@@ -45,6 +45,9 @@ class TTreeFactory{
 	//tree management functions
 	void TreeFillAndClear();
 	
+	//debugging
+	void printParams(std::vector<double> params);
+	
 
 
 };
