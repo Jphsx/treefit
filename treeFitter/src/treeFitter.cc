@@ -381,11 +381,11 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //make sure to do a cast for each type
 					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
 						//track push back casted tpfo
-						mc.addToFOList(*(TrackparticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
+						mc->addToFOList(*(TrackparticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
 					}
 					else{
 						//not a track add jfo
-					}	mc.addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
+					}	mc->addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
 				}//end j
 				//add FOs to constraint
 //temp				mc->setFOList( mcFitObjects );
