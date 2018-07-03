@@ -8,6 +8,8 @@
 #include "EVENT/ReconstructedParticle.h"
 #include "EVENT/Track.h"
 #include "EVENT/MCParticle.h"
+
+#include "LeptonFitObject.h"
 #include "TrackParticleFitObject.h"
 #include "JetFitObject.h"
 
