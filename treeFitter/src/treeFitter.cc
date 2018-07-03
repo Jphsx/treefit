@@ -378,10 +378,10 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				for(int j=0; j<fit.at(i).size(); j++){
 					//add to the array of FOs
 					//we have to use an array because ParticleConstraint  is weird
-//temp					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
+					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
 //trying to add each guy individually and
 //make sure to do a cast for each type
-					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
+					/*if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
 						//track push back casted tpfo
 					//	mc->addToFOList(*(TrackParticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
 						mc->addToFOList(*(LeptonFitObject*)FO_vec.at(fit.at(i).at(j) ));
@@ -389,9 +389,10 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 					else{
 						//not a track add jfo
 					}	mc->addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
+					*/
 				}//end j
 				//add FOs to constraint
-//temp				mc->setFOList( mcFitObjects );
+				mc->setFOList( mcFitObjects );
 				//instead of using a mcvector try just immediately pushing onto the fitter
 				fitter->addConstraint(mc);
 
