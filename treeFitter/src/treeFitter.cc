@@ -415,7 +415,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			fittlv.push_back(temp);
 			}
 		}
-		TLorentzVector parent();
+		TLorentzVector parent;
 		for(int i=0; i<fittlv.size(); i++){
 			parent += fittlv.at(i);
 		
