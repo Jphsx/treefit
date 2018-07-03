@@ -368,8 +368,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			if(node->mass != -1){
 				//make a new constraint
 				std::cout<<" THE NODE MASS "<<node->mass<<std::endl;
-				MassConstraint* mc = new MassConstraint(node->mass);
-				//MassConstraint mc(double(node->mass));
+				//MassConstraint* mc = new MassConstraint(node->mass);
+				MassConstraint mc(double(node->mass));
 
 				//get the FOs by iterating over j
 				std::vector<ParticleFitObject*>* mcFitObjects = new vector<ParticleFitObject*>();
@@ -378,23 +378,24 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				for(int j=0; j<fit.at(i).size(); j++){
 					//add to the array of FOs
 					//we have to use an array because ParticleConstraint  is weird
-					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
+		//			mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
 //trying to add each guy individually and
 //make sure to do a cast for each type
-					/*if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
+					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
 						//track push back casted tpfo
 					//	mc->addToFOList(*(TrackParticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
-						mc->addToFOList(*(LeptonFitObject*)FO_vec.at(fit.at(i).at(j) ));
+						mc.addToFOList(*(LeptonFitObject*)FO_vec.at(fit.at(i).at(j) ));
 					}
 					else{
 						//not a track add jfo
-					}	mc->addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
-					*/
+					}	mc.addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
+					
 				}//end j
 				//add FOs to constraint
-				mc->setFOList( mcFitObjects );
+			//	mc->setFOList( mcFitObjects );
 				//instead of using a mcvector try just immediately pushing onto the fitter
 				fitter->addConstraint(mc);
+fitter->fit();
 
 			}//end if
 		}//end i
@@ -402,7 +403,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		
 		
 		//do the fit
-		fitter->fit();
+		
 		//save the FOs globally so we can easily
 		//access/print the fitted particles
 		 FitObjects = FO_vec;
