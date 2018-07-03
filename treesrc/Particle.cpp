@@ -263,8 +263,8 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 		//reconstructedparticle, just only use the
 		//track covariance matrix
 		part = p;
-
-		if(isTrack){
+	}
+	if(isTrack){
 		v = getTLorentzVector(track,part->getMass(),Bfield);
 		localParams.push_back(lfo->getParam(0));
 		localParams.push_back(lfo->getParam(1));
