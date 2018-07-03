@@ -366,6 +366,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			
 			if(node->mass != -1){
 				//make a new constraint
+				std::cout<<" THE NODE MASS "<<node->mass<<std::endl;
 				MassConstraint* mc = new MassConstraint(node->mass);
 
 				//get the FOs by iterating over j
