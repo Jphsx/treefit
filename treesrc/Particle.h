@@ -31,6 +31,9 @@ class Particle{
 	//build from fitobjects
 	Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, float mass);
 
+	//build from lfo
+	Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass , float d0, float z0, double B);
+
 	//need to write a good destructor here?
 	//TODO ~Particle()
 	

@@ -168,6 +168,126 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 	}
 
 }
+//need to supply the old impact parameters
+Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass , float d0, float z0, double B){
+	//can either be jfo or lfo only
+	if(lfo==NULL){
+		isTrack = false;
+		//this is not a track, make ReconstructedParticle
+		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
+		ParticleIDImpl* newPDG = new ParticleIDImpl();
+		newPDG->setPDG(pdg);
+		newPDG->setLikelihood(1.0);
+		//for readability add local param variables
+		float E = jfo->getParam(0);
+		float Theta = jfo->getParam(1);
+		float Phi = jfo->getParam(2);
+		//calculate px,py,pz
+		float* mom = new float[3];
+		mom[0] = sqrt( E*E - mass*mass)*cos(Theta)*sin(Phi);
+		mom[1] = sqrt( E*E - mass*mass)*sin(Theta)*sin(Phi);
+ 		mom[2] = sqrt( E*E - mass*mass)*cos(Theta);	
+		
+		p->setMomentum(mom);
+		p->setEnergy(E);
+		//give the reco part an E,theta,phi cov matrix
+		//we need to construct the lower diagonal manually
+		float* cov = new float[6];
+		int index = 0;
+		for(int i=0; i<=2; i++){
+			for(int j=0; j<=i; j++){
+				cov[index]=jfo->getCov(i,j);
+				index++;	
+			}
+		}
+		p->setCovMatrix(cov);
+		p->setMass(mass);
+		p->setCharge(0.0);
+		p->addParticleID(newPDG);
+		p->setParticleIDUsed(newPDG);
+		p->setType(pdg);
+
+		part = p;
+	}
+	else{
+		isTrack = true;
+		//this is a track, make a Track*
+		TrackImpl* t = new TrackImpl();
+		std::vector<double> trackparams{};
+		trackparams = getTrackHelix(lfo, d0, z0, B);
+
+		t->setD0(d0); //Impact parameter in r-phi
+		t->setPhi(lfo->getParam(2)); //phi of track at reference point (primary vertex)
+		t->setOmega(trackparams.at(2));// signed curvature in 1/mm 
+		t->setZ0(z0); //Impact parameter in r-z
+		t->setTanLambda(trackparams.at(4));// dip of the track in r-z at primary vertex
+		//manually make the lower diagonal covariance matrix 
+		float* cov = new float[15];	
+		int index = 0;
+		for(int i=0; i<=2; i++){
+			for(int j=0; j<=i; j++){
+				//cov[index]=tpfo->getCov(i,j)*scaleFactor.at(i)*scaleFactor.at(j);
+				cov[index] = lfo->getCov(i,j);
+				index++;	
+			}
+		}
+	
+		t->setCovMatrix(cov);
+		track = t;
+		//also set bfield
+		Bfield = B;
+
+		//now make a reconstructed particle to go with
+		//with the track and store additional details
+		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
+		ParticleIDImpl* newPDG = new ParticleIDImpl();
+		newPDG->setPDG(pdg);
+		newPDG->setLikelihood(1.0);
+		
+		float* mom = new float[3];
+		std::vector<double> mom_vec = getTrackPxPyPz( t, Bfield);
+		mom[0] = mom_vec.at(0);
+		mom[1] = mom_vec.at(1);
+ 		mom[2] = mom_vec.at(2);	
+		
+		float P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
+		p->setMomentum(mom);
+		p->setEnergy( sqrt(P*P + mass*mass ) );
+
+		p->setMass(mass);
+		p->setCharge(lfo->getParam(0)*sqrt(mom[0]*mom[0] + mom[1]*mom[1]));
+		p->addParticleID(newPDG);
+		p->setParticleIDUsed(newPDG);
+		p->setType(pdg);
+		//dont worry about setting the cov in the 
+		//reconstructedparticle, just only use the
+		//track covariance matrix
+		part = p;
+
+		if(isTrack){
+		v = getTLorentzVector(track,part->getMass(),Bfield);
+		localParams.push_back(lfo->getParam(0));
+		localParams.push_back(lfo->getParam(1));
+		localParams.push_back(lfo->getParam(2));
+		
+		localErrors.push_back(std::sqrt(track->getCovMatrix()[0]));//k 
+            	localErrors.push_back(std::sqrt(track->getCovMatrix()[2]));//theta
+            	localErrors.push_back(std::sqrt(track->getCovMatrix()[5]));//phi
+            	
+	}
+	else{
+		v = getTLorentzVector(part);
+		localParams.push_back(part->getEnergy());//E
+		localParams.push_back(v->Theta());//theta
+		localParams.push_back(v->Phi());//phi
+		//reconstructed particle covmatrix must be modified 
+		//to use the E,theta,phi error model
+		localErrors.push_back(std::sqrt(part->getCovMatrix()[0]));//dE
+		localErrors.push_back(std::sqrt(part->getCovMatrix()[2]));//dtheta
+		localErrors.push_back(std::sqrt(part->getCovMatrix()[5]));//dphi
+	}
+
+}
 void Particle::printTrack(Track* t){
 	std::cout<<"Track: (d0,phi,ome,z0,tanL) "<< 
 		t->getD0()<<" "<<
@@ -216,6 +336,28 @@ std::vector<double> Particle::getTrackPxPyPz(Track* t, double BField){
 	txtytz.push_back(py);
 	txtytz.push_back(pz);
 	return txtytz;
+}
+std:vector<double> Particle::getTrackHelix(LeptonFitObject* lfo, double d0, double z0, double BField){
+	//const double c = 2.99792458e8; // m*s^-1        
+  	//const double mm2m = 1e-3;
+  	//const double eV2GeV = 1e-9;
+  	//const double eB = BField*c*mm2m*eV2GeV;
+	std::vector<double> helixparams{};	
+	
+	double tanlambda = tan(lfo->getParam(1)); //does this angle need adjusted?
+	//double omega = eBField/(fitp.P()*coslambda);
+	double omega = lfo->getParam(0)*Bfield;
+	/*if(meast->getOmega() < 0){
+		omega = -omega;
+	}*/
+	helixparams.push_back(d0);
+	helixparams.push_back(lfo->getParam(2));
+	helixparams.push_back(omega);
+	helixparams.push_back(z0);
+	helixparams.push_back(tanlambda);
+
+	
+	return helixparams;
 }
 void Particle::printTrackPxPyPz(Track* t, double B){
 	std::vector<double> txtytz = getTrackPxPyPz(t,B);

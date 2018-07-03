@@ -324,16 +324,17 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			recoindex = fit.at(0).at(j);
 			if(TFit->recoparts.at(recoindex)->isTrack){
 				//this is a track make LFO
-				/*FO_vec.at(recoindex) = new LeptonFitObject(
+				FO_vec.at(recoindex) = new LeptonFitObject(
 				TFit->recoparts.at(recoindex)->track, 
 				TFit->recoparts.at(recoindex)->Bfield, 
-				TFit->recoparts.at(recoindex)->part->getMass()); */
+				TFit->recoparts.at(recoindex)->part->getMass()); 
 				//testing track particle fit object
-				FO_vec.at(recoindex) = new TrackParticleFitObject(
+			/*	FO_vec.at(recoindex) = new TrackParticleFitObject(  //tpfo does not preserve the mass constraint
 				TFit->recoparts.at(recoindex)->track,
 				TFit->recoparts.at(recoindex)->part->getMass());
 				TrackParticleFitObject* tpfo = (TrackParticleFitObject*) FO_vec.at(recoindex);
 				tpfo->setBfield(TFit->recoparts.at(recoindex)->Bfield);
+			*/
 			}
 			else{
 				//this is not a track make JFO
@@ -367,8 +368,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			if(node->mass != -1){
 				//make a new constraint
 				std::cout<<" THE NODE MASS "<<node->mass<<std::endl;
-				//MassConstraint* mc = new MassConstraint(node->mass);
-				MassConstraint mc(double(node->mass));
+				MassConstraint* mc = new MassConstraint(node->mass);
+				//MassConstraint mc(double(node->mass));
 
 				//get the FOs by iterating over j
 				std::vector<ParticleFitObject*>* mcFitObjects = new vector<ParticleFitObject*>();
@@ -382,24 +383,25 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //make sure to do a cast for each type
 					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
 						//track push back casted tpfo
-						mc.addToFOList(*(TrackParticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
+					//	mc->addToFOList(*(TrackParticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
+						mc->addToFOList(*(LeptonFitObject*)FO_vec.at(fit.at(i).at(j) ));
 					}
 					else{
 						//not a track add jfo
-					}	mc.addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
+					}	mc->addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
 				}//end j
 				//add FOs to constraint
 //temp				mc->setFOList( mcFitObjects );
 				//instead of using a mcvector try just immediately pushing onto the fitter
 				fitter->addConstraint(mc);
-fitter->fit();
+
 			}//end if
 		}//end i
 		
 		
 		
 		//do the fit
-		
+		fitter->fit();
 		//save the FOs globally so we can easily
 		//access/print the fitted particles
 		 FitObjects = FO_vec;
@@ -468,7 +470,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			} 
 			
 			if(TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
+			//	TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
+				TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(K)->recopdg, TFit->recoparts.at(k)->part->getMass());
 				
 			}
 			if(!TFit->recoparts.at(k)->isTrack){
@@ -512,11 +515,12 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			} 
 			
 			if(TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
+				//TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
+				TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(K)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
 				
 			}
 			if(!TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
+				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), -1, -1, TFit->recoparts.at(k)->Bfield) ;
 			}
 			
 						
