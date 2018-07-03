@@ -267,7 +267,8 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 	if(isTrack){
 		//v = getTLorentzVector(track,part->getMass(),Bfield);
 		TLorentzVector* tlv = new TLorentzVector();
-		tlv->setPxPyPzE(lfo->getPx(), lfo->getPy(), lfo->getPz(),lfo->getE() );
+		tlv->SetPxPyPzE(lfo->getPx(), lfo->getPy(), lfo->getPz(),lfo->getE() );
+		v = tlv;
 		localParams.push_back(lfo->getParam(0));
 		localParams.push_back(lfo->getParam(1));
 		localParams.push_back(lfo->getParam(2));
