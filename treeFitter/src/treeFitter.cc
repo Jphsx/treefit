@@ -367,7 +367,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			if(node->mass != -1){
 				//make a new constraint
 				std::cout<<" THE NODE MASS "<<node->mass<<std::endl;
-				MassConstraint* mc = new MassConstraint(node->mass);
+				//MassConstraint* mc = new MassConstraint(node->mass);
+				MassConstraint mc(node->mass);
 
 				//get the FOs by iterating over j
 				std::vector<ParticleFitObject*>* mcFitObjects = new vector<ParticleFitObject*>();
@@ -381,11 +382,11 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //make sure to do a cast for each type
 					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
 						//track push back casted tpfo
-						mc->addToFOList(*(TrackParticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
+						mc.addToFOList(*(TrackParticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
 					}
 					else{
 						//not a track add jfo
-					}	mc->addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
+					}	mc.addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
 				}//end j
 				//add FOs to constraint
 //temp				mc->setFOList( mcFitObjects );
