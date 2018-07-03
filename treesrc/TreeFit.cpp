@@ -16,6 +16,7 @@ void TreeFit::printParticles(std::vector<Particle*> parts){
 		if(parts.at(i) != NULL){
 			std::cout<<"Particle Index/recoID "<<i<<std::endl;
 			Particle::printParticle(parts.at(i));
+		}
 	}
 }
 std::vector<std::vector<int> > TreeFit::makepdgcombinations(std::vector<std::vector<int> > combinations){
