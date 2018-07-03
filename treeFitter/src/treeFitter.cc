@@ -418,8 +418,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		TLorentzVector parent;
 		for(int i=0; i<fittlv.size(); i++){
 			parent += fittlv.at(i);
-		
-		std::cout<<"THE PARENT "<<parent->E()<<" "<<parent->M()<<std::endl;;
+		}
+		std::cout<<"THE PARENT "<<parent.E()<<" "<<parent.M()<<std::endl;;
 		//Particle::printTLorentzVector(parent);
 		
 
