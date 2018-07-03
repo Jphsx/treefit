@@ -80,6 +80,9 @@ class Particle{
 	//from the 5 track parameters return a vector of 
 	//momentum components px,py,pz
 	static std::vector<double> getTrackPxPyPz(Track* t, double BField);
+
+	//get the track components from a lepton fit object
+	static std:vector<double> getTrackHelix(LeptonFitObject* lfo, double d0, double z0, double BField);
 	
 	//make TLorentzVector from ReconstructedParticle/Track
 	static TLorentzVector* getTLorentzVector(ReconstructedParticle* p);
