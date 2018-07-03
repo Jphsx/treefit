@@ -55,20 +55,20 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 		recosum += *recocontainer.at(i)->v;
 		std::cout<<"FIT ";
      std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
-		*fitcontainer.at(i)->v.Px()<< " " <<
-		*fitcontainer.at(i)->v.Py()<< " " <<
-		*fitcontainer.at(i)->v.Pz()<< " " <<
-		*fitcontainer.at(i)->v.P() << " " <<
-		*fitcontainer.at(i)->v.E() << " " <<
-		*fitcontainer.at(i)->v.M() << " " <<std::endl;
+		fitcontainer.at(i)->v->Px()<< " " <<
+		fitcontainer.at(i)->v->Py()<< " " <<
+		fitcontainer.at(i)->v->Pz()<< " " <<
+		fitcontainer.at(i)->v->P() << " " <<
+		fitcontainer.at(i)->v->E() << " " <<
+		fitcontainer.at(i)->v->M() << " " <<std::endl;
 	std::cout<<"RECO ";
 	std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
-		*recocontainer.at(i)->v.Px()<< " " <<
-		*recocontainer.at(i)->v.Py()<< " " <<
-		*recocontainer.at(i)->v.Pz()<< " " <<
-		*recocontainer.at(i)->v.P() << " " <<
-		*recocontainer.at(i)->v.E() << " " <<
-		*recocontainer.at(i)->v.M() << " " <<std::endl;
+		recocontainer.at(i)->v->Px()<< " " <<
+		recocontainer.at(i)->v->Py()<< " " <<
+		recocontainer.at(i)->v->Pz()<< " " <<
+		recocontainer.at(i)->v->P() << " " <<
+		recocontainer.at(i)->v->E() << " " <<
+		recocontainer.at(i)->v->M() << " " <<std::endl;
 	}
 	RecoEnergy = recosum.E();
 	std::cout<<"RECO ";
