@@ -376,21 +376,31 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				for(int j=0; j<fit.at(i).size(); j++){
 					//add to the array of FOs
 					//we have to use an array because ParticleConstraint  is weird
-					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
+//temp					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
+//trying to add each guy individually and
+//make sure to do a cast for each type
+					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
+						//track push back casted tpfo
+						mc.addToFOList(*(TrackparticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
+					}
+					else{
+						//not a track add jfo
+					}	mc.addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
 				}//end j
 				//add FOs to constraint
-				mc->setFOList( mcFitObjects );
+//temp				mc->setFOList( mcFitObjects );
 				//instead of using a mcvector try just immediately pushing onto the fitter
 				fitter->addConstraint(mc);
 			}//end if
 		}//end i
 		
+		
+		
+		//do the fit
+		fitter->fit();
 		//save the FOs globally so we can easily
 		//access/print the fitted particles
 		 FitObjects = FO_vec;
-		//do the fit
-		fitter->fit();
-		
 		std::cout<<"Fit Probability: "<<fitter->getProbability()<<std::endl;
 		
 		return fitter;
