@@ -265,7 +265,9 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 		part = p;
 	}
 	if(isTrack){
-		v = getTLorentzVector(track,part->getMass(),Bfield);
+		//v = getTLorentzVector(track,part->getMass(),Bfield);
+		TLorentzVector* tlv = new TLorentzVector();
+		tlv->setPxPyPzE(lfo->getPx(), lfo->getPy(), lfo->getPz(),lfo->getE() );
 		localParams.push_back(lfo->getParam(0));
 		localParams.push_back(lfo->getParam(1));
 		localParams.push_back(lfo->getParam(2));
@@ -412,7 +414,10 @@ TLorentzVector* Particle::getTLorentzVector(ReconstructedParticle* p){
 TLorentzVector* Particle::getTLorentzVector(Track* t, double Mass, double B){
 	TLorentzVector* tlv = new TLorentzVector();
 	std::vector<double> txtytz = getTrackPxPyPz(t, B);
-	tlv->SetXYZM(txtytz.at(0),txtytz.at(1),txtytz.at(2), Mass);
+	double P = sqrt(txtytz.at(0)*txtytz.at(0) + txtytz.at(1)*txtytz.at(1) +txtytz.at(2)*txtytz.at(2) );
+	double E = sqrt(P*P + Mass*Mass);
+	//tlv->SetXYZM(txtytz.at(0),txtytz.at(1),txtytz.at(2), Mass);
+	tlv->SetPxPyPzE(txtytz.at(0),txtytz.at(1),txtytz.at(2),E);
 	return tlv;
 }
 void Particle::printParticle(Particle* pc){
