@@ -55,7 +55,23 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 		recosum += *recocontainer.at(i)->v;
 	}
 	RecoEnergy = recosum.E();
+	std::cout<<"RECO ";
+     std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
+		recosum.Px()<< " " <<
+		recosum.Py()<< " " <<
+		recosum.Pz()<< " " <<
+		recosum.P() << " " <<
+		recosum.E() << " " <<
+		recosum.M() << " " <<std::endl;
 	FitEnergy = fitsum.E();
+	std::cout<<"FIT ";
+	std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
+		fitsum.Px()<< " " <<
+		fitsum.Py()<< " " <<
+		fitsum.Pz()<< " " <<
+		fitsum.P() << " " <<
+		fitsum.E() << " " <<
+		fitsum.M() << " " <<std::endl;
 	RecoMass = recosum.M();
 
 }
