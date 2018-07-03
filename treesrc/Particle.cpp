@@ -337,7 +337,7 @@ std::vector<double> Particle::getTrackPxPyPz(Track* t, double BField){
 	txtytz.push_back(pz);
 	return txtytz;
 }
-std::vector<double> Particle::getTrackHelix(LeptonFitObject* lfo, double d0, double z0, double BField){
+std::vector<double> Particle::getTrackHelix(LeptonFitObject* lfo, double d0, double z0, double B){
 	//const double c = 2.99792458e8; // m*s^-1        
   	//const double mm2m = 1e-3;
   	//const double eV2GeV = 1e-9;
@@ -346,7 +346,7 @@ std::vector<double> Particle::getTrackHelix(LeptonFitObject* lfo, double d0, dou
 	
 	double tanlambda = tan(lfo->getParam(1)); //does this angle need adjusted?
 	//double omega = eBField/(fitp.P()*coslambda);
-	double omega = lfo->getParam(0)*Bfield;
+	double omega = lfo->getParam(0)*B;
 	/*if(meast->getOmega() < 0){
 		omega = -omega;
 	}*/
