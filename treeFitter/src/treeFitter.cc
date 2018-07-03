@@ -406,6 +406,22 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		fitter->fit();
 		//save the FOs globally so we can easily
 		//access/print the fitted particles
+		//check fit here directly
+		std::vector<TLorentzVector> fittlv{};
+		for(int i=0; i<FO_vec.size(); i++){
+			if(FO_vec.at(i) != NULL){
+			TLorentzVector v();
+			v.SetPxPyPzE(FO_vec.at(i)->getPx(),FO_vec.at(i)->getPy(),FO_vec.at(i)->getPz(),FO_vec.at(i)->getE());
+			fittlv.push_back(v);
+			}
+		}
+		TLorentzVector parent();
+		for(int i=0; i<fittlv.size(); i++){
+			parent += fittlv.at(i);
+		}
+		std::cout<<"THE PARENT "<<parent.E()<<" "<<parent.M()<<std::endl;;
+		
+
 		 FitObjects = FO_vec;
 		std::cout<<"Fit Probability: "<<fitter->getProbability()<<std::endl;
 		
