@@ -392,13 +392,14 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //temp				mc->setFOList( mcFitObjects );
 				//instead of using a mcvector try just immediately pushing onto the fitter
 				fitter->addConstraint(mc);
+fitter->fit();
 			}//end if
 		}//end i
 		
 		
 		
 		//do the fit
-		fitter->fit();
+		
 		//save the FOs globally so we can easily
 		//access/print the fitted particles
 		 FitObjects = FO_vec;
