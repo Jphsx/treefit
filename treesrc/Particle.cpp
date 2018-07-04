@@ -54,18 +54,16 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		ParticleIDImpl* newPDG = new ParticleIDImpl();
 		newPDG->setPDG(pdg);
 		newPDG->setLikelihood(1.0);
-		//for readability add local param variables
-		float E = jfo->getParam(0);
-		float Theta = jfo->getParam(1);
-		float Phi = jfo->getParam(2);
+		
+		
 		//calculate px,py,pz
 		float* mom = new float[3];
-		mom[0] = sqrt( E*E - mass*mass)*cos(Theta)*sin(Phi);
-		mom[1] = sqrt( E*E - mass*mass)*sin(Theta)*sin(Phi);
- 		mom[2] = sqrt( E*E - mass*mass)*cos(Theta);	
+		mom[0] = jfo->getPx();
+		mom[1] = jfo->getPy();
+ 		mom[2] = jfo->getPz();	
 		
 		p->setMomentum(mom);
-		p->setEnergy(E);
+		p->setEnergy(jfo->getE());
 		//give the reco part an E,theta,phi cov matrix
 		//we need to construct the lower diagonal manually
 		float* cov = new float[6];
@@ -121,14 +119,14 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		newPDG->setLikelihood(1.0);
 		
 		float* mom = new float[3];
-		std::vector<double> mom_vec = getTrackPxPyPz( t, tpfo->bfield);
-		mom[0] = mom_vec.at(0);
-		mom[1] = mom_vec.at(1);
- 		mom[2] = mom_vec.at(2);	
+		//std::vector<double> mom_vec = getTrackPxPyPz( t, tpfo->bfield);
+		mom[0] = tpfo->getPx();
+		mom[1] = tpfo->getPy();
+ 		mom[2] = tpfo->getPz();	
 		
-		float P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
+		//float P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
 		p->setMomentum(mom);
-		p->setEnergy( sqrt(P*P + mass*mass ) );
+		p->setEnergy( tpfo->getE() );
 
 		p->setMass(mass);
 		p->setCharge(tpfo->getCharge());
@@ -143,8 +141,11 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 
 	//do tlv and error arrays
 	if(isTrack){
-		v = getTLorentzVector(track,part->getMass(),Bfield);
+		//v = getTLorentzVector(track,part->getMass(),Bfield);
 		//TODO change this to direct creation from getPx getPy etc..
+		TLorentzVector tlv;
+		tlv.SetPxPyPzE(tpfo->getPx(), tpfo->getPy(), tpfo->getPz(), tpfo->getE());
+		v = tlv;
 		localParams.push_back(track->getD0());
 		localParams.push_back(track->getPhi());
 		localParams.push_back(track->getOmega());
@@ -157,7 +158,10 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
             	localErrors.push_back(std::sqrt(track->getCovMatrix()[14]));//tanL
 	}
 	else{
-		v = getTLorentzVector(part);
+		//v = getTLorentzVector(part);
+		TLorentzVector tlv;
+		tlv.SetPxPyPzE(jfo->getPx(), jfo->getPy(), jfo->getPz(), jfo->getE());
+		v = tlv;
 		localParams.push_back(part->getEnergy());//E
 		localParams.push_back(v.Theta());//theta
 		localParams.push_back(v.Phi());//phi
@@ -179,18 +183,16 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 		ParticleIDImpl* newPDG = new ParticleIDImpl();
 		newPDG->setPDG(pdg);
 		newPDG->setLikelihood(1.0);
-		//for readability add local param variables
-		float E = jfo->getParam(0);
-		float Theta = jfo->getParam(1);
-		float Phi = jfo->getParam(2);
+		
+		
 		//calculate px,py,pz
 		float* mom = new float[3];
-		mom[0] = sqrt( E*E - mass*mass)*cos(Theta)*sin(Phi);
-		mom[1] = sqrt( E*E - mass*mass)*sin(Theta)*sin(Phi);
- 		mom[2] = sqrt( E*E - mass*mass)*cos(Theta);	
+		mom[0] = jfo->getPx();
+		mom[1] = jfo->getPy();
+ 		mom[2] = jfo->getPz();	
 		
 		p->setMomentum(mom);
-		p->setEnergy(E);
+		p->setEnergy(jfo->getE());
 		//give the reco part an E,theta,phi cov matrix
 		//we need to construct the lower diagonal manually
 		float* cov = new float[6];
@@ -246,14 +248,14 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 		newPDG->setLikelihood(1.0);
 		
 		float* mom = new float[3];
-		std::vector<double> mom_vec = getTrackPxPyPz( t, Bfield);
-		mom[0] = mom_vec.at(0);
-		mom[1] = mom_vec.at(1);
- 		mom[2] = mom_vec.at(2);	
+		//std::vector<double> mom_vec = getTrackPxPyPz( t, Bfield);
+		mom[0] = lfo->getPx();
+		mom[1] = lfo->getPy();
+ 		mom[2] = lfo->getPz();	
 		
-		float P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
+		//float P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
 		p->setMomentum(mom);
-		p->setEnergy( sqrt(P*P + mass*mass ) );
+		p->setEnergy( lfo->getEnergy() );
 
 		p->setMass(mass);
 		p->setCharge(lfo->getParam(0)*sqrt(mom[0]*mom[0] + mom[1]*mom[1]));
@@ -279,8 +281,8 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
             	localErrors.push_back(std::sqrt(track->getCovMatrix()[5]));//phi
             	
 	}
-	else{ //BUG HERE
-		//v = getTLorentzVector(part); this error means ERROR IN RECONSTRUCTED FIT PARTICLE
+	else{ 
+		//v = getTLorentzVector(part); 
 		TLorentzVector tlv;
 		tlv.SetPxPyPzE(jfo->getPx(), jfo->getPy(), jfo->getPz(), jfo->getE() );
 		v = tlv;
