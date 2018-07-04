@@ -255,7 +255,7 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 		
 		//float P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
 		p->setMomentum(mom);
-		p->setEnergy( lfo->getEnergy() );
+		p->setEnergy( lfo->getE() );
 
 		p->setMass(mass);
 		p->setCharge(lfo->getParam(0)*sqrt(mom[0]*mom[0] + mom[1]*mom[1]));
