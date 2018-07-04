@@ -279,9 +279,11 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
             	localErrors.push_back(std::sqrt(track->getCovMatrix()[5]));//phi
             	
 	}
-	else{
-		v = getTLorentzVector(part);
-		localParams.push_back(part->getEnergy());//E
+	else{ //BUG HERE
+		//v = getTLorentzVector(part); this error means ERROR IN RECONSTRUCTED FIT PARTICLE
+		TLorentzVector tlv;
+		tlv.SetPxPyPzE(jfo->getPx(), jfo->getPy(), jfo->getPz(), jfo->get() );
+		localParams.push_back(part->getEnergy());//E   
 		localParams.push_back(v.Theta());//theta
 		localParams.push_back(v.Phi());//phi
 		//reconstructed particle covmatrix must be modified 
