@@ -144,6 +144,7 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 	//do tlv and error arrays
 	if(isTrack){
 		v = getTLorentzVector(track,part->getMass(),Bfield);
+		//TODO change this to direct creation from getPx getPy etc..
 		localParams.push_back(track->getD0());
 		localParams.push_back(track->getPhi());
 		localParams.push_back(track->getOmega());
@@ -266,8 +267,8 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 	}
 	if(isTrack){
 		//v = getTLorentzVector(track,part->getMass(),Bfield);
-		TLorentzVector* tlv = new TLorentzVector();
-		tlv->SetPxPyPzE(lfo->getPx(), lfo->getPy(), lfo->getPz(),lfo->getE() );
+		TLorentzVector tlv;
+		tlv.SetPxPyPzE(lfo->getPx(), lfo->getPy(), lfo->getPz(),lfo->getE() );
 		v = tlv;
 		localParams.push_back(lfo->getParam(0));
 		localParams.push_back(lfo->getParam(1));
@@ -309,15 +310,15 @@ void Particle::printReconstructedParticle(ReconstructedParticle* p){
 		
 	
 }
-void Particle::printTLorentzVector(TLorentzVector* v){
+void Particle::printTLorentzVector(TLorentzVector v){
 
 	std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
-		v->Px()<< " " <<
-		v->Py()<< " " <<
-		v->Pz()<< " " <<
-		v->P() << " " <<
-		v->E() << " " <<
-		v->M() << " " <<std::endl;
+		v.Px()<< " " <<
+		v.Py()<< " " <<
+		v.Pz()<< " " <<
+		v.P() << " " <<
+		v.E() << " " <<
+		v.M() << " " <<std::endl;
 }
 std::vector<double> Particle::getTrackPxPyPz(Track* t, double BField){
 	const double c = 2.99792458e8; // m*s^-1        
@@ -406,19 +407,19 @@ void Particle::printCovarianceMatrix(std::vector<float> cov, int npar){
 	std::cout<<std::endl;
 	
 }
-TLorentzVector* Particle::getTLorentzVector(ReconstructedParticle* p){
-	TLorentzVector* tlv = new TLorentzVector();
+TLorentzVector Particle::getTLorentzVector(ReconstructedParticle* p){
+	TLorentzVector tlv; 
 	const double* mom = p->getMomentum();
-	tlv->SetXYZM(mom[0],mom[1],mom[2],p->getMass());
+	tlv.SetXYZM(mom[0],mom[1],mom[2],p->getMass());
 	return tlv;
 }
-TLorentzVector* Particle::getTLorentzVector(Track* t, double Mass, double B){
-	TLorentzVector* tlv = new TLorentzVector();
+TLorentzVector Particle::getTLorentzVector(Track* t, double Mass, double B){
+	TLorentzVector tlv;
 	std::vector<double> txtytz = getTrackPxPyPz(t, B);
 	double P = sqrt(txtytz.at(0)*txtytz.at(0) + txtytz.at(1)*txtytz.at(1) +txtytz.at(2)*txtytz.at(2) );
 	double E = sqrt(P*P + Mass*Mass);
 	//tlv->SetXYZM(txtytz.at(0),txtytz.at(1),txtytz.at(2), Mass);
-	tlv->SetPxPyPzE(txtytz.at(0),txtytz.at(1),txtytz.at(2),E);
+	tlv.SetPxPyPzE(txtytz.at(0),txtytz.at(1),txtytz.at(2),E);
 	return tlv;
 }
 void Particle::printParticle(Particle* pc){

@@ -68,7 +68,7 @@ class Particle{
 	//print pdg/charge/px py pz E M
 	static void printReconstructedParticle(ReconstructedParticle* p);
 	//print px py pz E M
-	static void printTLorentzVector(TLorentzVector* v);
+	static void printTLorentzVector(TLorentzVector v);
 	//print whatever the local parameters are
 	static void printLocalParameters(std::vector<double> params);
 	//print whatever the local errors are (sigmas)
@@ -85,8 +85,8 @@ class Particle{
 	static std::vector<double> getTrackHelix(LeptonFitObject* lfo, double d0, double z0, double B);
 	
 	//make TLorentzVector from ReconstructedParticle/Track
-	static TLorentzVector* getTLorentzVector(ReconstructedParticle* p);
-	static TLorentzVector* getTLorentzVector(Track* t, double Mass, double B);
+	static TLorentzVector getTLorentzVector(ReconstructedParticle* p);
+	static TLorentzVector getTLorentzVector(Track* t, double Mass, double B);
 
 	static void printParticle(Particle* pc);
 	

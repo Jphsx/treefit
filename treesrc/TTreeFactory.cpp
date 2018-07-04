@@ -45,30 +45,31 @@ void TTreeFactory::addFitDetails(double fitprob, double chisq){
 }
 void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vector<Particle*> recocontainer){
 	//containers better be the same size, so just loop once
-	TLorentzVector fitsum, recosum;
+	TLorentzVector fitsum;
+	TLorentzVector recosum;
 	for(unsigned int i=0; i< fitcontainer.size(); i++){
 		addFittedParticle(fitcontainer.at(i));
 		addReconstructedParticle(recocontainer.at(i));
 		addpdg(recocontainer.at(i)->part->getType());
 
-		fitsum += *fitcontainer.at(i)->v;
-		recosum += *recocontainer.at(i)->v;
+		fitsum += fitcontainer.at(i)->v;
+		recosum += recocontainer.at(i)->v;
 		std::cout<<"FIT ";
      std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
-		fitcontainer.at(i)->v->Px()<< " " <<
-		fitcontainer.at(i)->v->Py()<< " " <<
-		fitcontainer.at(i)->v->Pz()<< " " <<
-		fitcontainer.at(i)->v->P() << " " <<
-		fitcontainer.at(i)->v->E() << " " <<
-		fitcontainer.at(i)->v->M() << " " <<std::endl;
+		fitcontainer.at(i)->v.Px()<< " " <<
+		fitcontainer.at(i)->v.Py()<< " " <<
+		fitcontainer.at(i)->v.Pz()<< " " <<
+		fitcontainer.at(i)->v.P() << " " <<
+		fitcontainer.at(i)->v.E() << " " <<
+		fitcontainer.at(i)->v.M() << " " <<std::endl;
 	std::cout<<"RECO ";
 	std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
-		recocontainer.at(i)->v->Px()<< " " <<
-		recocontainer.at(i)->v->Py()<< " " <<
-		recocontainer.at(i)->v->Pz()<< " " <<
-		recocontainer.at(i)->v->P() << " " <<
-		recocontainer.at(i)->v->E() << " " <<
-		recocontainer.at(i)->v->M() << " " <<std::endl;
+		recocontainer.at(i)->v.Px()<< " " <<
+		recocontainer.at(i)->v.Py()<< " " <<
+		recocontainer.at(i)->v.Pz()<< " " <<
+		recocontainer.at(i)->v.P() << " " <<
+		recocontainer.at(i)->v.E() << " " <<
+		recocontainer.at(i)->v.M() << " " <<std::endl;
 	}
 	RecoEnergy = recosum.E();
 	std::cout<<"RECO ";
