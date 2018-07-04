@@ -33,8 +33,8 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	else{
 		v = getTLorentzVector(p);
 		localParams.push_back(p->getEnergy());//E
-		localParams.push_back(v->Theta());//theta
-		localParams.push_back(v->Phi());//phi
+		localParams.push_back(v.Theta());//theta
+		localParams.push_back(v.Phi());//phi
 		//reconstructed particle covmatrix must be modified 
 		//to use the E,theta,phi error model
 		localErrors.push_back(std::sqrt(p->getCovMatrix()[0]));//dE
@@ -159,8 +159,8 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 	else{
 		v = getTLorentzVector(part);
 		localParams.push_back(part->getEnergy());//E
-		localParams.push_back(v->Theta());//theta
-		localParams.push_back(v->Phi());//phi
+		localParams.push_back(v.Theta());//theta
+		localParams.push_back(v.Phi());//phi
 		//reconstructed particle covmatrix must be modified 
 		//to use the E,theta,phi error model
 		localErrors.push_back(std::sqrt(part->getCovMatrix()[0]));//dE
@@ -282,8 +282,8 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 	else{
 		v = getTLorentzVector(part);
 		localParams.push_back(part->getEnergy());//E
-		localParams.push_back(v->Theta());//theta
-		localParams.push_back(v->Phi());//phi
+		localParams.push_back(v.Theta());//theta
+		localParams.push_back(v.Phi());//phi
 		//reconstructed particle covmatrix must be modified 
 		//to use the E,theta,phi error model
 		localErrors.push_back(std::sqrt(part->getCovMatrix()[0]));//dE
