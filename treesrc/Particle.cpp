@@ -410,7 +410,8 @@ void Particle::printCovarianceMatrix(std::vector<float> cov, int npar){
 TLorentzVector Particle::getTLorentzVector(ReconstructedParticle* p){
 	TLorentzVector tlv; 
 	const double* mom = p->getMomentum();
-	tlv.SetXYZM(mom[0],mom[1],mom[2],p->getMass());
+	//tlv.SetXYZM(mom[0],mom[1],mom[2],p->getMass());
+	tlv.SetPxPyPzE(mom[0],mom[1],mom[2],p->getEnergy());
 	return tlv;
 }
 TLorentzVector Particle::getTLorentzVector(Track* t, double Mass, double B){
