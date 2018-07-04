@@ -283,6 +283,7 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 		//v = getTLorentzVector(part); this error means ERROR IN RECONSTRUCTED FIT PARTICLE
 		TLorentzVector tlv;
 		tlv.SetPxPyPzE(jfo->getPx(), jfo->getPy(), jfo->getPz(), jfo->get() );
+		v = tlv;
 		localParams.push_back(part->getEnergy());//E   
 		localParams.push_back(v.Theta());//theta
 		localParams.push_back(v.Phi());//phi
