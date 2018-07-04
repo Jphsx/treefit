@@ -347,7 +347,7 @@ std::vector<double> Particle::getTrackHelix(LeptonFitObject* lfo, double d0, dou
   	const double eB = B*c*mm2m*eV2GeV;
 	std::vector<double> helixparams{};	
 	
-	double tanlambda = tan(lfo->getParam(1)); //does this angle need adjusted?
+	double tanlambda = 1.0/tan(lfo->getParam(1)); //does this angle need adjusted?
 	//double omega = eBField/(fitp.P()*coslambda);
 	double omega = lfo->getParam(0)*eB;
 	/*if(meast->getOmega() < 0){
