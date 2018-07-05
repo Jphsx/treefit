@@ -435,6 +435,96 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		
 		return fitter;
 }
+//TODO this function
+//void treeFitter::createFitPartsfromFitObjects(FOVEC){}
+
+//TODO this function
+void treeFitter::createLCOutputParticles(std::string collectionName, std::vector<Particle*> parts, std::vector<std::vector<int> > fit, double fitProb){
+		//create the LCIO reconstructed particle tree
+		//save the particles to an output collection		
+
+}
+//recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
+ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitProb, std::vector<std::vector<int> > fit){
+	
+		if(root->isLeaf) return NULL;// this should never happen
+
+		//create a reconstructed particle for non leaf node
+		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
+		ParticleIDImpl* newPDG = new ParticleIDImpl();
+			
+		newPDG->setPDG(root->pdg);
+		newPDG->setLikelihood(1.0);
+
+		//look up constituent particles, add together to get this particle
+		//while we are at it, add up the total charge
+		//this nodeID is index of fit combination
+		TLorentzVector parentParticle;
+		float charge=0.0;
+		for(int i=0; i<fit.at(root->nodeId).size(); i++){
+			//each element in the array at this fit location is an index of reco/FO/fit particle
+			parentParticle += TFit->fitparts.at(fit.at(root->nodeId).at(i))->v;
+			charge += TFit->recoparts.at(fit.at(root->nodeId).at(i))->part->getCharge();
+		}
+		
+		//set px,py,pz
+		float* mom = new float[3];
+		mom[0] = parentParticle.Px();
+		mom[1] = parentParticle.Py();
+ 		mom[2] = parentParticle.Pz();	
+		
+		p->setMomentum(mom);
+		p->setEnergy(parentParticle->E());
+		//give the reco part an E,theta,phi cov matrix
+		//we need to construct the lower diagonal manually
+		//TODO constuct matrix for every single particle resonance
+	/*	float* cov = new float[6];
+		int index = 0;
+		for(int i=0; i<=2; i++){
+			for(int j=0; j<=i; j++){
+				cov[index]=jfo->getCov(i,j);
+				index++;	
+			}
+		}*/
+		//p->setCovMatrix(cov);
+		p->setMass(root->mass);
+		p->setCharge(charge);
+		p->addParticleID(newPDG);
+		p->setParticleIDUsed(newPDG);
+		p->setType(root->pdg);
+		p->setGoodnessOfPID(fitprob);
+
+		//go through children, identify the leaves and add them
+		//if we have a nonleaf child make a reconstructed particle for that resonance
+		std::vector<int> parentSet = fit.at(root->nodeId);
+		std::vector<int> childSet{};
+		for(int i=0; i<root->children.size(); i++){
+				//subtract all non leaf  children sets from parent, the remaining is the leaves to add 
+			if(!children.at(i)->isleaf){
+				childSet = fit.at(root->children.at(i)->nodeId);
+				parentSet = Combinatorics::subtractSets(parentSet,childSet);
+			}
+		}
+		//the remaining (if any) particles on parentSet are leaves that can be added immediately
+		for(int i=0; i<parentSet.size(); i++){
+			if(TFit->recoparts.at(parentSet.at(i))->isTrack){
+				//this is a track dont add reconstructedParticle*
+				p->addTrack( TFit->fitparts.at(parentSet.at(i))->track);
+			}
+			else{
+				//this is a neutral add the correct object
+				p->addParticle( TFit->fitparts.at(parentSet.at(i))->part);
+			}
+		}
+		//now deal with the non leaves, iterate through children again and create the other particles
+		for(int i=0; i<root->children.size(); i++){
+			if(!children.at(i)->isleaf){
+				p->addParticle( createOutputParticle(root->children.at(i),fitProb,fit) );
+			}
+		}
+		return p;
+
+}
 
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"EVENT "<<evtNo<<std::endl;
