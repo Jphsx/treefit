@@ -130,6 +130,9 @@ class treeFitter : public marlin::Processor {
 	//all trees created in init
 	std::vector<TTreeFactory*> ttrees{};
 
+	//cut parameters
+	double _fitProbabilityCut;
+
 };
 
 

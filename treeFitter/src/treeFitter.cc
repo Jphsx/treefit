@@ -103,6 +103,13 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 			    	_outputTrackCollectionName,
 			    	outputTrackCollectionName);
 
+
+	//cut input parameters
+	registerProcessorParameter( "FitProbabilityCut" , 
+			      	  "Minimum fit probability"  ,
+			          _fitProbabilityCut,
+			          (double)0.001);
+
 return;
 }
 
@@ -473,8 +480,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 		
 		fitter = fitParticles(fit);
-		//check and see if this is the best fit
-		if(fitter->getProbability() > bestfitprob){
+		//check and see if this is the best fit and exceeds the minimal probability cut
+		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut){
 			bestfit = fit;
 			bestfitprob = fitter->getProbability();
  		}
