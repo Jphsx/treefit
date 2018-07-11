@@ -474,7 +474,7 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
  		mom[2] = parentParticle.Pz();	
 		
 		p->setMomentum(mom);
-		p->setEnergy(parentParticle->E());
+		p->setEnergy(parentParticle.E());
 		//give the reco part an E,theta,phi cov matrix
 		//we need to construct the lower diagonal manually
 		//TODO constuct matrix for every single particle resonance
@@ -492,7 +492,7 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		p->addParticleID(newPDG);
 		p->setParticleIDUsed(newPDG);
 		p->setType(root->pdg);
-		p->setGoodnessOfPID(fitprob);
+		p->setGoodnessOfPID(fitProb);
 
 		//go through children, identify the leaves and add them
 		//if we have a nonleaf child make a reconstructed particle for that resonance
@@ -500,7 +500,7 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		std::vector<int> childSet{};
 		for(int i=0; i<root->children.size(); i++){
 				//subtract all non leaf  children sets from parent, the remaining is the leaves to add 
-			if(!children.at(i)->isleaf){
+			if(!root->children.at(i)->isleaf){
 				childSet = fit.at(root->children.at(i)->nodeId);
 				parentSet = Combinatorics::subtractSets(parentSet,childSet);
 			}
@@ -518,7 +518,7 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		}
 		//now deal with the non leaves, iterate through children again and create the other particles
 		for(int i=0; i<root->children.size(); i++){
-			if(!children.at(i)->isleaf){
+			if(!root->children.at(i)->isleaf){
 				p->addParticle( createOutputParticle(root->children.at(i),fitProb,fit) );
 			}
 		}
