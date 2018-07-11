@@ -581,10 +581,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 		
 		fitter = fitParticles(fit);
-		if(fitter->getProbability() > _fitProbabilityCut){
-			//if we pass, save this particle hypothesis and fit to the outputcollection
-			createLCOutputParticles(recparcol, fit, fitter->getProbability());
-		}
+		
 		//check and see if this is the best fit and exceeds the minimal probability cut
 		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut){
 			bestfit = fit;
@@ -610,6 +607,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			}
 			
 						
+		}
+		if(fitter->getProbability() > _fitProbabilityCut){
+			//if we pass, save this particle hypothesis and fit to the outputcollection
+			createLCOutputParticles(recparcol, fit, fitter->getProbability());
 		}
 		
 		//print every fit
