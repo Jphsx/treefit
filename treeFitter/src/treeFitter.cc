@@ -437,7 +437,7 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		if(root->isLeaf) return NULL;// this should never happen
 		//guarante debug print
 		std::cout<<std::endl;
-		std::endl;
+		std::cout<<std::endl;
 
 		//create a reconstructed particle for non leaf node
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
