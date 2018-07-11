@@ -435,6 +435,9 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitProb, std::vector<std::vector<int> > fit){
 	
 		if(root->isLeaf) return NULL;// this should never happen
+		//guarante debug print
+		std::cout<<std::endl;
+		std::endl;
 
 		//create a reconstructed particle for non leaf node
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
