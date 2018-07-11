@@ -13,6 +13,7 @@
 	<execute>
 	<processor name="MyPhotonResponseAdjuster"/>
    	<processor name="MyTreeFitter"/>  
+	<processor name="MyLCIOOutputProcessor"/>
  	</execute>
 
 	<global>
@@ -42,6 +43,15 @@
 		<parameter name="InputParticleCollectionName" value="AdjustedParticles" />
 		<parameter name="McParticleCollectionName" value="MCParticle" />
 		<parameter name="OutputParticleCollectionName" value="FittedParticles" />
+   
+ 	</processor>
+
+	<processor name="MyLCIOOutputProcessor" type="LCIOOutputProcessor">
+     		<!--   standard output: full reconstruction keep all collections -->
+     		<parameter name="LCIOOutputFile" type="string" >
+       		./etafit.slcio
+     		</parameter>
+     		<parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
    
  	</processor>
 
