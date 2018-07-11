@@ -459,6 +459,7 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 				std::cout<<"node "<<i<<" size "<< fit.at(i).size() << "element j" << fit.at(i).at(j)<<std::endl;
 			}
 		}
+		std::cout<<"FIT PRINTED"<<std::endl;
 		for(int i=0; i<fit.at(root->nodeId).size(); i++){
 			//each element in the array at this fit location is an index of reco/FO/fit particle
 			parentParticle += TFit->fitparts.at(fit.at(root->nodeId).at(i))->v;

@@ -115,11 +115,15 @@ void TreeFit::clearEvent(){
 	fitparts.clear();
 }
 void TreeFit::addFitToTable(Node* root){
-	if(root->isLeaf) return;
+	if(root->isLeaf) return;// testing new imp, if is leaf  put on a empty table
 
+	//if(root->isLeaf){
+		
+	//}
+	//else{
 		fitTable.at(root->nodeId).push_back(root->currentcombination);
 		fitPdgs.at(root->nodeId).push_back(root->currentcombination_pdgs);
-	
+	//}
 	for(int i=0; i< root->children.size(); i++){
 		addFitToTable(root->children.at(i));
 	}
