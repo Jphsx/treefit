@@ -448,12 +448,13 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		//this nodeID is index of fit combination
 		TLorentzVector parentParticle;
 		float charge=0.0;
+		std::cout<<"SEG1"<<std::endl;
 		for(int i=0; i<fit.at(root->nodeId).size(); i++){
 			//each element in the array at this fit location is an index of reco/FO/fit particle
 			parentParticle += TFit->fitparts.at(fit.at(root->nodeId).at(i))->v;
 			charge += TFit->recoparts.at(fit.at(root->nodeId).at(i))->part->getCharge();
 		}
-		
+				std::cout<<"SEG1F"<<std::endl;
 		//set px,py,pz
 		float* mom = new float[3];
 		mom[0] = parentParticle.Px();
@@ -485,6 +486,7 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		//if we have a nonleaf child make a reconstructed particle for that resonance
 		std::vector<int> parentSet = fit.at(root->nodeId);
 		std::vector<int> childSet{};
+				std::cout<<"SEG2"<<std::endl;
 		for(int i=0; i<root->children.size(); i++){
 				//subtract all non leaf  children sets from parent, the remaining is the leaves to add 
 			if(!root->children.at(i)->isLeaf){
@@ -492,7 +494,9 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 				parentSet = Combinatorics::subtractSets(parentSet,childSet);
 			}
 		}
+				std::cout<<"SEG2F"<<std::endl;
 		//the remaining (if any) particles on parentSet are leaves that can be added immediately
+				std::cout<<"SEG3"<<std::endl;
 		for(int i=0; i<parentSet.size(); i++){
 			if(TFit->recoparts.at(parentSet.at(i))->isTrack){
 				//this is a track dont add reconstructedParticle*
@@ -503,12 +507,15 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 				p->addParticle( TFit->fitparts.at(parentSet.at(i))->part);
 			}
 		}
+				std::cout<<"SEG3F"<<std::endl;
 		//now deal with the non leaves, iterate through children again and create the other particles
+				std::cout<<"SEG4"<<std::endl;
 		for(int i=0; i<root->children.size(); i++){
 			if(!root->children.at(i)->isLeaf){
 				p->addParticle( createOutputParticle(root->children.at(i),fitProb,fit) );
 			}
 		}
+				std::cout<<"SEG4F"<<std::endl;
 		return p;
 
 }
