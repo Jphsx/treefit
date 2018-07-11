@@ -41,6 +41,7 @@
 		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
 		<parameter name="InputParticleCollectionName" value="AdjustedParticles" />
 		<parameter name="McParticleCollectionName" value="MCParticle" />
+		<parameter name="OutputParticleCollectionName" value="FittedParticles" />
    
  	</processor>
 

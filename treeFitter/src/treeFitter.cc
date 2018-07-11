@@ -96,13 +96,6 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 			     	_outputParticleCollectionName,
 			     	outputParticleCollectionName);
 
-  	std::string outputTrackCollectionName = "x";
-  	registerOutputCollection( LCIO::TRACK,
-			    	"OutputTrackCollectionName",
-			    	"Output Particle Collection Name" ,
-			    	_outputTrackCollectionName,
-			    	outputTrackCollectionName);
-
 
 	//cut input parameters
 	registerProcessorParameter( "FitProbabilityCut" , 
@@ -438,12 +431,6 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //TODO this function
 //void treeFitter::createFitPartsfromFitObjects(FOVEC){}
 
-//TODO this function
-void treeFitter::createLCOutputParticles(std::string collectionName, std::vector<Particle*> parts, std::vector<std::vector<int> > fit, double fitProb){
-		//create the LCIO reconstructed particle tree
-		//save the particles to an output collection		
-
-}
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
 ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitProb, std::vector<std::vector<int> > fit){
 	
@@ -525,7 +512,13 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		return p;
 
 }
-
+void treeFitter::createLCOutputParticles(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb){
+		//create the LCIO reconstructed particle tree
+		//save the particles to an output collection		
+		//calreccol->setSubset(true);	   is this needed?
+		recparcol->addElement( createOutputParticle(TFit->ParticleTree->Root, fitProb, fit  ));
+		  
+}
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"EVENT "<<evtNo<<std::endl;
 	//print each particle directly 
@@ -570,6 +563,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 		
 		fitter = fitParticles(fit);
+		if(fitter->getProbability() > _fitProbabilityCut){
+			//if we pass, save this particle hypothesis and fit to the outputcollection
+			createLCOutputParticles(recparcol, fit, fitter->getProbability());
+		}
 		//check and see if this is the best fit and exceeds the minimal probability cut
 		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut){
 			bestfit = fit;

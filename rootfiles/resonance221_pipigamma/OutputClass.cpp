@@ -13,8 +13,8 @@ class OutputClass{
 		OutputClass();
 };
 OutputClass::OutputClass(){
-	hRecoEnergy = new TH1D("hRecoEnergy", "default description", 87, 0.573775, 24.2318);
-	hFitEnergy = new TH1D("hFitEnergy", "default description", 87, 0.600451, 31.9519);
+	hRecoEnergy = new TH1D("hRecoEnergy", "default description", 87, 10.0, 30.0);
+	hFitEnergy = new TH1D("hFitEnergy", "default description", 87, 10.0, 30.0);
 	hRecoMass = new TH1D("hRecoMass", "default description", 87, 0.281587, 4.68418);
 	hFitProbability = new TH1D("hFitProbability", "default description", 87, 0, 0.999976);
 	hChisq = new TH1D("hChisq", "default description", 87, 9.00506e-10, 54974.1);
