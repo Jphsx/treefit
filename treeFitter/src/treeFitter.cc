@@ -452,6 +452,13 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		TLorentzVector parentParticle;
 		float charge=0.0;
 		std::cout<<"SEG1"<<std::endl;
+		std::cout<<"root node id "<<root->nodeId<<std::endl;
+		//try printing fit
+		for(int i=0; i<fit.size(); i++){
+			for(int j=0; j<fit.at(i).size(); j++){
+				std::cout<<"node "<<i<<" size "<< fit.at(i).size() << "element j" << fit.at(i).at(j)<<std::endl;
+			}
+		}
 		for(int i=0; i<fit.at(root->nodeId).size(); i++){
 			//each element in the array at this fit location is an index of reco/FO/fit particle
 			parentParticle += TFit->fitparts.at(fit.at(root->nodeId).at(i))->v;
