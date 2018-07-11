@@ -107,6 +107,16 @@ class treeFitter : public marlin::Processor {
 	*************/
 	std::vector<ParticleFitObject*> FitObjects{};
 	
+	/************
+	Function to created fit particles from the fit objects
+	*************/
+	//TODO
+
+	/*************
+	Functions to generate the proper output collections
+	**************/
+	void createLCOutputParticles(std::string collectionName, std::vector<Particle*> parts, std::vector<std::vector<int> > fit, double fitProb);
+	ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitProb, std::vector<std::vector<int> > fit);
 
 	void FindMassConstraintCandidates( LCCollectionVec* recparcol);
 
