@@ -500,7 +500,7 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		std::vector<int> childSet{};
 		for(int i=0; i<root->children.size(); i++){
 				//subtract all non leaf  children sets from parent, the remaining is the leaves to add 
-			if(!root->children.at(i)->isleaf){
+			if(!root->children.at(i)->isLeaf){
 				childSet = fit.at(root->children.at(i)->nodeId);
 				parentSet = Combinatorics::subtractSets(parentSet,childSet);
 			}
@@ -518,7 +518,7 @@ ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitPr
 		}
 		//now deal with the non leaves, iterate through children again and create the other particles
 		for(int i=0; i<root->children.size(); i++){
-			if(!root->children.at(i)->isleaf){
+			if(!root->children.at(i)->isLeaf){
 				p->addParticle( createOutputParticle(root->children.at(i),fitProb,fit) );
 			}
 		}
