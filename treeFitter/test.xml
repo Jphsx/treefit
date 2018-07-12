@@ -11,7 +11,7 @@
 
 <marlin>
 	<execute>
-	<!--<processor name="MyPhotonResponseAdjuster"/> -->
+	<processor name="MyPhotonResponseAdjuster"/>
    	<processor name="MyTreeFitter"/>  
 	<processor name="MyLCIOOutputProcessor"/>
  	</execute>
