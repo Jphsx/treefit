@@ -434,7 +434,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //void treeFitter::createFitPartsfromFitObjects(FOVEC){}
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
-ReconstructedParticleImpl* treeFitter::createOutputParticle(Node* root, double fitProb, std::vector<std::vector<int> > fit){
+void treeFitter::createLCOutputParticles(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb){
 	
 		//if(root->isLeaf) return NULL;// this should never happen
 		//guarante debug print
@@ -443,10 +443,10 @@ ReconstructedParticleImpl* treeFitter::createOutputParticle(Node* root, double f
 		std::cout<<"in create output"<<std::endl;
 		//create a reconstructed particle for non leaf node
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
-		ParticleIDImpl* newPDG = new ParticleIDImpl();
+		//ParticleIDImpl* newPDG = new ParticleIDImpl();
 			
-		newPDG->setPDG(root->pdg);
-		newPDG->setLikelihood(1.0);
+		//newPDG->setPDG(root->pdg);
+		//newPDG->setLikelihood(1.0);
 
 		//look up constituent particles, add together to get this particle
 		//while we are at it, add up the total charge
@@ -493,10 +493,13 @@ ReconstructedParticleImpl* treeFitter::createOutputParticle(Node* root, double f
 		p->setCovMatrix(cov);
 		p->setMass(root->mass);
 		p->setCharge(charge);
-		p->addParticleID(newPDG);
-		p->setParticleIDUsed(newPDG);
+		//p->addParticleID(newPDG);
+		//p->setParticleIDUsed(newPDG);
 		p->setType(root->pdg);
 		p->setGoodnessOfPID(fitProb);
+		
+		//add this particle
+		recparcol->addElement(p);
 
 		//go through children, identify the leaves and add them
 		//if we have a nonleaf child make a reconstructed particle for that resonance
@@ -522,6 +525,8 @@ ReconstructedParticleImpl* treeFitter::createOutputParticle(Node* root, double f
 				//this is a neutral add the correct object
 				p->addParticle( TFit->fitparts.at(parentSet.at(i))->part);
 			}
+			//regardless what it is add the recopart to the collection
+			recparcol->addElement(TFit->fitparts.at(parentSet.at(i))->part);
 		}
 				std::cout<<"SEG3F"<<std::endl;
 		//now deal with the non leaves, iterate through children again and create the other particles
@@ -537,13 +542,7 @@ ReconstructedParticleImpl* treeFitter::createOutputParticle(Node* root, double f
 		return p;
 
 }
-void treeFitter::createLCOutputParticles(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb){
-		//create the LCIO reconstructed particle tree
-		//save the particles to an output collection		
-		//calreccol->setSubset(true);	   is this needed?
-		recparcol->addElement( createOutputParticle(TFit->ParticleTree->Root, fitProb, fit  ));
-		  
-}
+
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"EVENT "<<evtNo<<std::endl;
 	//print each particle directly 
