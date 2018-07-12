@@ -478,15 +478,18 @@ ReconstructedParticleImpl* treeFitter::createOutputParticle(Node* root, double f
 		//give the reco part an E,theta,phi cov matrix
 		//we need to construct the lower diagonal manually
 		//TODO constuct matrix for every single particle resonance
-	/*	float* cov = new float[6];
+	/	float* cov = new float[10];
 		int index = 0;
-		for(int i=0; i<=2; i++){
+	/*	for(int i=0; i<=2; i++){
 			for(int j=0; j<=i; j++){
 				cov[index]=jfo->getCov(i,j);
 				index++;	
 			}
 		}*/
-		//p->setCovMatrix(cov);
+		for(int i=0; i<10; i++){
+			cov[i] = 0.0;
+		}
+		p->setCovMatrix(cov);
 		p->setMass(root->mass);
 		p->setCharge(charge);
 		p->addParticleID(newPDG);
