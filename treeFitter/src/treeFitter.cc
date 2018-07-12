@@ -443,10 +443,10 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		std::cout<<"in create output"<<std::endl;
 		//create a reconstructed particle for non leaf node
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
-		//ParticleIDImpl* newPDG = new ParticleIDImpl();
+		ParticleIDImpl* newPDG = new ParticleIDImpl();
 			
-		//newPDG->setPDG(root->pdg);
-		//newPDG->setLikelihood(1.0);
+		newPDG->setPDG(root->pdg);
+		newPDG->setLikelihood(1.0);
 
 		//look up constituent particles, add together to get this particle
 		//while we are at it, add up the total charge
@@ -493,8 +493,8 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		p->setCovMatrix(cov);
 		p->setMass(root->mass);
 		p->setCharge(charge);
-		//p->addParticleID(newPDG);
-		//p->setParticleIDUsed(newPDG);
+		p->addParticleID(newPDG);
+		p->setParticleIDUsed(newPDG);
 		p->setType(root->pdg);
 		p->setGoodnessOfPID(fitProb);
 		
@@ -519,6 +519,8 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			if(TFit->recoparts.at(parentSet.at(i))->isTrack){
 				//this is a track dont add reconstructedParticle*
 				p->addTrack( TFit->fitparts.at(parentSet.at(i))->track);
+				//also add the associated recopart
+				p->addParticle( TFit->fitparts.at(parentSet.at(i))->part);
 			}
 			else{
 				//this is a neutral add the correct object
