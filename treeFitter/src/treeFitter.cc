@@ -436,11 +436,11 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
 ReconstructedParticleImpl* treeFitter::createOutputParticle(Node* root, double fitProb, std::vector<std::vector<int> > fit){
 	
-		if(root->isLeaf) return NULL;// this should never happen
+		//if(root->isLeaf) return NULL;// this should never happen
 		//guarante debug print
 		std::cout<<std::endl;
 		std::cout<<std::endl;
-
+		std::cout<<"in create output"<<std::endl;
 		//create a reconstructed particle for non leaf node
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
 		ParticleIDImpl* newPDG = new ParticleIDImpl();
