@@ -40,7 +40,7 @@
 
 		<!-- input/output collection names -->
 		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
-		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">AdjustedParticles</parameter>
+		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
 		<parameter name="McParticleCollectionName" value="MCParticle" />  
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles </parameter>
    
