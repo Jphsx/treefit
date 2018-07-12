@@ -51,9 +51,9 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		isTrack = false;
 		//this is not a track, make ReconstructedParticle
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
-		ParticleIDImpl* newPDG = new ParticleIDImpl();
-		newPDG->setPDG(pdg);
-		newPDG->setLikelihood(1.0);
+		//ParticleIDImpl* newPDG = new ParticleIDImpl();
+		//newPDG->setPDG(pdg);
+		//newPDG->setLikelihood(1.0);
 		
 		
 		//calculate px,py,pz
@@ -77,8 +77,8 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		p->setCovMatrix(cov);
 		p->setMass(mass);
 		p->setCharge(0.0);
-		p->addParticleID(newPDG);
-		p->setParticleIDUsed(newPDG);
+		//p->addParticleID(newPDG);
+		//p->setParticleIDUsed(newPDG);
 		p->setType(pdg);
 
 		part = p;
@@ -114,9 +114,9 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		//now make a reconstructed particle to go with
 		//with the track and store additional details
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
-		ParticleIDImpl* newPDG = new ParticleIDImpl();
-		newPDG->setPDG(pdg);
-		newPDG->setLikelihood(1.0);
+		//ParticleIDImpl* newPDG = new ParticleIDImpl();
+		//newPDG->setPDG(pdg);
+		//newPDG->setLikelihood(1.0);
 		
 		float* mom = new float[3];
 		//std::vector<double> mom_vec = getTrackPxPyPz( t, tpfo->bfield);
@@ -130,8 +130,8 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 
 		p->setMass(mass);
 		p->setCharge(tpfo->getCharge());
-		p->addParticleID(newPDG);
-		p->setParticleIDUsed(newPDG);
+		//p->addParticleID(newPDG);
+		//p->setParticleIDUsed(newPDG);
 		p->setType(pdg);
 		//dont worry about setting the cov in the 
 		//reconstructedparticle, just only use the
@@ -180,9 +180,9 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 		isTrack = false;
 		//this is not a track, make ReconstructedParticle
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
-		ParticleIDImpl* newPDG = new ParticleIDImpl();
-		newPDG->setPDG(pdg);
-		newPDG->setLikelihood(1.0);
+		//ParticleIDImpl* newPDG = new ParticleIDImpl();
+		//newPDG->setPDG(pdg);
+		//newPDG->setLikelihood(1.0);
 		
 		
 		//calculate px,py,pz
@@ -206,8 +206,8 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 		p->setCovMatrix(cov);
 		p->setMass(mass);
 		p->setCharge(0.0);
-		p->addParticleID(newPDG);
-		p->setParticleIDUsed(newPDG);
+		//p->addParticleID(newPDG);
+		//p->setParticleIDUsed(newPDG);
 		p->setType(pdg);
 
 		part = p;
@@ -243,9 +243,9 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 		//now make a reconstructed particle to go with
 		//with the track and store additional details
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
-		ParticleIDImpl* newPDG = new ParticleIDImpl();
-		newPDG->setPDG(pdg);
-		newPDG->setLikelihood(1.0);
+		//ParticleIDImpl* newPDG = new ParticleIDImpl();
+		//newPDG->setPDG(pdg);
+		//newPDG->setLikelihood(1.0);
 		
 		float* mom = new float[3];
 		//std::vector<double> mom_vec = getTrackPxPyPz( t, Bfield);
@@ -259,8 +259,8 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 
 		p->setMass(mass);
 		p->setCharge(lfo->getParam(0)*sqrt(mom[0]*mom[0] + mom[1]*mom[1]));
-		p->addParticleID(newPDG);
-		p->setParticleIDUsed(newPDG);
+		//p->addParticleID(newPDG);
+		//p->setParticleIDUsed(newPDG);
 		p->setType(pdg);
 		//dont worry about setting the cov in the 
 		//reconstructedparticle, just only use the
