@@ -434,9 +434,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //void treeFitter::createFitPartsfromFitObjects(FOVEC){}
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
-void treeFitter::createLCOutputParticles(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb){
-		
-		//temp assign the root to a local ptr
+ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb){
 		Node* root = TFit->ParticleTree->Root;
 		//if(root->isLeaf) return NULL;// this should never happen
 		//guarante debug print
@@ -500,8 +498,7 @@ void treeFitter::createLCOutputParticles(LCCollectionVec* recparcol, std::vector
 		p->setType(root->pdg);
 		p->setGoodnessOfPID(fitProb);
 		
-		//add this particle
-		recparcol->addElement(p);
+		
 
 		//go through children, identify the leaves and add them
 		//if we have a nonleaf child make a reconstructed particle for that resonance
@@ -541,10 +538,18 @@ void treeFitter::createLCOutputParticles(LCCollectionVec* recparcol, std::vector
 				std::cout<<"SEG4F"<<std::endl;
 		std::cout<<"created this parent particle :: "<<std::endl;
 		Particle::printReconstructedParticle(p);
+		//add this particle
+		recparcol->addElement(p);
 		return p;
 
 }
-
+/*void treeFitter::createLCOutputParticles(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb){
+		//create the LCIO reconstructed particle tree
+		//save the particles to an output collection		
+		//calreccol->setSubset(true);	   is this needed?
+		recparcol->addElement( createOutputParticle(TFit->ParticleTree->Root, fitProb, fit  ));
+		  
+}*/
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"EVENT "<<evtNo<<std::endl;
 	//print each particle directly 
@@ -618,7 +623,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 		if(fitter->getProbability() > _fitProbabilityCut){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
-			createLCOutputParticles(recparcol, fit, fitter->getProbability());
+			//createLCOutputParticles(recparcol, fit, fitter->getProbability());		
+			createLCOutputParticleTree(recparcol, fit, fitter->getProbability());
 		}
 		
 		//print every fit
