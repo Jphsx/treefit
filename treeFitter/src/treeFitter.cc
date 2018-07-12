@@ -166,7 +166,7 @@ void treeFitter::processEvent( LCEvent * evt ) {
 		this->FindMassConstraintCandidates(recparcol);
 	}
 
-
+	std::cout<<"seg at the collection??"<<std::endl;
 	//add collection to event
 	evt->addCollection( recparcol,  _outputParticleCollectionName.c_str() );
 
@@ -634,8 +634,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//redo the best fit, and send the particles to the TTrees in the Rootfiles
 	std::cout<<"is fault here"<<std::endl;
 	//make sure there was at least 1 fit
-//temp removing bestfit stuff 
-/*	if(bestfitprob != -1.0){
+
+	if(bestfitprob != -1.0){
 		fitter = fitParticles(bestfit);
 	std::cout<<"nothere "<<std::endl;
 		std::cout<<FitObjects.size()<<" FO size "<<std::endl;
@@ -706,17 +706,20 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	}
 	recop.clear();
 	fitp.clear();
-	}//end bestfit   */
+	}//end bestfit   
 
-
+	std::cout<<"seg at the end??"<<std::endl;
 
 	//advance to next event
 	evtNo++;
+std::cout<<"seg at the end??"<<std::endl;
 	_pfovec.clear();
 	_trackvec.clear();
+std::cout<<"seg at the end??"<<std::endl;
 	//might need to run a destructor here first
 	TFit->clearEvent();
 	FitObjects.clear();//clear the bestfit
+std::cout<<"seg at the end??"<<std::endl;
 	return;
 }
 
