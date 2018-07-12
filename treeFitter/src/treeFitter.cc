@@ -434,8 +434,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //void treeFitter::createFitPartsfromFitObjects(FOVEC){}
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
-ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb){
-		Node* root = TFit->ParticleTree->Root;
+ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, Node* root, std::vector<std::vector<int> > fit, double fitProb){
+		
 		//if(root->isLeaf) return NULL;// this should never happen
 		//guarante debug print
 		std::cout<<std::endl;
@@ -532,7 +532,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 				std::cout<<"SEG4"<<std::endl;
 		for(int i=0; i<root->children.size(); i++){
 			if(!root->children.at(i)->isLeaf){
-				p->addParticle( createOutputParticle(root->children.at(i),fitProb,fit) );
+				p->addParticle( createLCOutputParticleTree(recparcol, root->children.at(i),fitProb,fit) );
 			}
 		}
 				std::cout<<"SEG4F"<<std::endl;
@@ -624,7 +624,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		if(fitter->getProbability() > _fitProbabilityCut){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			//createLCOutputParticles(recparcol, fit, fitter->getProbability());		
-			createLCOutputParticleTree(recparcol, fit, fitter->getProbability());
+			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter->getProbability());
 		}
 		
 		//print every fit
