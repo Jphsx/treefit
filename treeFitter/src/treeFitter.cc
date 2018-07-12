@@ -151,7 +151,7 @@ call the fitter
 ********************/
 void treeFitter::processEvent( LCEvent * evt ) { 
 	// Make a new vector of particles
-  	//LCCollectionVec * recparcol = new LCCollectionVec(LCIO::RECONSTRUCTEDPARTICLE);
+  	LCCollectionVec * recparcol = new LCCollectionVec(LCIO::RECONSTRUCTEDPARTICLE);
 
 	//find pfos
 	//find tracks
@@ -169,7 +169,7 @@ void treeFitter::processEvent( LCEvent * evt ) {
 
 	std::cout<<"seg at the collection??"<<std::endl;
 	//add collection to event
-	//evt->addCollection( recparcol,  _outputParticleCollectionName.c_str() );
+	evt->addCollection( recparcol,  _outputParticleCollectionName.c_str() );
 	std::cout<<"seg after the collection??"<<std::endl;	
 	
 	return;
@@ -617,7 +617,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 		if(fitter->getProbability() > _fitProbabilityCut){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
-			//createLCOutputParticles(recparcol, fit, fitter->getProbability());
+			createLCOutputParticles(recparcol, fit, fitter->getProbability());
 		}
 		
 		//print every fit
