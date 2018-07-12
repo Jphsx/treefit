@@ -435,7 +435,9 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
 void treeFitter::createLCOutputParticles(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb){
-	
+		
+		//temp assign the root to a local ptr
+		Node* root = TFit->ParticleTree->Root;
 		//if(root->isLeaf) return NULL;// this should never happen
 		//guarante debug print
 		std::cout<<std::endl;
