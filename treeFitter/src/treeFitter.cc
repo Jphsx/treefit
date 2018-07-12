@@ -168,7 +168,7 @@ void treeFitter::processEvent( LCEvent * evt ) {
 
 	std::cout<<"seg at the collection??"<<std::endl;
 	//add collection to event
-	evt->addCollection( recparcol,  _outputParticleCollectionName.c_str() );
+	//evt->addCollection( recparcol,  _outputParticleCollectionName.c_str() );
 	std::cout<<"seg after the collection??"<<std::endl;	
 	
 	return;
