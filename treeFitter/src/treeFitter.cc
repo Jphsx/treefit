@@ -527,6 +527,8 @@ ReconstructedParticleImpl* treeFitter::createOutputParticle(Node* root, double f
 			}
 		}
 				std::cout<<"SEG4F"<<std::endl;
+		std::cout<<"created this parent particle :: "<<std::endl;
+		Particle::printReconstructedParticle(p)
 		return p;
 
 }
