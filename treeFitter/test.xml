@@ -42,14 +42,14 @@
 		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
 		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
 		<parameter name="McParticleCollectionName" value="MCParticle" />  
-		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles </parameter>
+		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles</parameter>
    
  	</processor>
 
 	<processor name="MyLCIOOutputProcessor" type="LCIOOutputProcessor">
      		<!--   standard output: full reconstruction keep all collections -->
      		<parameter name="LCIOOutputFile" type="string" > ./etafit.slcio </parameter>
-     		<parameter name="LCIOWriteMode" type="string" value="WRITE_APPEND"/>
+     		<parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
 		<parameter name="fullSubsetCollections" value="1"/>
    
  	</processor>
