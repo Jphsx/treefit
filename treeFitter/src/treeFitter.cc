@@ -634,7 +634,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//redo the best fit, and send the particles to the TTrees in the Rootfiles
 	std::cout<<"is fault here"<<std::endl;
 	//make sure there was at least 1 fit
-	if(bestfitprob != -1.0){
+//temp removing bestfit stuff 
+/*	if(bestfitprob != -1.0){
 		fitter = fitParticles(bestfit);
 	std::cout<<"nothere "<<std::endl;
 		std::cout<<FitObjects.size()<<" FO size "<<std::endl;
@@ -705,7 +706,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	}
 	recop.clear();
 	fitp.clear();
-	}//end bestfit
+	}//end bestfit   */
 
 
 
