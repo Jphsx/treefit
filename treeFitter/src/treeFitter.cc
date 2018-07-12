@@ -163,8 +163,8 @@ void treeFitter::processEvent( LCEvent * evt ) {
 		FindMCParticles(evt);
 	
 		//call fitter
-		//this->FindMassConstraintCandidates(recparcol);
-		this->FindMassConstraintCandidates(NULL);
+		this->FindMassConstraintCandidates(recparcol);
+		
 	}
 
 	std::cout<<"seg at the collection??"<<std::endl;
