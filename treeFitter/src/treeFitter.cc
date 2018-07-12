@@ -532,7 +532,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 				std::cout<<"SEG4"<<std::endl;
 		for(int i=0; i<root->children.size(); i++){
 			if(!root->children.at(i)->isLeaf){
-				p->addParticle( createLCOutputParticleTree(recparcol, root->children.at(i),fitProb,fit) );
+				p->addParticle( createLCOutputParticleTree(recparcol, root->children.at(i),fit,fitProb) );
 			}
 		}
 				std::cout<<"SEG4F"<<std::endl;
