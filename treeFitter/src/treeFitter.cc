@@ -432,7 +432,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //void treeFitter::createFitPartsfromFitObjects(FOVEC){}
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
-ReconstructedParticle* treeFitter::createOutputParticle(Node* root, double fitProb, std::vector<std::vector<int> > fit){
+ReconstructedParticleImpl* treeFitter::createOutputParticle(Node* root, double fitProb, std::vector<std::vector<int> > fit){
 	
 		if(root->isLeaf) return NULL;// this should never happen
 		//guarante debug print
