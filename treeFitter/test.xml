@@ -26,8 +26,8 @@
  	</global>
 	
  	<processor name ="MyPhotonResponseAdjuster" type="PhotonResponseAdjuster">
-  		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs </parameter>
-   		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">AdjustedParticles </parameter>
+  		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
+   		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">AdjustedParticles</parameter>
    		<parameter name="EnergyScaleFactor" value="0.9437" />
    		<parameter name="Printing" value="5"/>
 	</processor>
@@ -40,7 +40,7 @@
 
 		<!-- input/output collection names -->
 		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
-		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">AdjustedParticles </parameter>
+		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">AdjustedParticles</parameter>
 		<parameter name="McParticleCollectionName" value="MCParticle" />  
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles </parameter>
    
