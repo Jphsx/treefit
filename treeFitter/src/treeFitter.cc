@@ -651,6 +651,17 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 	if(bestfitprob != -1.0){
 		fitter = fitParticles(bestfit);
+	//try printing out the global covariance matrix
+	int dim=0;
+	double* globalcov = fitter->getGlobalCovarianceMatrix(dim);
+
+	std::cout<<"PRINTING GLOBAL COV"
+	for(int i=0; i<(dim*dim -1); i++){
+		if(i%dim == 0){ std::cout<<std::endl; }
+		std::cout<<globalcov[i]<<" ";		
+	}
+	std::cout<<std::endl;
+
 	std::cout<<"nothere "<<std::endl;
 		std::cout<<FitObjects.size()<<" FO size "<<std::endl;
 		std::cout<<TFit->fitparts.size()<<" fitparts size"<<std::endl;
