@@ -494,7 +494,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		//here is some testing for cov calculuation
 		//after we do this also lets do some covariance/jacobian printouts for testing
 			//start with fit.at(0) for the combo
-			std::vector<string> jac{};
+			std::vector<std::string> jac{};
 			jac = Covariance::constructJacobian(TFit->fitparts, fit.at(root->nodeId) );
 			int dim = Covariance::getNparams(TFit->fitparts, fit.at(root->nodeId) );
 			Covariance::printCovarianceMatrix(jac,dim);
