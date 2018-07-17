@@ -30,6 +30,7 @@ typedef lcio::ReconstructedParticle ReconstructedParticle ;
 #include "Matching.h"
 #include "Particle.h"
 #include "TTreeFactory.h"
+#include "Covariance.h"
 
 
 class treeFitter : public marlin::Processor {

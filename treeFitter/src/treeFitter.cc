@@ -490,6 +490,27 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		for(int i=0; i<10; i++){
 			cov[i] = 0.0;
 		}
+
+		//here is some testing for cov calculuation
+		//after we do this also lets do some covariance/jacobian printouts for testing
+			//start with fit.at(0) for the combo
+			std::vector<string> jac{};
+			jac = Covariance::constructJacobian(TFit->fitparts, fit.at(root->nodeId) );
+			int dim = Covariance::getNparams(TFit->fitparts, fit.at(root->nodeId) );
+			Covariance::printCovarianceMatrix(jac,dim);
+
+
+
+
+
+
+
+
+
+
+
+
+	//end cov testing
 		p->setCovMatrix(cov);
 		p->setMass(root->mass);
 		p->setCharge(charge);
@@ -627,6 +648,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			//createLCOutputParticles(recparcol, fit, fitter->getProbability());		
 			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter->getProbability());
+			
 		}
 		
 		//print every fit
