@@ -81,7 +81,7 @@ std::vector<std::vector<string> > Covariance::constructLFOJacobian(Particle* p){
 	row.push_back( "dE/dphi" );
 	jacobian.push_back(row);
 	row.clear();
-	
+	std::cout<<"made LFO "<<std::endl;
 	return jacobian;
 
 
