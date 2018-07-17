@@ -155,7 +155,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 			}
 		}
 	}
-
+	std::cout<<"finished big matrix"<<std::endl;
 	//turn the 4d matrix into a 1 d matrix
 	std::vector<string> jac{};
 	for(int i=0; i<Nparts; i++){
