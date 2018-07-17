@@ -2,8 +2,8 @@
 
 int Covariance::getNparams(std::vector<Particle*> parts, std::vector<int> combo){
 	std::vector<int> nparams{};
-	for(int i=0; i<fitCombo.size(); i++){
-		nparams.push_back( fitparts.at( fitCombo.at(i) )->localParams.size() );
+	for(int i=0; i<combo.size(); i++){
+		nparams.push_back( parts.at( combo.at(i) )->localParams.size() );
 	}
 	int Nparams = 0;
 	for(int i =0; i<nparams.size(); i++){
@@ -13,7 +13,7 @@ int Covariance::getNparams(std::vector<Particle*> parts, std::vector<int> combo)
 	
 }
 int Covariance::getNparts(std::vector<Particle*> parts, std::vector<int> combo){
-	int Nparts = fitCombo.size();
+	int Nparts = combo.size();
 	return Nparts;
 }
 std::vector<std::vector<string> > Covariance::constuctJFOJacobian(Particle* p ){
