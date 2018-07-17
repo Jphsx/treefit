@@ -17,7 +17,7 @@ int Covariance::getNparts(std::vector<Particle*> parts, std::vector<int> combo){
 	return Nparts;
 }
 std::vector<std::vector<string> > Covariance::constructJFOJacobian(Particle* p){
-
+	std::cout<<"in the JFO jac "<<std::endl;
 	std::vector< std::vector<string> > jacobian{};
 	/*
 	  dPx/de dPx/dtheta dPx/dphi
@@ -48,11 +48,12 @@ std::vector<std::vector<string> > Covariance::constructJFOJacobian(Particle* p){
 	jacobian.push_back(row);
 	row.clear();
 	
+
 	return jacobian;
 
 }
 std::vector<std::vector<string> > Covariance::constructLFOJacobian(Particle* p){
-	
+	std::cout<<"in the lfo jac "<<std::endl;
 	std::vector< std::vector<string> > jacobian{};
 	/* dPx/dk dPx/dtheta dPx/dphi
 	  dPy/dk dPy/dtheta dPy/dphi
@@ -86,6 +87,7 @@ std::vector<std::vector<string> > Covariance::constructLFOJacobian(Particle* p){
 
 }
 std::vector<std::vector<string> > Covariance::constructEmptyJacobian(int nrow, int ncol){
+	std::cout<<"in the empty jac "<<std::endl;
 	std::vector< std::vector<string> > jacobian{};
 	std::vector<string> row{};
 	for(int i =0; i<ncol; i++){
@@ -105,11 +107,12 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	for(int i=0; i<fitCombo.size(); i++){
 		nparams.push_back( fitparts.at( fitCombo.at(i) )->localParams.size() );
 	}
-
+	std::cout<<"NPARTS "<<Nparts<<std::endl;
 	int Nparams = 0;
 	for(int i =0; i<nparams.size(); i++){
 		Nparams += nparams.at(i);
 	}
+	std::cout<<"NPARAMS "<< Nparams<<std::endl;
 	//start with 4d matrix
 	// then unwrap the 4d into a 2d matrix
 	//need to store the fit parts onto a local array with no gaps
@@ -124,7 +127,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	std::vector< std::vector< std::vector< std::vector<string> > > > jacobian{};
 	//ij are the ith and jth particle
 	//kl are the ith and jth kth and lth parameters
-	
+	std::cout<<"going into the big matrix "<<std::endl;
 	for(int i = 0; i < Nparts; i++){
 		for(int j=0; j< Nparts; j++){
 			if (i==j){
