@@ -1,6 +1,6 @@
 #include "Covariance.h"
 
-static int Covariance::getNparams(std::vector<Particle*> parts, std::vector<int> combo){
+int Covariance::getNparams(std::vector<Particle*> parts, std::vector<int> combo){
 	std::vector<int> nparams{};
 	for(int i=0; i<fitCombo.size(); i++){
 		nparams.push_back( fitparts.at( fitCombo.at(i) )->localParams.size() );
@@ -12,7 +12,7 @@ static int Covariance::getNparams(std::vector<Particle*> parts, std::vector<int>
 	return Nparams;
 	
 }
-static int Covariance::getNparts(std::vector<Particle*> parts, std::vector<int> combo){
+int Covariance::getNparts(std::vector<Particle*> parts, std::vector<int> combo){
 	int Nparts = fitCombo.size();
 	return Nparts;
 }
