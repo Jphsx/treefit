@@ -127,7 +127,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	//std::vector< std::vector< std::vector< std::vector<string> > > > jacobian{};
 	//allocate memory for 4d array
 	std::vector< std::vector< std::vector< std::vector<string> > > > jacobian(Nparts);
-	std::vector< std::vector< std::vector<string> > > jacobian row(Nparts);
+	std::vector< std::vector< std::vector<string> > > jacobianrow(Nparts);
 	std::cout<<"trying new allocation method"<<std::endl;
 	for(int i =0; i<Nparts; i++){
 		jacobian.at(i) = jacobianrow;
@@ -142,16 +142,16 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 			if (i==j){
 				if(fitp.at(i)->isTrack){
 					//LFO
-					jacobian.at(i).push_back(constructLFOJacobian(fitp.at(i) ));
+					jacobian.at(i).at(j)=  (constructLFOJacobian(fitp.at(i) ));
 				}
 				if(!fitp.at(i)->isTrack){
 					//JFO
-					jacobian.at(i).push_back(constructJFOJacobian(fitp.at(i) ));
+					jacobian.at(i).at(j) =(constructJFOJacobian(fitp.at(i) ));
 				}
 			}else{
 			//if i!= j then make empty guy with
 			// i rows and j cols
-			jacobian.at(i).push_back(constructEmptyJacobian(nparams.at(i), nparams.at(j)));
+			jacobian.at(i).at(j)=(constructEmptyJacobian(nparams.at(i), nparams.at(j)));
 			}
 		}
 	}
