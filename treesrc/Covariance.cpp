@@ -124,7 +124,16 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	
 	//with fitp make the jacobian
 	//4 d matrix
-	std::vector< std::vector< std::vector< std::vector<string> > > > jacobian{};
+	//std::vector< std::vector< std::vector< std::vector<string> > > > jacobian{};
+	//allocate memory for 4d array
+	std::vector< std::vector< std::vector< std::vector<string> > > > jacobian(Nparts);
+	std::vector< std::vector< std::vector<string> > > jacobian row(Nparts);
+	std::cout<<"trying new allocation method"<<std::endl;
+	for(int i =0; i<Nparts; i++){
+		jacobian.at(i) = jacobianrow;
+	}
+
+
 	//ij are the ith and jth particle
 	//kl are the ith and jth kth and lth parameters
 	std::cout<<"going into the big matrix "<<std::endl;
