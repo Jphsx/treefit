@@ -48,7 +48,7 @@ std::vector<std::vector<string> > Covariance::constructJFOJacobian(Particle* p){
 	jacobian.push_back(row);
 	row.clear();
 	
-
+	std::cout<<"made jfo "<<std::endl;
 	return jacobian;
 
 }
