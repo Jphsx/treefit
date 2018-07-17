@@ -130,16 +130,16 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 			if (i==j){
 				if(fitp.at(i)->isTrack){
 					//LFO
-					jacobian.at(i).push_back(constuctLFOJacobian(fitp.at(i) ));
+					jacobian.at(i).push_back(constructLFOJacobian(fitp.at(i) ));
 				}
 				if(!fitp.at(i)->isTrack){
 					//JFO
-					jacobian.at(i).push_back(constuctJFOJacobian(fitp.at(i) ));
+					jacobian.at(i).push_back(constructJFOJacobian(fitp.at(i) ));
 				}
 			}
 			//if i!= j then make empty guy with
 			// i rows and j cols
-			jacobian.at(i).push_back(constructEmptyJacobian(npars.at(i), npars.at(j)));
+			jacobian.at(i).push_back(constructEmptyJacobian(nparams.at(i), nparams.at(j)));
 			
 		}
 	}
