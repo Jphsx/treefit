@@ -16,7 +16,7 @@ int Covariance::getNparts(std::vector<Particle*> parts, std::vector<int> combo){
 	int Nparts = combo.size();
 	return Nparts;
 }
-std::vector<std::vector<string> > Covariance::constuctJFOJacobian(Particle* p ){
+std::vector<std::vector<string> > Covariance::constructJFOJacobian(Particle* p){
 
 	std::vector< std::vector<string> > jacobian{};
 	/*
@@ -51,7 +51,7 @@ std::vector<std::vector<string> > Covariance::constuctJFOJacobian(Particle* p ){
 	return jacobian;
 
 }
-std::vector<std::vector<string> > Covariance::constuctLFOJacobian(Particle* p ){
+std::vector<std::vector<string> > Covariance::constructLFOJacobian(Particle* p){
 	
 	std::vector< std::vector<string> > jacobian{};
 	/* dPx/dk dPx/dtheta dPx/dphi
@@ -150,7 +150,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 		for(int j=0; j<Nparts; j++){
 			for(int k=0; k< jacobian.at(i).at(j).size(); k++){
 				for(int l=0; l< jacobian.at(i).at(j).at(k).size(); j++){
-					jac.push_back(jacobian.at(i).at(j).at(k).at(l);
+					jac.push_back(jacobian.at(i).at(j).at(k).at(l));
 				}
 
 			}
@@ -163,8 +163,9 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 }
 void Covariance::printCovarianceMatrix(std::vector<string> cov, int dim){
 	for(int i=0; i<dim; i++){
-		if(i%dim == 0){ std::cout<<std::endl;
+		if(i%dim == 0){ std::cout<<std::endl;}
 		std::cout<<cov.at(i)<<" ";
+		
 	}
 	std::cout<<std::endl;
 }
