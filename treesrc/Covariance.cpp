@@ -139,11 +139,11 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 					//JFO
 					jacobian.at(i).push_back(constructJFOJacobian(fitp.at(i) ));
 				}
-			}
+			}else{
 			//if i!= j then make empty guy with
 			// i rows and j cols
 			jacobian.at(i).push_back(constructEmptyJacobian(nparams.at(i), nparams.at(j)));
-			
+			}
 		}
 	}
 
