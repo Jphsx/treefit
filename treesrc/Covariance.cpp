@@ -116,7 +116,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	//this will preserve its position in the matrix
 	std::vector<Particle*> fitp{};
 	for(int i=0; i<fitCombo.size(); i++){
-		fitp.push_back(fitCombo.at(i));
+		fitp.push_back(fitparts.at(fitCombo.at(i)));
 	}
 	
 	//with fitp make the jacobian
