@@ -222,6 +222,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 
 }
 void Covariance::printCovarianceMatrix(std::vector<string> cov, int dim){
+	std::cout<<"the cov size "<< cov.size() << std::endl;
 	for(int i=0; i<dim; i++){
 		if(i%dim == 0 ){ std::cout<<std::endl;}
 		std::cout<<cov.at(i)<<" ";
