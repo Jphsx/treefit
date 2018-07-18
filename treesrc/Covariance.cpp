@@ -177,7 +177,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	}
 	for(unsigned int i=0; i< jacobian.size(); i++){
 		for( unsigned int j=0; j< jacobian.at(i).size(); j++){
-			std::vector<string>::iterator> it = jacobian.at(i).at(j).begin();
+			std::vector<string>::iterator it = jacobian.at(i).at(j).begin();
 			its.at(i).at(j) = it;
 		}
 	}
