@@ -187,12 +187,16 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	while(its.at(Nparts-1).at(Nparts-1) < jacobian.at(Nparts-1).at(Nparts-1).end()){
 		
 			std::cout<<"parsed "<<std::endl;
+		
 			for(int i=0; i<jacobian.size(); i++){
 				for(int j=0; j<jacobian.at(i).size(); j++){
-					jac_1d.insert(jac_1d.end(), its.at(i).at(j), its.at(i).at(j)+nparams.at(j));
-					its.at(i).at(j) = its.at(i).at(j) + nparams.at(j);
+					if(its.at(i).at(j) < matrices.at(i).at(j).end()){
+						jac_1d.insert(jac_1d.end(), its.at(i).at(j), its.at(i).at(j)+nparams.at(j));
+						its.at(i).at(j) = its.at(i).at(j) + nparams.at(j);
+					}
 				}
 			}
+		
 	}
 				
 
