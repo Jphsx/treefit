@@ -165,6 +165,38 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	std::cout<<"finished big matrix"<<std::endl;
 	//turn the 4d matrix into a 1 d matrix
 
+	std::vector<std::vector<std::vector<string>::iterator> >its(Nparts);
+	std::vector<std::vector<string>::iterator> itscol(Nparts);
+	/*for(unsigned int i=0; i<matrices.size(); i++){
+		std::vector<double>::iterator it = matrices.at(i).begin();
+		its.push_back(it);
+	}*/
+	std::cout<<"trying new allocation method"<<std::endl;
+	for(int i =0; i<Nparts; i++){
+		its.at(i) = itscol;
+	}
+	for(unsigned int i=0; i< jacobian.size(); i++){
+		for( unsigned int j=0; j< jacobian.at(i).size(); j++){
+			std::vector<string>::iterator> it = jacobian.at(i).at(j).begin();
+			its.at(i).at(j) = it;
+		}
+	}
+	//parse this guy
+
+	std::vector<string> jac_1d{};
+	while(its.at(Nparts-1).at(Nparts-1) < jacobian.at(Nparts-1).at(Nparts-1).end()){
+		
+			
+			for(int i=0; i<jacobian.size(); i++){
+				for(int j=0; j<jacobian.at(i).size(); j++){
+					jac_1d.insert(jac_1d.end(), its.at(i).at(j), its.at(j)+nparams.at(j));
+					its.at(i).at(j) = its.at(i).at(j) + nparams.at(j);
+				}
+			}
+	}
+				
+
+	
 	//SEG IS HERE START HERE
 /*	std::vector<string> jac{};
 	for(int i=0; i<Nparts; i++){
@@ -179,14 +211,14 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	}
 
 	return jac;*/
-	std::vector<string> compiler{};
-	return compiler;
+	
+	return jac_1d;
 
 
 }
 void Covariance::printCovarianceMatrix(std::vector<string> cov, int dim){
 	for(int i=0; i<dim; i++){
-		if(i%dim == 0){ std::cout<<std::endl;}
+		if(i%dim == 0 ){ std::cout<<std::endl;}
 		std::cout<<cov.at(i)<<" ";
 		
 	}
