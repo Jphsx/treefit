@@ -131,7 +131,45 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	//allocate memory for 4d array
 	//std::vector< std::vector< std::vector< std::vector<string> > > > jacobian(Nparts);
 	//std::vector< std::vector< std::vector<string> > > jacobianrow(Nparts);
+
+	std::vector<std::vector<string> > jacobian(Nparts);
 	
+	std::cout<<"going into the big matrix "<<std::endl;
+	for(int i = 0; i < Nparts; i++){
+		if(fitp.at(i)->isTrack){
+			//LFO
+			jacobian.at(i) =  (constructLFOJacobian(fitp.at(i) ));
+		}
+		if(!fitp.at(i)->isTrack){
+			//JFO
+			jacobian.at(i) =(constructJFOJacobian(fitp.at(i) ));
+		}
+	}
+	std::cout<<"finished big matrix"<<std::endl;
+
+	std::vector<std::vector<string>::iterator> its;
+	for(unsigned int i=0; i<jacobian.size(); i++){
+		std::vector<string>::iterator it = jacobian.at(i).begin();
+		its.push_back(it);
+	}
+
+	std::vector<string> jac_1d{};
+	while(its.at(Nparts-1) < jacobian.at(Nparts-1).end()){
+		
+			std::cout<<"parsed "<<std::endl;
+		
+			for(int i=0; i<jacobian.size(); i++){
+				
+				if(its.at(i) < jacobian.at(i).end()){
+					jac_1d.insert(jac_1d.end(), its.at(i), its.at(i)+nparams.at(i));
+					its.at(i) = its.at(i) + nparams.at(i);
+				}
+				
+			}
+		
+	}
+
+/* save all this code for global cov decomposition ////////////////////////////////////////////////////////////////
 	std::vector< std::vector< std::vector<string> > > jacobian(Nparts);
 	std::vector<std::vector<string> > jacobiancol(Nparts);
 
@@ -165,12 +203,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	std::cout<<"finished big matrix"<<std::endl;
 	//turn the 4d matrix into a 1 d matrix
 
-	std::vector<std::vector<std::vector<string>::iterator> >its(Nparts);
-	std::vector<std::vector<string>::iterator> itscol(Nparts);
-	/*for(unsigned int i=0; i<matrices.size(); i++){
-		std::vector<double>::iterator it = matrices.at(i).begin();
-		its.push_back(it);
-	}*/
+
 	std::cout<<"trying new allocation method"<<std::endl;
 	for(int i =0; i<Nparts; i++){
 		its.at(i) = itscol;
@@ -198,24 +231,11 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 			}
 		
 	}
-				
+*/				
 
 	std::cout<<"finished parsing"<<std::endl;
 	
-	//SEG IS HERE START HERE
-/*	std::vector<string> jac{};
-	for(int i=0; i<Nparts; i++){
-		for(int j=0; j<Nparts; j++){
-			for(int k=0; k< jacobian.at(i).at(j).size(); k++){
-				for(int l=0; l< jacobian.at(i).at(j).at(k).size(); j++){
-					jac.push_back(jacobian.at(i).at(j).at(k).at(l));
-				}
 
-			}
-		}
-	}
-
-	return jac;*/
 	
 	return jac_1d;
 
