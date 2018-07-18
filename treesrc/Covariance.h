@@ -28,13 +28,13 @@ class Covariance{
 	//take in all fit parts and the combo for this resonance
 	static std::vector<string> constructJacobian(std::vector<Particle*> fitparts, std::vector<int> fitCombo);
 
-	static std::vector<std::vector<string> > constructJFOJacobian(Particle* p);
-	static std::vector<std::vector<string> > constructLFOJacobian(Particle* p);
+	static std::vector<string> constructJFOJacobian(Particle* p);
+	static std::vector<string> constructLFOJacobian(Particle* p);
 	//static void printCovarianceMatrix(std::vector<std::vector<string> > cov);
 	static void printCovarianceMatrix(std::vector<string> cov, int dim);//dim = Nparam
 	//TODO 
 	//static std::Vector<string> constuct TPFOJacobian();
-	static std::vector<std::vector<string> > constructEmptyJacobian(int nrow, int ncol);
+	static std::vector<string> constructEmptyJacobian(int nrow, int ncol);
 
 };
 #endif
