@@ -186,7 +186,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	std::vector<string> jac_1d{};
 	while(its.at(Nparts-1).at(Nparts-1) < jacobian.at(Nparts-1).at(Nparts-1).end()){
 		
-			
+			std::cout<<"parsed "<<std::endl;
 			for(int i=0; i<jacobian.size(); i++){
 				for(int j=0; j<jacobian.at(i).size(); j++){
 					jac_1d.insert(jac_1d.end(), its.at(i).at(j), its.at(i).at(j)+nparams.at(j));
@@ -196,6 +196,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 	}
 				
 
+	std::cout<<"finished parsing"<<std::endl;
 	
 	//SEG IS HERE START HERE
 /*	std::vector<string> jac{};
