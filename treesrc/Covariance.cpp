@@ -277,7 +277,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 	//keep looping over parameters over entire cov
 	std::vector<double>::iterator it=_globalcov.begin();
 	
-	
+	for(int i=0; i<Nparts; i++){
 		for(int j=0; j<nparams.size(); j++){
 			
 			//if(i%dim == 0){ std::cout<<std::endl;}
@@ -290,6 +290,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 				it+= nparams.at(j);
 			}
 		}
+	}
 	
 
 	//test print of the sectored out matrix
