@@ -250,9 +250,9 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 	}
 	
 	std::vector<int> nparams{};
-	int Nparts = fitCombo.size();
-	for(int i=0; i<fitCombo.size(); i++){
-		nparams.push_back( fitparts.at( fitCombo.at(i) )->localParams.size() );
+	int Nparts = combo.size();
+	for(int i=0; i<combo.size(); i++){
+		nparams.push_back( parts.at( combo.at(i) )->localParams.size() );
 	}
 	std::cout<<"NPARTS "<<Nparts<<std::endl;
 	int Nparams = 0;
