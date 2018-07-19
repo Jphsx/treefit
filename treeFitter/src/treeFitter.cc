@@ -654,7 +654,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		if(fitter->getProbability() > _fitProbabilityCut){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			//createLCOutputParticles(recparcol, fit, fitter->getProbability());		
-			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter->getProbability());
+			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
 			
 		}
 		
