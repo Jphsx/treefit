@@ -241,6 +241,72 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 
 
 }
+std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(float* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo){
+
+	//put the global cov onto an vector so we can use iterators on it
+	std::vector<double> _globalcov{};
+	for(int i=0; i<dim*dim; i++){
+		_globalcov.push_back(globalcov[i]);
+	}
+	
+	std::vector<int> nparams{};
+	int Nparts = fitCombo.size();
+	for(int i=0; i<fitCombo.size(); i++){
+		nparams.push_back( fitparts.at( fitCombo.at(i) )->localParams.size() );
+	}
+	std::cout<<"NPARTS "<<Nparts<<std::endl;
+	int Nparams = 0;
+	for(int i =0; i<nparams.size(); i++){
+		Nparams += nparams.at(i);
+	}
+	std::cout<<"NPARAMS "<< Nparams<<std::endl;
+
+	std::vector<std::vector<std::vector<double> > > cov(Nparts);
+	std::vector<std::vector<double> > covcol(Nparts);
+
+	//memory management
+	std::vector<double> covsubmatrix{};
+	for(int i =0; i< cov.size(); i++){
+		cov.at(i) = covcol;
+		for(int j=0; j<cov.at(i).size(); j++){
+			cov.at(i).at(j) = covsubmatrix;
+		}
+	}
+
+	//extrapolate the gencov into the 3d matrix
+	//keep looping over parameters over entire cov
+	std::vector<double>::iterator it=_globalcov.begin();
+	
+	for(int i=0; i<_globalcov.size(); i++){
+		for(int j=0; j<nparams.size(); j++){
+			
+			if(i%dim == 0){ std::cout<<std::endl;}
+			//ith row jth column
+			//extract params from nparams and put in ij sector
+			covsubmatrix.clear();
+			if(it < _globalcov.end()){
+				covsubmatrix.insert(covsubmatrix.end(),it,it+nparams.at(j)); 
+				cov.at(i).at(j).insert(cov.at(i).at(j).end(), covsubmatrix.begin(), covsubmatrix.end()); 
+			}
+		}
+	}
+
+	//test print of the sectored out matrix
+	for(int i=0; i<_globalcov.size(); i++){
+		for(int j=0; j<_globalcov.at(i).size(); j++){
+			std::cout<<"SECTOR "<<i<<" "<<j<<std::endl;
+			for(int k=0; k<_globalcov.at(i).at(j).size(); k++){
+				std::cout<<_globalcov.at(i).at(j).at(k)<<" ";
+			}	
+			std::cout<<std::endl;
+		}
+	}
+
+
+	return cov;
+	
+
+}
 void Covariance::printCovarianceMatrix(std::vector<string> cov, int dim){
 	std::cout<<"the cov size "<< cov.size() << std::endl;
 	for(int i=0; i<cov.size(); i++){

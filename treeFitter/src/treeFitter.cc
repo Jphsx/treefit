@@ -434,7 +434,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 //void treeFitter::createFitPartsfromFitObjects(FOVEC){}
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
-ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, Node* root, std::vector<std::vector<int> > fit, double fitProb){
+ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, Node* root, std::vector<std::vector<int> > fit, OPALFitterGSL *  fitter){
+		
 		
 		//if(root->isLeaf) return NULL;// this should never happen
 		//guarante debug print
@@ -499,6 +500,11 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			jac = Covariance::constructJacobian(TFit->fitparts, fit.at(root->nodeId) );
 			int dim = Covariance::getNparams(TFit->fitparts, fit.at(root->nodeId) );
 			Covariance::printCovarianceMatrix(jac,dim);
+			std::vector<std::vector<std::vector<std::string> > > rebuiltmat{};
+			int gcovdim;
+			double* = fitter->getGlobalCovarianceMatrix(gcovdim);
+			rebuiltmat = Covariance::rebuildGlobalCov(fitter,gcovdim, TFit->fitparts, fit.at(root->nodeId));
+		
 
 			std::cout<<"END JACOBIAN TEST"<<std::endl;
 
@@ -518,7 +524,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		p->addParticleID(newPDG);
 		p->setParticleIDUsed(newPDG);
 		p->setType(root->pdg);
-		p->setGoodnessOfPID(fitProb);
+		p->setGoodnessOfPID(fitter->getProbability());
 		
 		
 

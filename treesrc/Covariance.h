@@ -34,7 +34,11 @@ class Covariance{
 	static void printCovarianceMatrix(std::vector<string> cov, int dim);//dim = Nparam
 	//TODO 
 	//static std::Vector<string> constuct TPFOJacobian();
+	
+	//TODO delete this stupid method	
 	static std::vector<string> constructEmptyJacobian(int nrow, int ncol);
+	//turn 1d covariance matrix into a more manageable 3d matrix
+	static std::vector<std::vector<std::vector<double> > > rebuildGlobalCov(float* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
 
 };
 #endif
