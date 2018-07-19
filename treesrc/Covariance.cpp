@@ -284,7 +284,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 	for(int i=0; i<Nparams; i++){
 		for(int j=0; j<nparams.size(); j++){
 
-			if( i == *(param_it) -1 ){
+			if( param_it < nparams.end() && i == *(param_it) -1 ){
 				param_it++;
 				R++;
 			}
