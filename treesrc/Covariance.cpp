@@ -288,7 +288,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 				param_it++;
 				R++;
 			}
-			
+			std::cout << " R , i "<< R << " "<< i <<std::endl;
 			//if(i%dim == 0){ std::cout<<std::endl;}
 			//ith row jth column
 			//extract params from nparams and put in ij sector
