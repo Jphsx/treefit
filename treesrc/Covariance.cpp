@@ -282,13 +282,15 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 	std::vector<int>::iterator param_it = nparams.begin();
 
 	for(int i=0; i<Nparams; i++){
-		for(int j=0; j<nparams.size(); j++){
-
-			if( param_it < nparams.end() && i == *(param_it) -1 ){
+		
+		if( param_it < nparams.end() && i == *(param_it) -1 ){
 				param_it++;
 				R++;
-			}
-			std::cout << " R , i "<< R << " "<< i <<std::endl;
+		}
+		std::cout << " R , i "<< R << " "<< i <<std::endl;
+
+		for(int j=0; j<nparams.size(); j++){
+
 			//if(i%dim == 0){ std::cout<<std::endl;}
 			//ith row jth column
 			//extract params from nparams and put in ij sector
