@@ -272,24 +272,25 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 			cov.at(i).at(j) = covsubmatrix;
 		}
 	}
-
+	std::cout<<"allocated mem"<<std::endl;
 	//extrapolate the gencov into the 3d matrix
 	//keep looping over parameters over entire cov
 	std::vector<double>::iterator it=_globalcov.begin();
 	
-	for(int i=0; i<_globalcov.size(); i++){
+	
 		for(int j=0; j<nparams.size(); j++){
 			
-			if(i%dim == 0){ std::cout<<std::endl;}
+			//if(i%dim == 0){ std::cout<<std::endl;}
 			//ith row jth column
 			//extract params from nparams and put in ij sector
 			covsubmatrix.clear();
 			if(it < _globalcov.end()){
 				covsubmatrix.insert(covsubmatrix.end(),it,it+nparams.at(j)); 
 				cov.at(i).at(j).insert(cov.at(i).at(j).end(), covsubmatrix.begin(), covsubmatrix.end()); 
+				it+= nparams.at(j);
 			}
 		}
-	}
+	
 
 	//test print of the sectored out matrix
 	for(int i=0; i<cov.size(); i++){
