@@ -292,11 +292,11 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 	}
 
 	//test print of the sectored out matrix
-	for(int i=0; i<_globalcov.size(); i++){
-		for(int j=0; j<_globalcov.at(i).size(); j++){
+	for(int i=0; i<cov.size(); i++){
+		for(int j=0; j<cov.at(i).size(); j++){
 			std::cout<<"SECTOR "<<i<<" "<<j<<std::endl;
-			for(int k=0; k<_globalcov.at(i).at(j).size(); k++){
-				std::cout<<_globalcov.at(i).at(j).at(k)<<" ";
+			for(int k=0; k<cov.at(i).at(j).size(); k++){
+				std::cout<<cov.at(i).at(j).at(k)<<" ";
 			}	
 			std::cout<<std::endl;
 		}
