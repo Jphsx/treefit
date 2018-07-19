@@ -280,11 +280,14 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 	int R = 0;
 	//param pointer
 	std::vector<int>::iterator param_it = nparams.begin();
+	
+	int paramThreshold = *(param_it);
 
 	for(int i=0; i<Nparams; i++){
 		
-		if( param_it < nparams.end() && i+1 %*(param_it) == 0 ){
+		if( param_it < nparams.end() && i == paramThreshold -1 ){
 				param_it++;
+				paramThreshold += *(param_it);
 				R++;
 		}
 		std::cout << " R , i "<< R << " "<< i <<std::endl;
