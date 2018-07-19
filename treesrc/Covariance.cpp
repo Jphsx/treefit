@@ -277,8 +277,17 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 	//keep looping over parameters over entire cov
 	std::vector<double>::iterator it=_globalcov.begin();
 	
+	int R = 0;
+	//param pointer
+	std::vector<int>::iterator param_it = nparams.begin();
+
 	for(int i=0; i<Nparams; i++){
 		for(int j=0; j<nparams.size(); j++){
+
+			if( i == *(param_it) -1 ){
+				param_it++;
+				R++;
+			}
 			
 			//if(i%dim == 0){ std::cout<<std::endl;}
 			//ith row jth column
@@ -286,7 +295,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 			covsubmatrix.clear();
 			if(it < _globalcov.end()){
 				covsubmatrix.insert(covsubmatrix.end(),it,it+nparams.at(j)); 
-				cov.at(i).at(j).insert(cov.at(i).at(j).end(), covsubmatrix.begin(), covsubmatrix.end()); 
+				cov.at(R).at(j).insert(cov.at(R).at(j).end(), covsubmatrix.begin(), covsubmatrix.end()); 
 				it+= nparams.at(j);
 			}
 		}
