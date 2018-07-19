@@ -241,7 +241,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 
 
 }
-std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(float* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo){
+std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo){
 
 	//put the global cov onto an vector so we can use iterators on it
 	std::vector<double> _globalcov{};
