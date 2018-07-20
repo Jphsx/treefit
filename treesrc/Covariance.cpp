@@ -24,6 +24,7 @@ void Covariance::printCovarianceMatrix(std::vector<string> cov, int dim){
 		
 	}
 	std::cout<<std::endl;
+
 }
 
 void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> > > cov ){
@@ -36,6 +37,7 @@ void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vect
 			std::cout<<std::endl;
 		}
 	}
+	std::cout<<"finished print"<<std::endl;
 }
 std::vector<string> Covariance::constructJFOJacobian(Particle* p){
 	std::cout<<"in the JFO jac "<<std::endl;
