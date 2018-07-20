@@ -367,9 +367,12 @@ std::vector<double> Covariance::getSubGlobalCov( double* globalcov, int dim, std
 	//these indices are the locations of the particles on the sectored matrix
 	std::vector<int> indices{};
 	//do a simple match
+
+	std::cout<<"SUB SIZE, GLOBLSIZE "<< subCombo.size() << " "<< globalCombo.size() <<std::endl;
 	for(int i=0; i<subCombo.size(); i++){
+	
 		for(int j=0; j<globalCombo.size(); i++){
-			if( subCombo.at(i) == globalCombo.at(i)){
+			if( subCombo.at(i) == globalCombo.at(j)){
 				indices.push_back(j);
 				break;
 			}
