@@ -509,6 +509,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			//build some sub matrices and print them
 			// combo is in fit.at(root->nodeId)
 			//make and print sub matrix from (1st and 3rd parts) (2nd and 3rd) and (3rd only)
+			std::cout<<"making the test vecs"<<std::endl;
 			std::vector<int> combo1test{};
 			std::vector<int> combo2test{};
 			std::vector<int> combo3test{};
@@ -517,6 +518,8 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			combo2test.push_back( fit.at(root->nodeId).at(1) );
 			combo2test.push_back( fit.at(root->nodeId).at(2) );
 			combo3test.push_back( fit.at(root->nodeId).at(2) );
+
+			std::cout<<"finished test vecs"<<std::endl;
 
 			std::cout<<"doing submatrix testing"<<std::endl;
 			std::vector<double> testvec;
