@@ -375,6 +375,7 @@ std::vector<double> Covariance::getSubGlobalCov( double* globalcov, int dim, std
 			}
 		}		
 	}
+	std::cout<<"just did index matching"<<std::endl;
 	
 	//now create memory space for the new submatrix
 	std::vector<std::vector<std::vector<double> > > subcov(subCombo.size());
