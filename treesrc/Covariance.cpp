@@ -380,10 +380,10 @@ std::vector<double> Covariance::getSubGlobalCov( double* globalcov, int dim, std
 
 	//memory management
 	std::vector<double> covsubmatrix{};
-	for(int i =0; i< cov.size(); i++){
-		cov.at(i) = covcol;
-		for(int j=0; j<cov.at(i).size(); j++){
-			cov.at(i).at(j) = covsubmatrix;
+	for(int i =0; i< subcov.size(); i++){
+		subcov.at(i) = subcovcol;
+		for(int j=0; j<subcov.at(i).size(); j++){
+			subcov.at(i).at(j) = covsubmatrix;
 		}
 	}
 
@@ -399,7 +399,7 @@ std::vector<double> Covariance::getSubGlobalCov( double* globalcov, int dim, std
 	}
 	//translate the 2d to 3d for printing and testing
 	int R=0; 
-	int J=0:
+	int J=0;
 	int threshold = subCombo.size();
 	for(int i=0; i< tempcov.size(); i++){
 		if( i == threshold ){
