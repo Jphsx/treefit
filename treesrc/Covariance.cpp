@@ -414,6 +414,8 @@ std::vector<double> Covariance::getSubGlobalCov( double* globalcov, int dim, std
 	printSectoredCovarianceMatrix(subcov );
 
 	//print the submatrix
+	std::vector<double> emptyvec{};
+	return emptyvec;
 
 }
 
