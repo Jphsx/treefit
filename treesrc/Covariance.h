@@ -32,13 +32,16 @@ class Covariance{
 	static std::vector<string> constructLFOJacobian(Particle* p);
 	//static void printCovarianceMatrix(std::vector<std::vector<string> > cov);
 	static void printCovarianceMatrix(std::vector<string> cov, int dim);//dim = Nparam
+	static void printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> cov );
 	//TODO 
 	//static std::Vector<string> constuct TPFOJacobian();
 	
 	//TODO delete this stupid method	
 	static std::vector<string> constructEmptyJacobian(int nrow, int ncol);
 	//turn 1d covariance matrix into a more manageable 3d matrix
-	static std::vector<std::vector<std::vector<double> > > rebuildGlobalCov(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
+	static std::vector<std::vector<std::vector<double> > > sectorGlobalCov(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
+	
+	static std::vector<double> getSubGlobalCov( double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
 
 };
 #endif

@@ -16,6 +16,27 @@ int Covariance::getNparts(std::vector<Particle*> parts, std::vector<int> combo){
 	int Nparts = combo.size();
 	return Nparts;
 }
+void Covariance::printCovarianceMatrix(std::vector<string> cov, int dim){
+	std::cout<<"the cov size "<< cov.size() << std::endl;
+	for(int i=0; i<cov.size(); i++){
+		if(i%dim == 0 ){ std::cout<<std::endl;}
+		std::cout<<cov.at(i)<<" ";
+		
+	}
+	std::cout<<std::endl;
+}
+
+void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> cov ){
+	for(int i=0; i<cov.size(); i++){
+		for(int j=0; j<cov.at(i).size(); j++){
+			std::cout<<"SECTOR "<<i<<" "<<j<<std::endl;
+			for(int k=0; k<cov.at(i).at(j).size(); k++){
+				std::cout<<cov.at(i).at(j).at(k)<<" ";
+			}	
+			std::cout<<std::endl;
+		}
+	}
+}
 std::vector<string> Covariance::constructJFOJacobian(Particle* p){
 	std::cout<<"in the JFO jac "<<std::endl;
 	//std::vector< std::vector<string> > jacobian{};
@@ -241,7 +262,7 @@ std::vector<string> Covariance::constructJacobian(std::vector<Particle*> fitpart
 
 
 }
-std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo){
+std::vector<std::vector<std::vector<double> > > Covariance::sectorGlobalCov(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo){
 
 	//put the global cov onto an vector so we can use iterators on it
 	std::vector<double> _globalcov{};
@@ -307,7 +328,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 	}
 	
 
-	//test print of the sectored out matrix
+	//test print of the sectored matrix
 	for(int i=0; i<cov.size(); i++){
 		for(int j=0; j<cov.at(i).size(); j++){
 			std::cout<<"SECTOR "<<i<<" "<<j<<std::endl;
@@ -323,13 +344,78 @@ std::vector<std::vector<std::vector<double> > > Covariance::rebuildGlobalCov(dou
 	
 
 }
-void Covariance::printCovarianceMatrix(std::vector<string> cov, int dim){
-	std::cout<<"the cov size "<< cov.size() << std::endl;
-	for(int i=0; i<cov.size(); i++){
-		if(i%dim == 0 ){ std::cout<<std::endl;}
-		std::cout<<cov.at(i)<<" ";
-		
+std::vector<double> Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo){
+	
+/*	std::vector<int> nparams{};
+	int Nparts = combo.size();
+	for(int i=0; i<combo.size(); i++){
+		nparams.push_back( parts.at( combo.at(i) )->localParams.size() );
 	}
-	std::cout<<std::endl;
+	std::cout<<"NPARTS "<<Nparts<<std::endl;
+	int Nparams = 0;
+	for(int i =0; i<nparams.size(); i++){
+		Nparams += nparams.at(i);
+	}
+	std::cout<<"NPARAMS "<< Nparams<<std::endl; */
+
+	//make the manageable sectored version of the global covariance matrix
+	std::vector<std::vector<std::vector<double> > > sectoredGlobalCov = sectorGlobalCov(globalcov, dim, parts, globalCombo);
+
+	//locate the indices on globalcombo of the particles matched between combo sets
+	//these indices are the locations of the particles on the sectored matrix
+	std::vector<int> indices{};
+	//do a simple match
+	for(int i=0; i<subCombo.size(); i++){
+		for(int j=0; j<globalCombo.size(); i++){
+			if( subCombo.at(i) == globalCombo.at(i)){
+				indices.push_back(j);
+				break;
+			}
+		}		
+	}
+	
+	//now create memory space for the new submatrix
+	std::vector<std::vector<std::vector<double> > > subcov(subCombo.size());
+	std::vector<std::vector<double> > subcovcol(subCombo.size());
+
+	//memory management
+	std::vector<double> covsubmatrix{};
+	for(int i =0; i< cov.size(); i++){
+		cov.at(i) = covcol;
+		for(int j=0; j<cov.at(i).size(); j++){
+			cov.at(i).at(j) = covsubmatrix;
+		}
+	}
+
+	//now go through and extract the proper matrix sectors
+	//use a selection sort type method
+	//do it in two loops for more readability
+	
+	std::vector<std::vector<double> > tempcov{};
+	for(int i=0; i<indices.size(); i++){
+		for(int j=0; j<indices.size(); j++){
+			tempcov.push_back( sectoredGlobalCov.at(indices.at(i)).at(indices.at(j)) );
+		}
+	}
+	//translate the 2d to 3d for printing and testing
+	int R=0; 
+	int J=0:
+	int threshold = subCombo.size();
+	for(int i=0; i< tempcov.size(); i++){
+		if( i == threshold ){
+			R++;
+			threshold += threshold;
+			J=0;
+		}
+		subcov.at(R).at(J) = tempcov.at(i);
+		J++;
+	}
+
+	printSectoredCovarianceMatrix(subcov );
+
+	//print the submatrix
+
 }
+
+
 
