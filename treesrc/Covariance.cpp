@@ -26,7 +26,7 @@ void Covariance::printCovarianceMatrix(std::vector<string> cov, int dim){
 	std::cout<<std::endl;
 }
 
-void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> cov ){
+void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> > > cov ){
 	for(int i=0; i<cov.size(); i++){
 		for(int j=0; j<cov.at(i).size(); j++){
 			std::cout<<"SECTOR "<<i<<" "<<j<<std::endl;
