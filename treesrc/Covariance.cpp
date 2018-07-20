@@ -371,7 +371,7 @@ std::vector<double> Covariance::getSubGlobalCov( double* globalcov, int dim, std
 	std::cout<<"SUB SIZE, GLOBLSIZE "<< subCombo.size() << " "<< globalCombo.size() <<std::endl;
 	for(int i=0; i<subCombo.size(); i++){
 	
-		for(int j=0; j<globalCombo.size(); i++){
+		for(int j=0; j<globalCombo.size(); j++){
 			if( subCombo.at(i) == globalCombo.at(j)){
 				indices.push_back(j);
 				break;
