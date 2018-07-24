@@ -24,11 +24,11 @@ int Covariance::getNparts(std::vector<int> combo){
 	int Nparts = combo.size();
 	return Nparts;
 }
-void Covariance::printCovarianceMatrix(std::vector<string> cov, int dim){
-	std::cout<<"the cov size "<< cov.size() << std::endl;
-	for(int i=0; i<cov.size(); i++){
-		if(i%dim == 0 ){ std::cout<<std::endl;}
-		std::cout<<cov.at(i)<<" ";
+void Covariance::printCovarianceMatrix(double* cov, int rows, int columns){
+	//std::cout<<"the cov size "<< cov.size() << std::endl;
+	for(int i=0; i<rows*columns; i++){
+		if(i%columns == 0 ){ std::cout<<std::endl;}
+		std::cout<<cov[i]<<" ";
 		
 	}
 	std::cout<<std::endl;
