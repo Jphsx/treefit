@@ -417,9 +417,11 @@ double* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Pa
 
 	//turn matrix into storable double*
 	double* newcov = new double[Nparams*Nparams];
+	int index =0;
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
-			newcov[i] = Covmatrix(i,j);
+			newcov[index] = Covmatrix(i,j);
+			index++;
 		}
 	}
 	printCovarianceMatrix(newcov,4,4);
