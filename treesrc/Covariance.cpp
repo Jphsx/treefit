@@ -407,12 +407,12 @@ double* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Pa
 	
 	//do the matrix calculation
 	//figure out all matrix dimensions
-	TMatrixD Dmatrix(Nparams,4, jacobian, "F");
+	TMatrixD Dmatrix(4,Nparams, jacobian, "F");
 	TMatrixD Vmatrix(Nparams,Nparams, subcov, "F");
  
         TMatrixD Covmatrix(4,4); 
-	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
-	//Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
+	//Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
+	Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
 
 	//turn matrix into storable double*
 	double* newcov = new double[Nparams*Nparams];
