@@ -92,7 +92,7 @@ double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat, std::v
 	return cov1d;
 
 }
-double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > > mat ){
+double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > > mat , std::vector<int> nparams){
 
 	int size = 0;
 	for(int i=0; i<mat.size(); i++){
@@ -224,9 +224,7 @@ double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<
 	std::cout<<"NPARTS "<<Nparts<<std::endl;
 	int Nparams = getNparams(parts,combo);
 	std::cout<<"NPARAMS "<< Nparams<<std::endl;
-	//start with 4d matrix
-	// then unwrap the 4d into a 2d matrix
-	//need to store the fit parts onto a local array with no gaps
+	
 	//this will preserve its position in the matrix
 	std::vector<Particle*> p{};
 	for(int i=0; i<combo.size(); i++){
@@ -271,7 +269,7 @@ double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<
 			}
 		
 	}*/
-	double* jac1d = matrix2Dto1D(jacobian, nparams);
+	double* jac1d = matrix2DTo1D(jacobian, nparams);
 
 
 
@@ -418,7 +416,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 	//print the submatrix
 	//transform to 1d and return
 	
-	double * vec = matrix3DTo1D(subcov, getnparamsvec(parts,combo));
+	double * vec = matrix3DTo1D(subcov, getnparamsvec(parts,subCombo));
 	//TODO return 1d submatrix
 	return vec;
 
