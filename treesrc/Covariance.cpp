@@ -47,7 +47,7 @@ void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vect
 	}
 	std::cout<<"finished print"<<std::endl;
 }
-double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat ){
+double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat, std::vector<int> nparams ){
 	//make vector and copy it? no
 	//add all sizes together
 	
@@ -271,7 +271,7 @@ double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<
 			}
 		
 	}*/
-	double* jac1d = matrix2Dto1D(jacobian);
+	double* jac1d = matrix2Dto1D(jacobian, nparams);
 
 
 
@@ -418,7 +418,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 	//print the submatrix
 	//transform to 1d and return
 	
-	double * vec = matrix3DTo1D(subcov,
+	double * vec = matrix3DTo1D(subcov, getnparamsvec(parts,combo));
 	//TODO return 1d submatrix
 	return vec;
 
