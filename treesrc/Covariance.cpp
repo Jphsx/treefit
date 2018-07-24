@@ -407,7 +407,7 @@ double* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Pa
 	
 	//do the matrix calculation
 	//figure out all matrix dimensions
-	TMatrixD Dmatrix(4,Nparams, jacobian, "F");
+	TMatrixD Dmatrix(Nparams,4, jacobian, "F");
 	TMatrixD Vmatrix(Nparams,Nparams, subcov, "F");
  
         TMatrixD Covmatrix(4,4); 
