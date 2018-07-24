@@ -21,27 +21,31 @@ class Covariance{
 	//the jacobian derivatives are completely dependent on
 	//the type of fit objects used
 	static int getNparams(std::vector<Particle*> parts, std::vector<int> combo);
-	static int getNparts(std::vector<Particle*> parts, std::vector<int> combo);
+	static int getNparts( std::vector<int> combo);
+	static std::vector<int> getnparamsvec(std::vector<Particle*> parts, std::vector<int> combo);
 	
 
 	//first testing construct a jacobian with strings
 	//take in all fit parts and the combo for this resonance
-	static std::vector<string> constructJacobian(std::vector<Particle*> fitparts, std::vector<int> fitCombo);
-
-	static std::vector<string> constructJFOJacobian(Particle* p);
-	static std::vector<string> constructLFOJacobian(Particle* p);
-	//static void printCovarianceMatrix(std::vector<std::vector<string> > cov);
+	static double* constructJacobian(std::vector<Particle*> fitparts, std::vector<int> fitCombo);
+	static std::vector<double> constructJFOJacobian(Particle* p);
+	static std::vector<double> constructLFOJacobian(Particle* p);
+	//static std::Vector<string> constuct TPFOJacobian();
+	
 	static void printCovarianceMatrix(std::vector<string> cov, int dim);//dim = Nparam
 	static void printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> > > cov );
 	//TODO 
-	//static std::Vector<string> constuct TPFOJacobian();
 	
-	//TODO delete this stupid method	
-	static std::vector<string> constructEmptyJacobian(int nrow, int ncol);
+	
+	
+	//produce covariance sub matrix
+	static double* getSubGlobalCov( double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
+
+	//matrix management functions
+	static double* matrix2DTo1D( std::vector<std::vector<double>  > mat, std::vector<int> nparams );
+	static double* matrix3DTo1D( std::vector<std::vector<std::vector<double> > > mat, std::vector<int> nparams );
 	//turn 1d covariance matrix into a more manageable 3d matrix
-	static std::vector<std::vector<std::vector<double> > > sectorGlobalCov(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
-	
-	static std::vector<double> getSubGlobalCov( double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
+	static std::vector<std::vector<std::vector<double> > > matrix1DTo3D(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
 
 };
 #endif
