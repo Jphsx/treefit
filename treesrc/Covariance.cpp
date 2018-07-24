@@ -64,13 +64,13 @@ double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat, std::v
 	//we need to know the jth particles number of params
 
 	//do iterator trick
-	std::vector<std::vector<string>::iterator> its;
+	std::vector<std::vector<double>::iterator> its;
 	for(unsigned int i=0; i<mat.size(); i++){
-		std::vector<string>::iterator it = mat.at(i).begin();
+		std::vector<double>::iterator it = mat.at(i).begin();
 		its.push_back(it);
 	}
 
-	std::vector<string> mat_1d{};
+	std::vector<double> mat_1d{};
 	while(its.at(Nparts-1) < mat.at(Nparts-1).end()){
 		
 			std::cout<<"parsed "<<std::endl;
@@ -120,7 +120,7 @@ double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > 
 
 	
 
-	std::vector<string> mat_1d{};
+	std::vector<double> mat_1d{};
 	while(its.at(Nparts-1).at(Nparts-1) < mat.at(Nparts-1).at(Nparts-1).end()){
 		
 			std::cout<<"parsed "<<std::endl;
@@ -154,7 +154,7 @@ std::vector<double> Covariance::constructJFOJacobian(Particle* p){
 	*/ 
 	//go row by row
 	//this jacobian is by columns
-	std::vector<string> jacobian{};
+	std::vector<double> jacobian{};
 	jacobian.push_back( 1);// "dPx/de" );
 	jacobian.push_back( 1);//"dPx/dtheta" );
 	jacobian.push_back( 1);//"dPx/dphi" );
@@ -188,7 +188,7 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	  dPz/dk dPz/dtheta dPz/dphi
 	  dE/dk dE/dtheta dE/dphi */
 	//this jacobian is by columns
-	std::vector<string> jacobian{};
+	std::vector<double> jacobian{};
 	
 	jacobian.push_back( 5);//"dPx/dk" );
 	jacobian.push_back( 5);//"dPx/dtheta" );
@@ -235,7 +235,7 @@ double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<
 	
 	
 
-	std::vector<std::vector<string> > jacobian(Nparts);
+	std::vector<std::vector<double> > jacobian(Nparts);
 	
 	std::cout<<"going into the big matrix "<<std::endl;
 	for(int i = 0; i < Nparts; i++){
