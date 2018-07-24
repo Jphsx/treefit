@@ -60,7 +60,7 @@ double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat, std::v
 	//assuming there is 1 element get N parts
 	int Nparts = mat.size();
 
-	double* cov1d = new double(size);
+	double* cov1d = new double[size];
 	//we need to know the jth particles number of params
 
 	//do iterator trick
@@ -103,7 +103,7 @@ double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > 
 	//assuming there is 1 element get N parts
 	int Nparts = mat.size();
 
-	double* cov1d = new double(size);
+	double* cov1d = new double[size];
 	//we need to know the jth particles number of params
 
 	//do iterator trick
