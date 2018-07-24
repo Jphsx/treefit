@@ -403,16 +403,16 @@ double* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Pa
 
 	//get the jacobian for this submatrix
 	//the jacobian retrieved is actually the transpose
-	double* jacobianTranspose = constructJacobian(parts,subCombo);
+	double* jacobian = constructJacobian(parts,subCombo);
 	
 	//do the matrix calculation
 	//figure out all matrix dimensions
-	TMatrixD Dmatrix(4,Nparams, jacobianTranspose, "F");
+	TMatrixD Dmatrix(4,Nparams, jacobian, "F");
 	TMatrixD Vmatrix(Nparams,Nparams, subcov, "F");
  
         TMatrixD Covmatrix(4,4); 
-	//Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
-	Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
+	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
+	//Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
 
 	//turn matrix into storable double*
 	double* newcov = new double[Nparams*Nparams];
