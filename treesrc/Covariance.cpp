@@ -112,7 +112,7 @@ double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > 
 	std::vector<std::vector<double>::iterator> itcol(Nparts);
 	for(int i=0; i<Nparts; i++){
 		its.at(i) = itcol;
-		for( j=0; j<Nparts; j++){
+		for( int j=0; j<Nparts; j++){
 			std::vector<double>::iterator it = mat.at(i).at(j).begin();
 			its.at(i).at(j) = it;
 		}
@@ -127,7 +127,7 @@ double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > 
 		
 			for(int i=0; i<mat.size(); i++){
 				for( int j=0; j<mat.at(i).size(); j++){
-					if(its.at(i) < mat.at(i).end()){
+					if(its.at(i).at(j) < mat.at(i).at(j).end()){
 						mat_1d.insert(mat_1d.end(), its.at(i).at(j), its.at(i).at(j)+nparams.at(j));
 						its.at(i).at(j) = its.at(i).at(j) + nparams.at(j);
 					}
