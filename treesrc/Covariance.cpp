@@ -125,9 +125,8 @@ double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > 
 		
 			std::cout<<"parsed "<<std::endl;
 		
-			for(int i=0; i<mat.size(); i++){
+		for(int i=0; i<mat.size(); i++){
 
-			//while?
 			while(its.at(i).at(Nparts-1) < mat.at(i).at(Nparts-1).end()){
 				for( int j=0; j<mat.at(i).size(); j++){
 					if(its.at(i).at(j) < mat.at(i).at(j).end()){
@@ -137,7 +136,7 @@ double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > 
 				}
 			}//while
 				
-			}
+		}
 	}
 	//copy vector onto double*
 	for(int i=0; i<mat_1d.size(); i++){
@@ -156,29 +155,23 @@ std::vector<double> Covariance::constructJFOJacobian(Particle* p){
 	  dPz/de dPz/dtheta dPz/dphi
 	  dE/de  dE/dtheta  dE/dphi
 	*/ 
-	//go row by row
-	//this jacobian is by columns
+	
 	std::vector<double> jacobian{};
-	jacobian.push_back( 1);// "dPx/de" );
-	jacobian.push_back( 1);//"dPx/dtheta" );
-	jacobian.push_back( 1);//"dPx/dphi" );
-	//jacobian.push_back(row);
-	//row.clear();
-	jacobian.push_back( 2);//"dPy/de" );
-	jacobian.push_back( 2);//"dPy/dtheta" );
-	jacobian.push_back( 2);//"dPy/dphi" );
-	//jacobian.push_back(row);
-	//row.clear();
-	jacobian.push_back( 3);//"dPz/de" );
-	jacobian.push_back( 3);//"dPz/dtheta" );
-	jacobian.push_back( 3);//"dPz/dphi" );
-	//jacobian.push_back(row);
-	//row.clear();
-	jacobian.push_back( 4);//"dE/de" );
-	jacobian.push_back( 4);//"dE/dtheta" );
-	jacobian.push_back( 4);//"dE/dphi" );
-	//jacobian.push_back(row);
-	//row.clear();
+	jacobian.push_back( p->v.Px()/p->.P());// dPx/de
+	jacobian.push_back( p->v.Pz()*p->v.Px()/p->v.Perp());// dPx/dtheta
+	jacobian.push_back( -p->v.Py() );// dPx/dphi
+	
+	jacobian.push_back( p->v.Py()/p->v.P());// dPy/de
+	jacobian.push_back( p->v.Pz()*p->v.Py()/p->v.Perp());// dPy/dtheta
+	jacobian.push_back( p->v.Px());// dPy/dphi
+	
+	jacobian.push_back( p->v.Pz()/p->v.P());// dPz/de
+	jacobian.push_back( -p->v.Perp());// dPz/dtheta
+	jacobian.push_back( 0.0 );// dPz/dphi
+	
+	jacobian.push_back( 1.0);// dE/de
+	jacobian.push_back( 0.0);// dE/dtheta
+	jacobian.push_back( 0.0);// dE/dphi
 	
 	std::cout<<"made jfo "<<std::endl;
 	return jacobian;
@@ -186,34 +179,30 @@ std::vector<double> Covariance::constructJFOJacobian(Particle* p){
 }
 std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	std::cout<<"in the lfo jac "<<std::endl;
-	//std::vector< std::vector<string> > jacobian{};
+	
 	/* dPx/dk dPx/dtheta dPx/dphi
 	  dPy/dk dPy/dtheta dPy/dphi
 	  dPz/dk dPz/dtheta dPz/dphi
 	  dE/dk dE/dtheta dE/dphi */
-	//this jacobian is by columns
+	
 	std::vector<double> jacobian{};
 	
-	jacobian.push_back( 5);//"dPx/dk" );
-	jacobian.push_back( 5);//"dPx/dtheta" );
-	jacobian.push_back( 5);//"dPx/dphi" );
-	//jacobian.push_back(row);
-	//row.clear();
-	jacobian.push_back( 6);//"dPy/dk" );
-	jacobian.push_back( 6);//"dPy/dtheta" );
-	jacobian.push_back( 6);//"dPy/dphi" );
-	//jacobian.push_back(row);
-	//row.clear();
-	jacobian.push_back( 7);//"dPz/dk" );
-	jacobian.push_back( 7);//"dPz/dtheta" );
-	jacobian.push_back( 7);//"dPz/dphi" );
-	//jacobian.push_back(row);
-	//row.clear();
-	jacobian.push_back( 8);//"dE/dk" );
-	jacobian.push_back( 8);//"dE/dtheta" );
-	jacobian.push_back( 8);//"dE/dphi" );
-	//jacobian.push_back(row);
-	//row.clear();
+	jacobian.push_back( -p->v.Perp() * p->v.Px() );//"dPx/dk" );
+	jacobian.push_back( p->v.Pz()*p->v.Px()/ p->v.Perp());//"dPx/dtheta" );
+	jacobian.push_back( -p->v.Py());//"dPx/dphi" );
+	
+	jacobian.push_back( -p->v.Perp() * p->v.Py() );//"dPy/dk" );
+	jacobian.push_back( p->v.Pz()*p->v.Px()/ p->v.Perp() );//"dPy/dtheta" );
+	jacobian.push_back( p->v.Px() );//"dPy/dphi" );
+	
+	jacobian.push_back( -p->v.Perp()*p->v.P() );//"dPz/dk" );
+	jacobian.push_back( -p->v.Perp());//"dPz/dtheta" );
+	jacobian.push_back( 0.0);//"dPz/dphi" );
+	
+	jacobian.push_back( 1.0);//"dE/dk" );
+	jacobian.push_back( 0.0);//"dE/dtheta" );
+	jacobian.push_back( 0.0);//"dE/dphi" );
+	
 	std::cout<<"made LFO "<<std::endl;
 	return jacobian;
 
@@ -252,27 +241,6 @@ double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<
 	}
 	std::cout<<"finished big matrix"<<std::endl;
 
-	/*std::vector<std::vector<string>::iterator> its;
-	for(unsigned int i=0; i<jacobian.size(); i++){
-		std::vector<string>::iterator it = jacobian.at(i).begin();
-		its.push_back(it);
-	}
-
-	std::vector<string> jac_1d{};
-	while(its.at(Nparts-1) < jacobian.at(Nparts-1).end()){
-		
-			std::cout<<"parsed "<<std::endl;
-		
-			for(int i=0; i<jacobian.size(); i++){
-				
-				if(its.at(i) < jacobian.at(i).end()){
-					jac_1d.insert(jac_1d.end(), its.at(i), its.at(i)+nparams.at(i));
-					its.at(i) = its.at(i) + nparams.at(i);
-				}
-				
-			}
-		
-	}*/
 	double* jac1d = matrix2DTo1D(jacobian, nparams);
 
 
@@ -423,6 +391,41 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 	double * vec = matrix3DTo1D(subcov, getnparamsvec(parts,subCombo));
 	//TODO return 1d submatrix
 	return vec;
+
+}
+double* get4VecCovariance(double* globalCov, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo){
+	
+
+	//get Nparams
+	int Nparams = getNparams(parts, subCombo);
+	//get the sub covariance matrix
+	double* subcov = getSubGlobalCov(globalCov, parts, globalCombo, subCombo);
+
+	//get the jacobian for this submatrix
+	//the jacobian retrieved is actually the transpose
+	double* jacobianTranspose = constructJacobian(parts,subCombo);
+	
+	//do the matrix calculation
+	//figure out all matrix dimensions
+	TMatrixD Dmatrix(4,Nparams, jacobianTranspose, "F");
+	TMatrixD Vmatrix(Nparams,Nparams, subcov, "F");
+ 
+        TMatrixD Covmatrix(4,4); 
+	//Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
+	Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
+
+	//turn matrix into storable double*
+	double* newcov = new double[Nparams*Nparams];
+	for(int i=0; i<4; i++){
+		for(int j=0; j<4; j++){
+			newcov[i] = Covmatrix(i,j);
+		}
+	}
+	printCovarianceMatrix(newcov,4,4);
+	//convert the matrix to lower diagonal
+	//double* newLDcov = lowerdiag(newcov)
+
+	return newcov;
 
 }
 

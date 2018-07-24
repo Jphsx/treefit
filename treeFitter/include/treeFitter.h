@@ -21,6 +21,9 @@
 #include "MassConstraint.h"
 #include "TH1D.h"
 
+#include "TMath.h"
+#include "TMatrixD.h"
+
 
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
