@@ -107,9 +107,9 @@ double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > 
 	//we need to know the jth particles number of params
 
 	//do iterator trick
-	std::vector<std::vector<std::vector<double> > ::iterator> its(Nparts);
+	std::vector<std::vector<std::vector<double>::iterator > > its(Nparts);
 	//need to do memory allocation for 3d vector
-	std::vector<std::vector<double> :: iterator> itcol(Nparts);
+	std::vector<std::vector<double>::iterator> itcol(Nparts);
 	for(int i=0; i<Nparts; i++){
 		its.at(i) = itcol;
 		for( j=0; j<Nparts; j++){
