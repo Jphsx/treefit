@@ -157,7 +157,7 @@ std::vector<double> Covariance::constructJFOJacobian(Particle* p){
 	*/ 
 	
 	std::vector<double> jacobian{};
-	jacobian.push_back( p->v.Px()/p->.P());// dPx/de
+	jacobian.push_back( p->v.Px()/p->v.P());// dPx/de
 	jacobian.push_back( p->v.Pz()*p->v.Px()/p->v.Perp());// dPx/dtheta
 	jacobian.push_back( -p->v.Py() );// dPx/dphi
 	
@@ -393,13 +393,13 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 	return vec;
 
 }
-double* Covariance::get4VecCovariance(double* globalCov, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo){
+double* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo){
 	
 
 	//get Nparams
 	int Nparams = getNparams(parts, subCombo);
 	//get the sub covariance matrix
-	double* subcov = getSubGlobalCov(globalCov, parts, globalCombo, subCombo);
+	double* subcov = getSubGlobalCov(globalCov,dim, parts, globalCombo, subCombo);
 
 	//get the jacobian for this submatrix
 	//the jacobian retrieved is actually the transpose

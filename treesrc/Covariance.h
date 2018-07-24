@@ -12,6 +12,8 @@
 #include "Particle.h"
 #include <vector>
 #include <string>
+#include "TMath.h"
+#include "TMatrixD.h"
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
 typedef std::string string;
@@ -19,7 +21,7 @@ class Covariance{
 
 	public:
 	//main method to call
-	static double* get4VecCovariance(double* globalCov, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
+	static double* get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
 
 	//TODO get lower diagonal
 

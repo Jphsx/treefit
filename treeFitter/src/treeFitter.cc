@@ -498,7 +498,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			std::cout<<"BEGINNING JACOBIAN TEST"<<std::endl;
 			int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-			double* cov4vec = Covariance::get4VecCovariance(gcov, TFit->fitparts, fit.at(0), fit.at(root->nodeId));
+			double* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId));
 	//			std::vector<double> jac{};
 			/*double * jac;		
 			jac = Covariance::constructJacobian(TFit->fitparts, fit.at(root->nodeId) );
