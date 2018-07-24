@@ -393,7 +393,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 	return vec;
 
 }
-double* get4VecCovariance(double* globalCov, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo){
+double* Covariance::get4VecCovariance(double* globalCov, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo){
 	
 
 	//get Nparams
