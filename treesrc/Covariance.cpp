@@ -175,6 +175,8 @@ std::vector<double> Covariance::constructJFOJacobian(Particle* p){
 	
 	std::cout<<"made jfo "<<std::endl;
 	return jacobian;
+	
+
 
 }
 std::vector<double> Covariance::constructLFOJacobian(Particle* p){
@@ -192,7 +194,7 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	jacobian.push_back( -p->v.Py());//"dPx/dphi" );
 	
 	jacobian.push_back( -p->v.Perp() * p->v.Py() );//"dPy/dk" );
-	jacobian.push_back( p->v.Pz()*p->v.Px()/ p->v.Perp() );//"dPy/dtheta" );
+	jacobian.push_back( p->v.Pz()*p->v.Py()/ p->v.Perp() );//"dPy/dtheta" );
 	jacobian.push_back( p->v.Px() );//"dPy/dphi" );
 	
 	jacobian.push_back( -p->v.Perp()*p->v.P() );//"dPz/dk" );
@@ -205,7 +207,6 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	
 	std::cout<<"made LFO "<<std::endl;
 	return jacobian;
-
 
 }
 double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<int> combo){
