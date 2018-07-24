@@ -499,6 +499,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 	//			std::vector<double> jac{};
 			double * jac;		
 			jac = Covariance::constructJacobian(TFit->fitparts, fit.at(root->nodeId) );
+			std::cout<<"about to get dim"<<std::endl;
 			int dim = Covariance::getNparams(TFit->fitparts, fit.at(root->nodeId) );
 			std::cout<<"about the print jac "<<std::endl;
 			Covariance::printCovarianceMatrix(jac,4,9);
