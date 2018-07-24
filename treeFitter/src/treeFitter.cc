@@ -496,14 +496,14 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		//after we do this also lets do some covariance/jacobian printouts for testing
 			//start with fit.at(0) for the combo
 			std::cout<<"BEGINNING JACOBIAN TEST"<<std::endl;
-			std::vector<std::string> jac{};
+			std::vector<double> jac{};
 			jac = Covariance::constructJacobian(TFit->fitparts, fit.at(root->nodeId) );
 			int dim = Covariance::getNparams(TFit->fitparts, fit.at(root->nodeId) );
 			Covariance::printCovarianceMatrix(jac,dim);
 			std::vector<std::vector<std::vector<double> > > rebuiltmat{};
 			int gcovdim;
 			double* newcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-			rebuiltmat = Covariance::sectorGlobalCov(newcov,gcovdim, TFit->fitparts, fit.at(root->nodeId));
+			rebuiltmat = Covariance::matrix1DTo3D(newcov,gcovdim, TFit->fitparts, fit.at(root->nodeId));
 
 
 			//build some sub matrices and print them
@@ -522,7 +522,8 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			std::cout<<"finished test vecs"<<std::endl;
 
 			std::cout<<"doing submatrix testing"<<std::endl;
-			std::vector<double> testvec;
+			//std::vector<double> testvec;
+			double * testvec;
 			std::cout<<"test1"<<std::endl;
 			testvec = Covariance::getSubGlobalCov( newcov, gcovdim,  TFit->fitparts, fit.at(root->nodeId), combo1test);
 			std::cout<<"test2"<<std::endl;

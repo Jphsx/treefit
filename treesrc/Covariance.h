@@ -32,7 +32,7 @@ class Covariance{
 	static std::vector<double> constructLFOJacobian(Particle* p);
 	//static std::Vector<string> constuct TPFOJacobian();
 	
-	static void printCovarianceMatrix(std::vector<string> cov, int dim);//dim = Nparam
+	static void printCovarianceMatrix(std::vector<double> cov, int dim);//dim = Nparam
 	static void printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> > > cov );
 	//TODO 
 	
