@@ -54,7 +54,7 @@
 		<parameter name="FitProbabilityCut" value="0.000001" />
 
 		<!-- input/output collection names -->
-		<parameter name="InputTrackCollectionName" value="AdjustedTracks" />
+		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
 		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">AdjustedParticles</parameter>
 		<parameter name="McParticleCollectionName" value="MCParticle" />  
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles</parameter>

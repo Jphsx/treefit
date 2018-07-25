@@ -21,6 +21,10 @@ TTreeFactory::TTreeFactory(int nodeId, int pdg, TFile* f){
         tree->Branch("fitLocalErrors.", &fitLocalErrors);
 	tree->Branch("pdgs.",&pdgs);
 
+	tree->Branch("recoParentParams.", &recoParentParams);
+	tree->Branch("recoParentErrors.", &recoParentErrors);
+	tree->Branch("fitParentParams.", &fitParentParams);
+	tree->Branch("fitParentErrors.", &fitParentErrors);
 }
 void TTreeFactory::addFittedParticle(Particle* fitcontainer){
 	fitLocalParams.push_back(fitcontainer->localParams);
@@ -45,7 +49,7 @@ void TTreeFactory::addFitDetails(double fitprob, double chisq){
 }
 void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vector<Particle*> recocontainer){
 	//containers better be the same size, so just loop once
-	TLorentzVector fitsum;
+	TLorentzVector fitsum; //fitsum is the parent fitted particle
 	TLorentzVector recosum;
 	for(unsigned int i=0; i< fitcontainer.size(); i++){
 		addFittedParticle(fitcontainer.at(i));
@@ -90,6 +94,12 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 		fitsum.E() << " " <<
 		fitsum.M() << " " <<std::endl;
 	RecoMass = recosum.M();
+
+	//populate the parent vectors
+	recoparent.push_back(recosum.Px());
+	recoparent.push_back(recosum.Py());
+	recoparent.push_back(recosum.Pz());
+	recoparent
 
 }
 void TTreeFactory::TreeFillAndClear(){

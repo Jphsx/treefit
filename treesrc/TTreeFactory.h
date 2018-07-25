@@ -25,6 +25,15 @@ class TTreeFactory{
 
 	//this is the indexing array
 	std::vector<double> pdgs{};
+
+	//the resonance for the particles contained in this class
+	//Params : { Px Py Pz E }
+	std::vector<double> recoparentParams{};
+	std::vector<double> fitparentParams{};
+	//Errors : { dPx dPy dPz dE }
+	std::vector<double> recoparentErrors{};
+	std::vector<double> fitparentErrors{};
+	
 	
 	//this nodes resonance mass
 	double RecoMass{};
