@@ -12,6 +12,7 @@
 <marlin>
 	<execute>
 	<processor name="MyPhotonResponseAdjuster"/>
+	<!-- <processor name="MyTrackResponseAdjuster" /> -->
    	<processor name="MyTreeFitter"/>  
 	<processor name="MyLCIOOutputProcessor"/>
  	</execute>
@@ -31,6 +32,17 @@
    		<parameter name="EnergyScaleFactor" value="0.9437" />
    		<parameter name="Printing" value="5"/>
 	</processor>
+
+	 <processor name="MyTrackResponseAdjuster" type="TrackResponseAdjuster">
+  		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
+ 		<parameter name="OutputTrackCollectionName" value="AdjustedTracks" /> 
+  		<parameter name="D0ErrorScaleFactor" value="1.0" />
+  		<parameter name="Z0ErrorScaleFactor" value="1.0" />
+  		<parameter name="OmegaErrorScaleFactor" value="1.20" />
+  		<parameter name="PhiErrorScaleFactor" value="1.0" />
+  		<parameter name="TanLambdaErrorScaleFactor" value="1.0" />
+  		<parameter name="Printing" value="5" />
+ 	</processor>
 	
 	<processor name="MyTreeFitter" type="treeFitter">   
 		<!-- tree parameters -->
@@ -38,8 +50,11 @@
 		<parameter name="preorderSerial" type="string" value = "0,1,),2,),3,),)" />
 		<parameter name="preorderMass" type="FloatVec"> 0.547862 -1 -1 -1  </parameter>
 
+		<!-- cuts -->
+		<parameter name="FitProbabilityCut" value="0.000001" />
+
 		<!-- input/output collection names -->
-		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
+		<parameter name="InputTrackCollectionName" value="AdjustedTracks" />
 		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">AdjustedParticles</parameter>
 		<parameter name="McParticleCollectionName" value="MCParticle" />  
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles</parameter>
