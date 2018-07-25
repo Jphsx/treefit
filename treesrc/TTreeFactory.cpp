@@ -107,6 +107,19 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 	fitParentParams.push_back(fitsum.E());
 
 }
+void TTreeFactory::addFitParentErrors(float* cov){
+	//cov is lower diagonal
+	/*xx
+	  yx yy
+	  zx zy zz
+	  Ex Ey Ez EE */
+
+	fitParentErrors.push_back((double)cov[0]);
+	fitParentErrors.push_back((double)cov[2]);
+	fitParentErrors.push_back((double)cov[5]);
+	fitParentErrors.push_back((double)cov[9]);		
+
+}
 void TTreeFactory::TreeFillAndClear(){
 	//fill the tree
 	tree->Fill();
@@ -124,6 +137,7 @@ void TTreeFactory::TreeFillAndClear(){
 
 	recoParentParams.clear();
 	fitParentParams.clear();
+	fitParentErrors.clear();
 	pdgs.clear();
 	
 }

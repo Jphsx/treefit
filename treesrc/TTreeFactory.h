@@ -49,7 +49,10 @@ class TTreeFactory{
 	void addParticleSets(std::vector<Particle*> fitcontainer, std::vector<Particle*> recocontainer);
 	void addpdg( int pdg );
 	void addFitDetails(double fitprob, double chisq); 
-	//TODO MonteCarlo stuff
+	//TODO MonteCarlo stuff?
+
+	//parent error population
+	void addFitParentErrors(float* cov);
 
 	//tree management functions
 	void TreeFillAndClear();
