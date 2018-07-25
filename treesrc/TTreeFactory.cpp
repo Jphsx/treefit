@@ -99,7 +99,12 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 	recoParentParams.push_back(recosum.Px());
 	recoParentParams.push_back(recosum.Py());
 	recoParentParams.push_back(recosum.Pz());
-	//recoparent
+	recoParentParams.push_back(recosum.E());
+
+	fitParentParams.push_back(fitsum.Px());
+	fitParentParams.push_back(fitsum.Py());
+	fitParentParams.push_back(fitsum.Pz());
+	fitParentParams.push_back(fitsum.E());
 
 }
 void TTreeFactory::TreeFillAndClear(){
@@ -116,6 +121,9 @@ void TTreeFactory::TreeFillAndClear(){
 	recoLocalErrors.clear();
 	fitLocalParams.clear();
 	fitLocalErrors.clear();
+
+	recoParentParams.clear();
+	fitParentParams.clear();
 	pdgs.clear();
 	
 }
