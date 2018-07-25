@@ -21,7 +21,7 @@ class Covariance{
 
 	public:
 	//main method to call
-	static double* get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
+	static float* get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
 	static double* get4VecLD(double* cov);
 	//TODO get lower diagonal
 
