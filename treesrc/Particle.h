@@ -76,7 +76,7 @@ class Particle{
 
 	//prints the lower diagonal matrix with n parameters
 	static void printCovarianceMatrix(std::vector<float> cov, int npar);
-
+	static void printCovarianceMatrix(double* cov, int npar);
 	//from the 5 track parameters return a vector of 
 	//momentum components px,py,pz
 	static std::vector<double> getTrackPxPyPz(Track* t, double BField);

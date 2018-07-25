@@ -554,7 +554,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 
 
 	//end cov testing
-		p->setCovMatrix(cov4vec);
+		p->setCovMatrix((float*)cov4vec);
 		p->setMass(root->mass);
 		p->setCharge(charge);
 		p->addParticleID(newPDG);
