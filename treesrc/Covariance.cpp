@@ -454,7 +454,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 		newLDcovf[i] = (float) newLDcov[i];
 	}
 
-	return newLDcov;
+	return newLDcovf;
 
 }
 
