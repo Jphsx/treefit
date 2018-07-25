@@ -414,7 +414,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 	return vec;
 
 }
-double* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo){
+float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo){
 	
 
 	//get Nparams
@@ -448,6 +448,11 @@ double* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Pa
 	printCovarianceMatrix(newcov,4,4);
 	//convert the matrix to lower diagonal
 	double* newLDcov = get4VecLD(newcov);
+	float* newLDcovf = new float[10];
+	//convert to float //TODO properly change everything to floats
+	for(int i=0; i<10; i++){
+		newLDcovf[i] = (float) newLDcov[i];
+	}
 
 	return newLDcov;
 

@@ -412,7 +412,7 @@ void Particle::printCovarianceMatrix(std::vector<float> cov, int npar){
 	std::cout<<std::endl;
 	
 }
-void Particle::printCovarianceMatrix(double* cov, int npar){
+void Particle::printCovarianceMatrix(float* cov, int npar){
 	int nelem = 0;
 	int k=0;
 	while(k<=npar){
