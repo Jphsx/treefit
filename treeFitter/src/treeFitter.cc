@@ -826,10 +826,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
 	
 			//ading cov stuff
-			int gcovdim;
-			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i));
-			ttrees.at(index)->addFitParentErrors(cov4vec);
+			//int gcovdim;
+			//double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
+			//float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i));
+			//ttrees.at(index)->addFitParentErrors(cov4vec);
 			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->TreeFillAndClear();
 			std::cout<<"weve went past trees"<<std::endl;
