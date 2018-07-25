@@ -480,17 +480,17 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		//give the reco part an E,theta,phi cov matrix
 		//we need to construct the lower diagonal manually
 		//TODO constuct matrix for every single particle resonance
-		float* cov = new float[10];
-		int index = 0;
+	//	float* cov = new float[10];
+	//	int index = 0;
 	/*	for(int i=0; i<=2; i++){
 			for(int j=0; j<=i; j++){
 				cov[index]=jfo->getCov(i,j);
 				index++;	
 			}
 		}*/
-		for(int i=0; i<10; i++){
-			cov[i] = 0.0;
-		}
+	//	for(int i=0; i<10; i++){
+	//		cov[i] = 0.0;
+//		}
 
 		//here is some testing for cov calculuation
 		//after we do this also lets do some covariance/jacobian printouts for testing
@@ -499,6 +499,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
 			double* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId));
+			Particle::printCovarianceMatrix(cov4vec, 4);
 	//			std::vector<double> jac{};
 			/*double * jac;		
 			jac = Covariance::constructJacobian(TFit->fitparts, fit.at(root->nodeId) );
@@ -553,7 +554,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 
 
 	//end cov testing
-		p->setCovMatrix(cov);
+		p->setCovMatrix(cov4vec);
 		p->setMass(root->mass);
 		p->setCharge(charge);
 		p->addParticleID(newPDG);

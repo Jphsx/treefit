@@ -24,6 +24,26 @@ int Covariance::getNparts(std::vector<int> combo){
 	int Nparts = combo.size();
 	return Nparts;
 }
+double* Covariance::get4VecLD(double* cov){
+
+	/*xx xy xz xE
+	  yx yy yz yE
+	  zx zy zz zE
+	  Ex Ey Ez EE */
+	double* lowerDiagonal = new double[10];
+	lowerDiagonal[0] = cov[0];
+	lowerDiagonal[1] = cov[4];
+	lowerDiagonal[2] = cov[5];
+	lowerDiagonal[3] = cov[8];
+	lowerDiagonal[4] = cov[9];
+	lowerDiagonal[5] = cov[10];
+	lowerDiagonal[6] = cov[12];
+	lowerDiagonal[7] = cov[13];
+	lowerDiagonal[8] = cov[14];
+	lowerDiagonal[9] = cov[15];
+
+	return lowerDiagonal;	
+}
 void Covariance::printCovarianceMatrix(double* cov, int rows, int columns){
 	//std::cout<<"the cov size "<< cov.size() << std::endl;
 	for(int i=0; i<rows*columns; i++){
@@ -427,9 +447,9 @@ double* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Pa
 	}
 	printCovarianceMatrix(newcov,4,4);
 	//convert the matrix to lower diagonal
-	//double* newLDcov = lowerdiag(newcov)
+	double* newLDcov = get4VecLD(newcov);
 
-	return newcov;
+	return newLDcov;
 
 }
 
