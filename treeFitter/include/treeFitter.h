@@ -113,7 +113,7 @@ class treeFitter : public marlin::Processor {
 	/************
 	Function to created fit particles from the fit objects
 	*************/
-	//TODO
+	void createFitParticlesfromFitObjects();
 
 	/*************
 	Functions to generate the proper output collections
@@ -145,6 +145,9 @@ class treeFitter : public marlin::Processor {
 
 	//cut parameters
 	double _fitProbabilityCut;
+
+	//TrackFitObject option
+	int _trackFitObject;
 
 };
 

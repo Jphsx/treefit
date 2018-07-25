@@ -103,6 +103,12 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 			          _fitProbabilityCut,
 			          (double)0.001);
 
+	//Tracked Fit object option
+	registerProcessorParameter( "TrackFitObject" ,
+				   "[1] LeptonFitObject, [2] TrackParticleFitObject" ,
+				    _trackFitObject ,
+				    (int) 1);
+
 return;
 }
 
@@ -326,17 +332,21 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			recoindex = fit.at(0).at(j);
 			if(TFit->recoparts.at(recoindex)->isTrack){
 				//this is a track make LFO
-				FO_vec.at(recoindex) = new LeptonFitObject(
-				TFit->recoparts.at(recoindex)->track, 
-				TFit->recoparts.at(recoindex)->Bfield, 
-				TFit->recoparts.at(recoindex)->part->getMass()); 
+				if(_trackFitObject == 1){
+					FO_vec.at(recoindex) = new LeptonFitObject(
+					TFit->recoparts.at(recoindex)->track, 
+					TFit->recoparts.at(recoindex)->Bfield, 
+					TFit->recoparts.at(recoindex)->part->getMass()); 
+				}
 				//testing track particle fit object
-			/*	FO_vec.at(recoindex) = new TrackParticleFitObject(  //tpfo does not preserve the mass constraint
-				TFit->recoparts.at(recoindex)->track,
-				TFit->recoparts.at(recoindex)->part->getMass());
-				TrackParticleFitObject* tpfo = (TrackParticleFitObject*) FO_vec.at(recoindex);
-				tpfo->setBfield(TFit->recoparts.at(recoindex)->Bfield);
-			*/
+				if(_trackFitObject == 2){
+					FO_vec.at(recoindex) = new TrackParticleFitObject(  //tpfo does not preserve the mass constraint
+					TFit->recoparts.at(recoindex)->track,
+					TFit->recoparts.at(recoindex)->part->getMass());
+					TrackParticleFitObject* tpfo = (TrackParticleFitObject*) FO_vec.at(recoindex);
+					tpfo->setBfield(TFit->recoparts.at(recoindex)->Bfield);
+				}
+			
 			}
 			else{
 				//this is not a track make JFO
@@ -431,7 +441,28 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		return fitter;
 }
 //TODO this function
-//void treeFitter::createFitPartsfromFitObjects(FOVEC){}
+void treeFitter::createFitParticlesfromFitObjects(){
+	for(int k=0; k<FitObjects.size(); k++){
+			if(FitObjects.at(k)==NULL){
+				continue;
+			} 
+			
+			if(TFit->recoparts.at(k)->isTrack){
+				if(_trackFitObject == 2){
+					TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
+				}
+				if(_trackFitObject == 1){
+					TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
+				}
+				
+			}
+			if(!TFit->recoparts.at(k)->isTrack){
+				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), -1, -1, TFit->recoparts.at(k)->Bfield) ;
+			}
+			
+						
+		}
+}
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
 ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, Node* root, std::vector<std::vector<int> > fit, OPALFitterGSL *  fitter){
@@ -671,7 +702,9 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//make a temp vec to give to tfit, to make sure fitparts in synchronized in size
 		std::vector<Particle*> fit_vec(TFit->recoparts.size());
 		TFit->fitparts = fit_vec;
-		for(int k=0; k<FitObjects.size(); k++){
+//following code reduced to 1 function call
+		createFitParticlesfromFitObjects();
+	/*	for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
 				continue;
 			} 
@@ -687,10 +720,12 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			
 						
 		}
+	*/
 		if(fitter->getProbability() > _fitProbabilityCut){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
-			//createLCOutputParticles(recparcol, fit, fitter->getProbability());		
-			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
+				
+			//uncomment this after we know tpfo fits	
+			//createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
 			
 		}
 		
@@ -732,9 +767,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		std::cout<<TFit->fitparts.size()<<" fitparts size"<<std::endl;
 	std::cout<<"edit"<<std::endl;
 	//remake fitparticles
+		//this creation makes sure fitparts will be the correct size
 		std::vector<Particle*> fit_vec(TFit->recoparts.size());
 		TFit->fitparts = fit_vec;
-		for(int k=0; k<FitObjects.size(); k++){
+		createFitParticlesfromFitObjects();
+		/*for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
 				continue;
 			} 
@@ -749,7 +786,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			}
 			
 						
-		}
+		}*/
 
 	std::cout<<"print bestfit"<<std::endl;
 		for(int i=0; i<bestfit.size(); i++){
