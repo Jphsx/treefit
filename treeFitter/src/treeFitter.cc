@@ -107,7 +107,7 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 	registerProcessorParameter( "TrackFitObject" ,
 				   "[1] LeptonFitObject, [2] TrackParticleFitObject" ,
 				    _trackFitObject ,
-				    (int) 1);
+				    (int) 2);
 
 return;
 }
