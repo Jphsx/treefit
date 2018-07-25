@@ -96,9 +96,9 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 	RecoMass = recosum.M();
 
 	//populate the parent vectors
-	recoparent.push_back(recosum.Px());
-	recoparent.push_back(recosum.Py());
-	recoparent.push_back(recosum.Pz());
+	recoParentParams.push_back(recosum.Px());
+	recoParentParams.push_back(recosum.Py());
+	recoParentParams.push_back(recosum.Pz());
 	//recoparent
 
 }
