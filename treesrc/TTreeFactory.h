@@ -28,11 +28,11 @@ class TTreeFactory{
 
 	//the resonance for the particles contained in this class
 	//Params : { Px Py Pz E }
-	std::vector<double> recoparentParams{};
-	std::vector<double> fitparentParams{};
+	std::vector<double> recoParentParams{};
+	std::vector<double> fitParentParams{};
 	//Errors : { dPx dPy dPz dE }
-	std::vector<double> recoparentErrors{};
-	std::vector<double> fitparentErrors{};
+	std::vector<double> recoParentErrors{}; //TODO these
+	std::vector<double> fitParentErrors{};
 	
 	
 	//this nodes resonance mass
