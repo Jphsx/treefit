@@ -38,7 +38,6 @@ class Covariance{
 	static double* constructJacobian(std::vector<Particle*> parts, std::vector<int> combo, int FO_Option);
 	static std::vector<double> constructJFOJacobian(Particle* p);
 	static std::vector<double> constructLFOJacobian(Particle* p);
-	//static std::Vector<string> constuct TPFOJacobian();
 	static std::vector<double> constructTPFOJacobian(Particle* p);
 	
 	static void printCovarianceMatrix(double* cov, int rows, int columns);//dim = Nparam
