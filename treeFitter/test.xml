@@ -51,7 +51,7 @@
 		<parameter name="preorderMass" type="FloatVec"> 0.547862 -1 -1 -1  </parameter>
 
 		<!-- fit object option -->
-		<parameter name="TrackFitObject" value="1" />
+		<parameter name="TrackFitObject" value="2" />
 
 		<!-- cuts -->
 		<parameter name="FitProbabilityCut" value="-1.0" />
