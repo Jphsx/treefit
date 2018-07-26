@@ -54,7 +54,7 @@
 		<parameter name="TrackFitObject" value="2" />
 
 		<!-- cuts -->
-		<parameter name="FitProbabilityCut" value="-1.0" />
+		<parameter name="FitProbabilityCut" value="-2.0" />
 
 		<!-- input/output collection names -->
 		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
