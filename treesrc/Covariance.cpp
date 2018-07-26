@@ -229,7 +229,7 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	return jacobian;
 
 }
-std::vector<double> constructTPFOJacobian(Particle* p){
+std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	std::vector<double> jacobian{};
 
 
