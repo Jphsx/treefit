@@ -691,9 +691,14 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 		
 		fitter = fitParticles(fit);
+		//get the global covariance for this fit, we need to make sure it created one
+		//if there is no matrix we need to skip this event
+		int dim;
+		fitter->getGlobalCovarianceMatrix(dim);
+		std::cout<<" the fit cov matrix dimension !!!! "<< dim <<std::endl;
 		
 		//check and see if this is the best fit and exceeds the minimal probability cut
-		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut){
+		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut && dim > 0){
 			bestfit = fit;
 			bestfitprob = fitter->getProbability();
  		}
@@ -704,28 +709,12 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		TFit->fitparts = fit_vec;
 //following code reduced to 1 function call
 		createFitParticlesfromFitObjects();
-	/*	for(int k=0; k<FitObjects.size(); k++){
-			if(FitObjects.at(k)==NULL){
-				continue;
-			} 
-			
-			if(TFit->recoparts.at(k)->isTrack){
-			//	TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
-				TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
-				
-			}
-			if(!TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
-			}
-			
-						
-		}
-	*/
-		if(fitter->getProbability() > _fitProbabilityCut){
+	
+		if(fitter->getProbability() > _fitProbabilityCut &&  dim > 0){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
-				
+			std::cout<<"going to store in lcio "<<std::endl;
 			//uncomment this after we know tpfo fits	
-			//createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
+			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
 			
 		}
 		
