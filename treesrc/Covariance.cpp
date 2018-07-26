@@ -229,7 +229,13 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	return jacobian;
 
 }
-double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<int> combo){
+std::vector<double> constructTPFOJacobian(Particle* p){
+	std::vector<double> jacobian{};
+
+
+	return jacobian;
+}
+double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<int> combo,  int FO_Option){
 
 	//local param size in particle will give the number of params
 	std::vector<int> nparams = getnparamsvec(parts,combo);
@@ -252,8 +258,12 @@ double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<
 	std::cout<<"going into the big matrix "<<std::endl;
 	for(int i = 0; i < Nparts; i++){
 		if(p.at(i)->isTrack){
-			//LFO
-			jacobian.at(i) =  (constructLFOJacobian(p.at(i) ));
+			if( FO_Option == 1){
+				jacobian.at(i) =  (constructLFOJacobian(p.at(i) ));
+			}
+			if( FO_Option == 2){
+				jacobian.at(i) = (constructTPFOJacobian(p.at(i) ));
+			}
 		}
 		if(!p.at(i)->isTrack){
 			//JFO
@@ -414,7 +424,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 	return vec;
 
 }
-float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo){
+float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo,  int FO_Option){
 	
 
 	//get Nparams
@@ -424,7 +434,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 
 	//get the jacobian for this submatrix
 	//the jacobian retrieved is actually the transpose
-	double* jacobian = constructJacobian(parts,subCombo);
+	double* jacobian = constructJacobian(parts,subCombo, FO_Option);
 	
 	//do the matrix calculation
 	//figure out all matrix dimensions

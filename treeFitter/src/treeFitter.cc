@@ -715,7 +715,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			std::cout<<"going to store in lcio "<<std::endl;
 			//uncomment this after we know tpfo fits	
-			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
+			//createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
 			
 		}
 		
@@ -761,22 +761,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		std::vector<Particle*> fit_vec(TFit->recoparts.size());
 		TFit->fitparts = fit_vec;
 		createFitParticlesfromFitObjects();
-		/*for(int k=0; k<FitObjects.size(); k++){
-			if(FitObjects.at(k)==NULL){
-				continue;
-			} 
-			
-			if(TFit->recoparts.at(k)->isTrack){
-				//TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
-				TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
-				
-			}
-			if(!TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), -1, -1, TFit->recoparts.at(k)->Bfield) ;
-			}
-			
-						
-		}*/
+		
 
 	std::cout<<"print bestfit"<<std::endl;
 		for(int i=0; i<bestfit.size(); i++){
@@ -816,10 +801,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
 	
 			//ading cov stuff
-			int gcovdim;
+			/*int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
 			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i));
-			ttrees.at(index)->addFitParentErrors(cov4vec);
+			ttrees.at(index)->addFitParentErrors(cov4vec);*/
 			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->TreeFillAndClear();
 			std::cout<<"weve went past trees"<<std::endl;

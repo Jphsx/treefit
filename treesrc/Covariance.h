@@ -21,9 +21,10 @@ class Covariance{
 
 	public:
 	//main method to call
-	static float* get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
+	//Options 1=LFO 2=TPFO
+	static float* get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo,  int FO_Option);
 	static double* get4VecLD(double* cov);
-	//TODO get lower diagonal
+	
 
 	//the jacobian derivatives are completely dependent on
 	//the type of fit objects used
@@ -34,10 +35,11 @@ class Covariance{
 
 	//first testing construct a jacobian with strings
 	//take in all fit parts and the combo for this resonance
-	static double* constructJacobian(std::vector<Particle*> parts, std::vector<int> combo);
+	static double* constructJacobian(std::vector<Particle*> parts, std::vector<int> combo, int FO_Option);
 	static std::vector<double> constructJFOJacobian(Particle* p);
 	static std::vector<double> constructLFOJacobian(Particle* p);
 	//static std::Vector<string> constuct TPFOJacobian();
+	static std::vector<double> constructTPFOJacobian(Particle* p);
 	
 	static void printCovarianceMatrix(double* cov, int rows, int columns);//dim = Nparam
 	static void printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> > > cov );
