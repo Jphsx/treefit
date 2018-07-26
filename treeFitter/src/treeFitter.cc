@@ -15,8 +15,8 @@
 #include "LeptonFitObject.h"
 #include "JetFitObject.h"
 #include "OPALFitterGSL.h"
-#include "NewFitterGSL.h"
-#include "NewFitterGSL.h"
+#include "OPALFitterGSL.h"
+#include "OPALFitterGSL.h"
 #include "MassConstraint.h"
 
 // Marlin stuff
@@ -303,9 +303,9 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
   	return collectionFound;
 }
 //input a fit from the fit table 
-NewFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
+OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//general procedure
-		NewFitterGSL *  fitter = new NewFitterGSL();
+		OPALFitterGSL *  fitter = new OPALFitterGSL();
 
 		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit	
 		//printing fit for testing
@@ -465,7 +465,7 @@ void treeFitter::createFitParticlesfromFitObjects(){
 }
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
-ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, Node* root, std::vector<std::vector<int> > fit, NewFitterGSL *  fitter){
+ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, Node* root, std::vector<std::vector<int> > fit, OPALFitterGSL *  fitter){
 		
 		
 		//if(root->isLeaf) return NULL;// this should never happen
@@ -671,7 +671,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::vector<std::vector<int> > bestfit{};
 
 	//do the fits
-	NewFitterGSL*  fitter; 
+	OPALFitterGSL*  fitter; 
 	
 	for(int j = 0; j<TFit->fitTable.at(0).size(); j++){
 		//extract each fit onto a 2d fit vector
@@ -692,7 +692,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		std::cout<<" the fit cov matrix dimension !!!! "<< dim <<std::endl;
 		
 		//check and see if this is the best fit and exceeds the minimal probability cut
-		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut && dim >= 0){
+		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut && dim > 0){
 			bestfit = fit;
 			bestfitprob = fitter->getProbability();
  		}
@@ -704,7 +704,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 //following code reduced to 1 function call
 		createFitParticlesfromFitObjects();
 	
-		if(fitter->getProbability() > _fitProbabilityCut &&  dim >= 0){
+		if(fitter->getProbability() > _fitProbabilityCut &&  dim > 0){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			std::cout<<"going to store in lcio "<<std::endl;
 			//uncomment this after we know tpfo fits	
