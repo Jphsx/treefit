@@ -732,7 +732,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"is fault here"<<std::endl;
 	//make sure there was at least 1 fit
 
-	if(bestfitprob != -1.0){
+	if(bestfitprob != -2.0){
 		fitter = fitParticles(bestfit);
 	//try printing out the global covariance matrix
 	int dim=0;
