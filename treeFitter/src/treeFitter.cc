@@ -641,13 +641,6 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		return p;
 
 }
-/*void treeFitter::createLCOutputParticles(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb){
-		//create the LCIO reconstructed particle tree
-		//save the particles to an output collection		
-		//calreccol->setSubset(true);	   is this needed?
-		recparcol->addElement( createOutputParticle(TFit->ParticleTree->Root, fitProb, fit  ));
-		  
-}*/
 void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::cout<<"EVENT "<<evtNo<<std::endl;
 	//print each particle directly 
@@ -699,7 +692,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		std::cout<<" the fit cov matrix dimension !!!! "<< dim <<std::endl;
 		
 		//check and see if this is the best fit and exceeds the minimal probability cut
-		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut && dim > 0){
+		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut && dim >= 0){
 			bestfit = fit;
 			bestfitprob = fitter->getProbability();
  		}
@@ -711,7 +704,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 //following code reduced to 1 function call
 		createFitParticlesfromFitObjects();
 	
-		if(fitter->getProbability() > _fitProbabilityCut &&  dim > 0){
+		if(fitter->getProbability() > _fitProbabilityCut &&  dim >= 0){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			std::cout<<"going to store in lcio "<<std::endl;
 			//uncomment this after we know tpfo fits	
