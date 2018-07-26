@@ -15,8 +15,8 @@
 #include "LeptonFitObject.h"
 #include "JetFitObject.h"
 #include "OPALFitterGSL.h"
-#include "NewtonFitterGSL.h"
-#include "NewtonFitterGSL.h"
+#include "NewFitterGSL.h"
+#include "NewFitterGSL.h"
 #include "MassConstraint.h"
 
 // Marlin stuff
@@ -303,9 +303,9 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
   	return collectionFound;
 }
 //input a fit from the fit table 
-NewtonFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
+NewFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//general procedure
-		NewtonFitterGSL *  fitter = new NewtonFitterGSL();
+		NewFitterGSL *  fitter = new NewFitterGSL();
 
 		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit	
 		//printing fit for testing
@@ -465,7 +465,7 @@ void treeFitter::createFitParticlesfromFitObjects(){
 }
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
-ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, Node* root, std::vector<std::vector<int> > fit, NewtonFitterGSL *  fitter){
+ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, Node* root, std::vector<std::vector<int> > fit, NewFitterGSL *  fitter){
 		
 		
 		//if(root->isLeaf) return NULL;// this should never happen
@@ -671,7 +671,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::vector<std::vector<int> > bestfit{};
 
 	//do the fits
-	NewtonFitterGSL*  fitter; 
+	NewFitterGSL*  fitter; 
 	
 	for(int j = 0; j<TFit->fitTable.at(0).size(); j++){
 		//extract each fit onto a 2d fit vector
