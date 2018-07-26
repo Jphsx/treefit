@@ -50,6 +50,9 @@
 		<parameter name="preorderSerial" type="string" value = "0,1,),2,),3,),)" />
 		<parameter name="preorderMass" type="FloatVec"> 0.547862 -1 -1 -1  </parameter>
 
+		<!-- fit object option -->
+		<parameter name="TrackFitObject" value="1" />
+
 		<!-- cuts -->
 		<parameter name="FitProbabilityCut" value="0.0" />
 
