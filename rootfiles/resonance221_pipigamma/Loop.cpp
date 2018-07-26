@@ -52,5 +52,45 @@ void Loop(){
   	while(myvecReader5_2.Next()){
 		oc->hpdgs_param_2->Fill(myvecvar5_2->at(2));
 	}
+  	TTreeReader myvecReader6_0(tree);
+  	TTreeReaderValue<std::vector<double> > myvecvar6_0(myvecReader6_0,"recoParentParams");
+  	while(myvecReader6_0.Next()){
+		oc->hrecoParentParams_param_0->Fill(myvecvar6_0->at(0));
+	}
+  	TTreeReader myvecReader6_1(tree);
+  	TTreeReaderValue<std::vector<double> > myvecvar6_1(myvecReader6_1,"recoParentParams");
+  	while(myvecReader6_1.Next()){
+		oc->hrecoParentParams_param_1->Fill(myvecvar6_1->at(1));
+	}
+  	TTreeReader myvecReader6_2(tree);
+  	TTreeReaderValue<std::vector<double> > myvecvar6_2(myvecReader6_2,"recoParentParams");
+  	while(myvecReader6_2.Next()){
+		oc->hrecoParentParams_param_2->Fill(myvecvar6_2->at(2));
+	}
+  	TTreeReader myvecReader6_3(tree);
+  	TTreeReaderValue<std::vector<double> > myvecvar6_3(myvecReader6_3,"recoParentParams");
+  	while(myvecReader6_3.Next()){
+		oc->hrecoParentParams_param_3->Fill(myvecvar6_3->at(3));
+	}
+  	TTreeReader myvecReader8_0(tree);
+  	TTreeReaderValue<std::vector<double> > myvecvar8_0(myvecReader8_0,"fitParentParams");
+  	while(myvecReader8_0.Next()){
+		oc->hfitParentParams_param_0->Fill(myvecvar8_0->at(0));
+	}
+  	TTreeReader myvecReader8_1(tree);
+  	TTreeReaderValue<std::vector<double> > myvecvar8_1(myvecReader8_1,"fitParentParams");
+  	while(myvecReader8_1.Next()){
+		oc->hfitParentParams_param_1->Fill(myvecvar8_1->at(1));
+	}
+  	TTreeReader myvecReader8_2(tree);
+  	TTreeReaderValue<std::vector<double> > myvecvar8_2(myvecReader8_2,"fitParentParams");
+  	while(myvecReader8_2.Next()){
+		oc->hfitParentParams_param_2->Fill(myvecvar8_2->at(2));
+	}
+  	TTreeReader myvecReader8_3(tree);
+  	TTreeReaderValue<std::vector<double> > myvecvar8_3(myvecReader8_3,"fitParentParams");
+  	while(myvecReader8_3.Next()){
+		oc->hfitParentParams_param_3->Fill(myvecvar8_3->at(3));
+	}
 	f2->Write();
 }
