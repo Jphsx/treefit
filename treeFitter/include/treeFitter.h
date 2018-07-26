@@ -103,7 +103,7 @@ class treeFitter : public marlin::Processor {
 	Creates the fit objects and performs the fit with all
 	specified constraints
 	*************/
-	OPALFitterGSL* fitParticles(std::vector< std::vector<int>> fit);
+	NewtonFitterGSL* fitParticles(std::vector< std::vector<int>> fit);
 	/*************
 	Global vector to store all fit objects for post fit
 	easy access
@@ -119,7 +119,7 @@ class treeFitter : public marlin::Processor {
 	Functions to generate the proper output collections
 	**************/
 	//void createLCOutputParticles(LCCollectionVec* recparcol, std::vector<std::vector<int> > fit, double fitProb);
-	ReconstructedParticleImpl* createLCOutputParticleTree(LCCollectionVec* recparcol,Node* root, std::vector<std::vector<int> > fit, OPALFitterGSL *  fitter);
+	ReconstructedParticleImpl* createLCOutputParticleTree(LCCollectionVec* recparcol,Node* root, std::vector<std::vector<int> > fit, NewtonFitterGSL *  fitter);
 
 	void FindMassConstraintCandidates( LCCollectionVec* recparcol);
 
