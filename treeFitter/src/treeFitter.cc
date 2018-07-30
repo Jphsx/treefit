@@ -796,7 +796,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//ading cov stuff
 			int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i));
+			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i), _trackFitObject);
 			ttrees.at(index)->addFitParentErrors(cov4vec);
 
 			std::cout<<"is the fault at trees"<<std::endl;
