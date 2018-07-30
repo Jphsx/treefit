@@ -708,7 +708,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			std::cout<<"going to store in lcio "<<std::endl;
 			//uncomment this after we know tpfo fits	
-			//createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
+			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
 			
 		}
 		
@@ -794,10 +794,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
 	
 			//ading cov stuff
-			/*int gcovdim;
+			int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
 			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i));
-			ttrees.at(index)->addFitParentErrors(cov4vec);*/
+			ttrees.at(index)->addFitParentErrors(cov4vec);
+
 			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->TreeFillAndClear();
 			std::cout<<"weve went past trees"<<std::endl;
