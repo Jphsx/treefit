@@ -234,7 +234,7 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	const double c = 2.99792458e8; // m*s^-1        
   	const double mm2m = 1e-3;
   	const double eV2GeV = 1e-9;
-  	const double eB = p->BField*c*mm2m*eV2GeV;
+  	const double eB = p->Bfield*c*mm2m*eV2GeV;
  
  	
 	double cosLambda = 1 / sqrt(1 + p->track->getTanLambda()*p->track->getTanLambda() );
@@ -242,10 +242,8 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	double sinLambda = p->track->getTanLambda()*cosLambda;
 	double cosPhi = cos(p->track->getPhi());
 	double sinPhi = sin(p->track->getPhi());
-	double px = P*cosLambda*cosPhi;
-	double py = P*cosLambda*sinPhi;
-	double pz = P*sinLambda;
-	double E = sqrt( p*p + p->part->getMass() * p->part->getMass() );
+
+	double E = sqrt( P*P + p->part->getMass() * p->part->getMass() );
 	double M = p->part->getMass();
 
 	double omega = p->track->getOmega();
