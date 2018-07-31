@@ -482,11 +482,11 @@ double* Covariance::rescaleGlobalCov(double* globalCov, int dim, std::vector<Par
 	
 		
 	//go to 3d to find the track sectors 	
-	std::vector<std::vector<std::vector<double> > > cov3d = matrix1DTo3D(globalcov, dim, parts, combo);
+	std::vector<std::vector<std::vector<double> > > cov3d = matrix1DTo3D(globalCov, dim, parts, combo);
 
 	//scan through  parts/combo, the order the tracks appear is the order they appear on the cov matrix
 	//make a new parts vector to make the indices correspond with the 3d matrix
-	std::vector<Particle*> p{}:
+	std::vector<Particle*> p{};
 	for(int i=0; i<combo.size(); i++){
 		p.push_back( parts.at(combo.at(i)) );
 	}
@@ -498,7 +498,7 @@ double* Covariance::rescaleGlobalCov(double* globalCov, int dim, std::vector<Par
 			
 			//loop through the all sectors containing k and rescale kk, kj, jk
 			for(int i=0; i<cov3d.size(); i++){
-				for( int j=0; j<cov3d(); j++){
+				for( int j=0; j<cov3d.at(i).size(); j++){
 					if( i == k){//rescale
 						rescaleSector( cov3d.at(i).at(j) );
 					}
@@ -527,7 +527,9 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 	double* subcov = getSubGlobalCov(globalCov,dim, parts, globalCombo, subCombo);
 	//if we use tpfo we need to rescale globalCov
 	if(FO_Option == 2){
-		subcov = rescaleGlobalCov(subcov, getNparams( parts, subCombo),  parts, subCombo);
+		double* rescaledsubcov;
+		rescaledsubcov = rescaleGlobalCov(subcov, getNparams( parts, subCombo),  parts, subCombo);
+		subcov = rescaledsubcov;
 	}
 	//get the jacobian for this submatrix
 	//the jacobian retrieved is actually the transpose
