@@ -44,8 +44,10 @@ class Covariance{
 	static void printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> > > cov );
 	//TODO 
 	
-	
-	
+	//manipulation for tpfo cov matrix rescaling
+	double* rescaleGlobalCov(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
+	void rescaleSector(std::vector<double>& covSector);	
+
 	//produce covariance sub matrix
 	static double* getSubGlobalCov( double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
 
