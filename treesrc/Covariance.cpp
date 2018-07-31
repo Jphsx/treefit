@@ -527,9 +527,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 	double* subcov = getSubGlobalCov(globalCov,dim, parts, globalCombo, subCombo);
 	//if we use tpfo we need to rescale globalCov
 	if(FO_Option == 2){
-		double* rescaledsubcov;
-		rescaledsubcov = rescaleGlobalCov(subcov, getNparams( parts, subCombo),  parts, subCombo);
-		subcov = rescaledsubcov;
+		subcov = rescaleGlobalCov(subcov, getNparams( parts, subCombo),  parts, subCombo);
 	}
 	//get the jacobian for this submatrix
 	//the jacobian retrieved is actually the transpose
