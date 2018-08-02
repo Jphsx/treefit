@@ -1,0 +1,57 @@
+<!--#############################################################-->
+<!--#                                                           #-->
+<!--#     Example steering file for Marlin                      #-->
+<!--#   for finding and fitting pipigamma candidates consistent #-->
+<!--#     with                                                  #-->
+<!--#                                                           #-->
+<!--#           J/psi -> mu+ mu-                                #--> 
+<!--#                                                           #-->
+<!--#############################################################-->
+
+
+<marlin>
+	<execute>
+   	<processor name="MyTreeFitter"/>  
+	<processor name="MyLCIOOutputProcessor"/>
+ 	</execute>
+
+	<global>
+		<parameter name="LCIOInputFiles"> /pnfs/desy.de/ilc/prod/ilc/mc-opt/ild/rec/calib/resonance/ILD_l5_o1_v02_nobg/v01-19-05-p01/u038/rv01-19-05-p01.sv01-19-05-p01.mILD_l5_o1_v02_nobg.PJpsi_muPmuM_20Gev.n001_1.d_rec_u038.slcio </parameter>
+   		<parameter name="SkipNEvents" value="0" />
+   		<parameter name="MaxRecordNumber" value="0" /> <!-- 0 is all events -->
+   		<parameter name="SupressCheck" value="false" />
+   		<parameter name="GearXMLFile" value="gear_ILD_l4_v02_dd4hep.xml" />
+   		<parameter name="Verbosity"    options= "DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT"> DEBUG </parameter>
+ 	</global>
+	
+	<processor name="MyTreeFitter" type="treeFitter">   
+		<!-- tree parameters -->
+		<parameter name="preorderPdgs" type="IntVec"> 443 13 -13 </parameter>
+		<parameter name="preorderSerial" type="string" value = "0,1,),2,),)" />
+		<parameter name="preorderMass" type="FloatVec"> 3.096916 -1 -1  </parameter>
+
+		<!-- fit object option -->
+		<parameter name="TrackFitObject" value="1" />
+
+		<!-- cuts -->
+		<parameter name="FitProbabilityCut" value="-2.0" />
+
+		<!-- input/output collection names -->
+		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
+		<!-- we still require pfo collection to obtain mass information for the tracks -->
+		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
+		<parameter name="McParticleCollectionName" value="MCParticle" />  
+		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles</parameter>
+   
+ 	</processor>
+
+	<processor name="MyLCIOOutputProcessor" type="LCIOOutputProcessor">
+     		<!--   standard output: full reconstruction keep all collections -->
+     		<parameter name="LCIOOutputFile" type="string" > ./jpsifit.slcio </parameter>
+     		<parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
+		<parameter name="fullSubsetCollections" value="1"/>
+   
+ 	</processor>
+
+
+</marlin>

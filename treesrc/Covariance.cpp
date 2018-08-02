@@ -248,7 +248,7 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	double E = sqrt( P*P + p->part->getMass() * p->part->getMass() );
 
 	double omega = p->track->getOmega();
-	omega = fabs(omega);
+	//omega = fabs(omega);
 	
 
 	std::vector<double> jacobian{};
