@@ -812,6 +812,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	}
 	recop.clear();
 	fitp.clear();
+	delete fitter;
 	}//end bestfit   
 
 	std::cout<<"seg at the end??"<<std::endl;
@@ -825,7 +826,7 @@ std::cout<<"seg at the end??"<<std::endl;
 	//might need to run a destructor here first
 	TFit->clearEvent();
 	FitObjects.clear();//clear the bestfit
-	delete fitter;
+	
 std::cout<<"seg at the end??"<<std::endl;
 	
 	return;
