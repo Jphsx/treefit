@@ -673,7 +673,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	std::vector<std::vector<int> > bestfit{};
 
 	//do the fits
-	OPALFitterGSL*  fitter; 
+	OPALFitterGSL*  fitter = NULL; 
 	
 	for(int j = 0; j<TFit->fitTable.at(0).size(); j++){
 		//extract each fit onto a 2d fit vector
@@ -828,6 +828,8 @@ std::cout<<"seg at the end??"<<std::endl;
 	FitObjects.clear();//clear the bestfit
 	
 std::cout<<"seg at the end??"<<std::endl;
+	//renull fitter
+	fitter = NULL;
 	
 	return;
 }
