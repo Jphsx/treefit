@@ -831,7 +831,7 @@ std::cout<<"seg at the end??"<<std::endl;
 	//renull fitter
 	fitter = NULL;
 	
-	return;
+	
 }
 
 
