@@ -64,7 +64,7 @@ class treeFitter : public marlin::Processor {
    	*/
   	virtual void end() ;
 
-	private:
+	protected:
 	/*************
 	track the event number for printing
 	*************/
