@@ -728,6 +728,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//also clear fitparts after each fit and FOs
 		TFit->fitparts.clear();
 		FitObjects.clear();//this vector will not change capacity when cleared size will be 0 though
+		//delete fitter?
+		delete fitter;
 	}//fitTable iteration
 	
 	//redo the best fit, and send the particles to the TTrees in the Rootfiles
@@ -823,7 +825,9 @@ std::cout<<"seg at the end??"<<std::endl;
 	//might need to run a destructor here first
 	TFit->clearEvent();
 	FitObjects.clear();//clear the bestfit
+	delete fitter;
 std::cout<<"seg at the end??"<<std::endl;
+	
 	return;
 }
 
