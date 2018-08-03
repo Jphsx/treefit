@@ -187,6 +187,10 @@ void treeFitter::end(){
 	//if(_fitAnalysis){
 	//	rootFile->Write();
 	//}
+	std::cout<<"deleting TFit"<<std::endl;
+	delete TFit->ParticleTree;
+	TFit = NULL;
+	std::cout<<"deleted TFIT"<<std::endl;
 	file->Write();
   	return;
 }
