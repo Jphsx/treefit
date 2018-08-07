@@ -62,8 +62,8 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 	preorderVertexConstraint.push_back(0.0);
 	registerProcessorParameter("preorderVertexConstraint",
 				   "Nodes whos children are subject to common vertex constraint",
-				    _preorderVertexConstraint;
-				   preorederVertexConstraint);
+				    _preorderVertexConstraint,
+				   preorderVertexConstraint);
 
 	std::string preorderSerial = " ) ";
 	registerProcessorParameter("preorderSerial",
