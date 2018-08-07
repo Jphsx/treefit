@@ -47,7 +47,7 @@
 		<parameter name="preorderVertexConstraint" type="IntVec"> 1 -1 -1 </parameter>
 
 		<!-- fit object option -->
-		<parameter name="TrackFitObject" value="1" />
+		<parameter name="TrackFitObject" value="2" />
 
 		<!-- cuts -->
 		<parameter name="FitProbabilityCut" value="-2.0" />
