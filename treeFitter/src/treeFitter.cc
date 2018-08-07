@@ -488,8 +488,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		
 
 		 FitObjects = FO_vec;
-		std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;;
-		std::cout<<"Error
+		std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;
+		
 	
 		
 		return fitter;
