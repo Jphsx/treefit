@@ -422,7 +422,47 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 
 
 			}//end if
+
+			//we can do vertex constraints in the same loop
+			if(node->VC != -1){
+				VertexFitObject* vfo = new VertexFitObject("commonVtx",0,0,0);
+				//doint vfo init stuff ??
+				vertexFO->setParam(0,0.,false,false); // measured=false, fixed=false
+      				vertexFO->setParam(1,0.,false,false);
+      				vertexFO->setParam(2,0.,false,false);
+      				vertexFO->setError(0,100.); 
+      				vertexFO->setError(1,100.);
+      				vertexFO->setError(2,100.);
+
+				///add tpfos to vfo
+				vertexFO->addTrack( tfo[0], false, true ); 
+      				vertexFO->addTrack( tfo[1], false, true );
+				std::vector<ParticleFitObject*>* VertexFitObjects = new vector<ParticleFitObject*>();
+				for(int j=0; j<fit.at(i).size(); j++){
+					//TEST for now only add TPFOs to the VFO, we will try JFO later
+					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
+					VertexFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
+					}//end track req
+
+				}//end j
+
+				//add tpfos to vfo
+				for(int j=0; j<VertexFitObjects.size(); j++){
+					vfo->addTrack((TrackParticleFitObject*)VertexFitObjects.at(j), false, true); // inbound=false, measured=true
+				}//end j
+				
+				fitter->addFitObject( vfo );
+				// add a 3d vertex constraint
+      				vfo->addConstraints( *fitter, int(VertexFitObject::VXYZ) );
+				// prepare for fit
+      				vfo->initForFit();
+					
+			}//end if					
+									
+
 		}//end i
+
+		
 		
 		
 		
@@ -448,7 +488,9 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		
 
 		 FitObjects = FO_vec;
-		std::cout<<"Fit Probability: "<<fitter->getProbability()<<std::endl;
+		std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;;
+		std::cout<<"Error
+	
 		
 		return fitter;
 }
@@ -541,8 +583,8 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			std::cout<<"BEGINNING JACOBIAN TEST"<<std::endl;
 			int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId), _trackFitObject );
-			Particle::printCovarianceMatrix(cov4vec, 4);
+//TEMP REMOVE FOR VFO TEST			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId), _trackFitObject );
+//TEMP REMOVE			Particle::printCovarianceMatrix(cov4vec, 4);
 
 	//	//start major testing		std::vector<double> jac{};
 	/*		double * jac;		
@@ -722,7 +764,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			std::cout<<"going to store in lcio "<<std::endl;
 			//uncomment this after we know tpfo fits	
-			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
+		//TEMP REMOVE	createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
 			
 		}
 		
@@ -812,8 +854,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//ading cov stuff
 			int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i), _trackFitObject);
-			ttrees.at(index)->addFitParentErrors(cov4vec);
+		//TEMP REMOVE	float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i), _trackFitObject);
+		//TEMP REMOVE	ttrees.at(index)->addFitParentErrors(cov4vec);
 
 			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->TreeFillAndClear();
