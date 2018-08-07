@@ -19,7 +19,8 @@ class Node{
 	Node* parent = NULL;
 	vector<Node*> children{};
 	int pdg = -1;
-	double mass = -1.0; // -1 for leaf or no 			constraint at this node
+	double mass = -1.0; // -1 for leaf or no constraint at this node
+	int VC = -1; // -1 for leaf no Vertex constraint at this node, +1 for VC
 	bool isLeaf = 0;
 
 	//unique ID from key

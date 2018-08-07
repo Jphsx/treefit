@@ -43,6 +43,9 @@
 		<parameter name="preorderSerial" type="string" value = "0,1,),2,),)" />
 		<parameter name="preorderMass" type="FloatVec"> 3.096916 -1 -1  </parameter>
 
+		<!-- vertex constraint options -->
+		<parameter name="preorderVertexConstraint" type="IntVec"> 1 -1 -1 </parameter>
+
 		<!-- fit object option -->
 		<parameter name="TrackFitObject" value="1" />
 

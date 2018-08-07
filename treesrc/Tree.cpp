@@ -111,6 +111,15 @@ void Tree::setTreeMasses(Node* root, vector<float> masses, int* massptr ){
 	}
 	return;
 }
+//a preorder traversal that sets the vertex constraint for each node based on the input vector
+void Tree::setTreeVertexConstraints(Node* root, vector<int> VCs, int* vcptr){
+	root->VC = VCs.at(*vcptr);
+	++*vcptr;
+	for(int i=0; i< root->children.size(); i++){
+		setTreeVertexConstraints(root->children.at(i), VCs, vcptr);
+	}
+	return;
+}
 //a preorder traversal that sets the pdg codes for each node based on the input string
 void Tree::setTreePdgCodes(Node* root, vector<int> pdgs, int* pdgptr ){
 	root->pdg = pdgs.at(*pdgptr);
@@ -253,7 +262,7 @@ void Tree::getLastNonLeafNodeId(Node* root, int* id){
 //preorder print all tree information
 void Tree::printTree(Node* root){
 	cout<<endl;
-	cout<< "NodeId: "<< root->nodeId <<" Pdg: "<< root->pdg <<" Mass: "<< root->mass << " isLeaf= "<<root->isLeaf <<" Children { ";
+	cout<< "NodeId: "<< root->nodeId <<" Pdg: "<< root->pdg <<" Mass: "<< root->mass << " VertexConstraint = "<< root->VC << " isLeaf= "<<root->isLeaf <<" Children { ";
 	for(int i=0; i<root->children.size(); i++){
 		cout<< root->children.at(i)->nodeId << " ";
 	}
@@ -291,7 +300,7 @@ void Tree::printTree(Node* root){
 		printTree(root->children.at(i));
 	}
 }
-void Tree::treeInit(vector<int> pdg, string serial, vector<float>   mass, string delimiter){
+void Tree::treeInit(vector<int> pdg, string serial, vector<float> mass, vector<int> vertex, string delimiter){
 	int index = 0;
 	Node* root = new Node();
 	root = constructTree( splitString(serial,delimiter), &index);
@@ -304,12 +313,11 @@ void Tree::treeInit(vector<int> pdg, string serial, vector<float>   mass, string
 	cout<<endl;
 
 	index=0;
-	
 	setTreeMasses(root, mass, &index);
 	index=0;
-	
-	
 	setTreePdgCodes(root,pdg, &index);
+	index=0;
+	setTreeVertexConstraints(root,vertex,&index);
 	
 	markTreeLeaves(root);
 	

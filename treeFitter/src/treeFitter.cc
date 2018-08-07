@@ -58,11 +58,19 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 				   _preorderMass,
 				   preorderMass);
 
+	std::vector<int> preorderVertexConstraint;
+	preorderVertexConstraint.push_back(0.0);
+	registerProcessorParameter("preorderVertexConstraint",
+				   "Nodes whos children are subject to common vertex constraint",
+				    _preorderVertexConstraint;
+				   preorederVertexConstraint);
+
 	std::string preorderSerial = " ) ";
 	registerProcessorParameter("preorderSerial",
 				   "Preorder Serialization of the tree using unique node IDs",
 				   _preorderSerial,
 				   preorderSerial);
+
 
  
 	//input collection parameters
@@ -127,7 +135,7 @@ void treeFitter::init() {
 	//build particle tree
 	TFit = new TreeFit();
 	string SerialDelimiter = " ,";
-	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, SerialDelimiter);
+	TFit->ParticleTree->treeInit(_preorderPdgs, _preorderSerial, _preorderMass, _preorderVertexConstraint, SerialDelimiter);
 	TFit->ParticleTree->printTree(TFit->ParticleTree->Root);
 
 	//build TTREE from non leaf nodes

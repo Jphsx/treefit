@@ -127,7 +127,10 @@ class treeFitter : public marlin::Processor {
 	/** tree construction parameters **/
 	std::vector<int> _preorderPdgs{};
 	std::vector<float> _preorderMass{};
-	std::string _preorderSerial;
+	std::string _preorderSerial{};
+
+	/** 1/-1 indicator for V.C. at node **/
+	std::vector<int> _preorderVertexConstraint{};
 
 	/*************
 	 object that stores/manages

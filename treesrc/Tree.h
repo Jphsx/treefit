@@ -27,6 +27,7 @@ class Tree{
 	void preOrderTraverse(Node* tree);
 	void postOrderTraverse(Node* tree);
 	void setTreeMasses(Node* root, vector<float> masses, int* massptr);
+	void setTreeVertexConstraints(Node* root, vector<int> VCs, int* vcptr);
 	void setTreePdgCodes(Node* root, vector<int> pdgs, int* pdgptr );
 	void markTreeLeaves(Node* root);
 	void findLeaves(Node* root, Node* originalParent);
@@ -35,7 +36,7 @@ class Tree{
 	void getLastNonLeafNodeId(Node* root, int* id);
 	void printTree(Node* root);
 	//void treeInit(string pdg, string serial, string mass, string delimiter, int TESTNUM);
-	void treeInit(vector<int> pdg, string serial, vector<float>  mass, string delimiter);
+	void treeInit(vector<int> pdg, string serial, vector<float> mass, vector<int> vertex, string delimiter);
 
 
 	static Node* locateAncestorNearestNonLeafChild(Node* root);
