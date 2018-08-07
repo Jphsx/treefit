@@ -11,6 +11,7 @@
 
 <marlin>
 	<execute>
+	<processor name="MyT2RP"/>
    	<processor name="MyTreeFitter"/>  
 	<processor name="MyLCIOOutputProcessor"/>
  	</execute>
@@ -24,6 +25,18 @@
    		<parameter name="Verbosity"    options= "DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT"> DEBUG </parameter>
  	</global>
 	
+	<processor name="MyT2RP" type="TrackToReconstructedParticle">
+		<!-- particle assumptions to be applied to tracks -->		
+		<parameter name="Pdgs" type="IntVec"> 13 -13 </parameter>
+		<parameter name="Charges" type="IntVec"> 1 -1 </parameter>
+		<parameter name="Masses" type="FloatVec"> .1056583715 .1056583715</parameter>
+
+		<!-- input/output collection names -->
+		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
+		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">NewPfoCol</parameter>
+		
+	</processor>
+
 	<processor name="MyTreeFitter" type="treeFitter">   
 		<!-- tree parameters -->
 		<parameter name="preorderPdgs" type="IntVec"> 443 13 -13 </parameter>
@@ -39,7 +52,7 @@
 		<!-- input/output collection names -->
 		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
 		<!-- we still require pfo collection to obtain mass information for the tracks -->
-		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
+		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">NewPfoCol</parameter>
 		<parameter name="McParticleCollectionName" value="MCParticle" />  
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles</parameter>
    
