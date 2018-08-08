@@ -427,21 +427,19 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			if(node->VC != -1){
 				VertexFitObject* vfo = new VertexFitObject("commonVtx",0,0,0);
 				//doint vfo init stuff ??
-				vertexFO->setParam(0,0.,false,false); // measured=false, fixed=false
-      				vertexFO->setParam(1,0.,false,false);
-      				vertexFO->setParam(2,0.,false,false);
-      				vertexFO->setError(0,100.); 
-      				vertexFO->setError(1,100.);
-      				vertexFO->setError(2,100.);
+				vfo->setParam(0,0.,false,false); // measured=false, fixed=false
+      				vfo->setParam(1,0.,false,false);
+      				vfo->setParam(2,0.,false,false);
+      				vfo->setError(0,100.); 
+      				vfo->setError(1,100.);
+      				vfo->setError(2,100.);
 
-				///add tpfos to vfo
-				vertexFO->addTrack( tfo[0], false, true ); 
-      				vertexFO->addTrack( tfo[1], false, true );
-				std::vector<ParticleFitObject*>* VertexFitObjects = new vector<ParticleFitObject*>();
+				///add tpfos to vfo (we dont need the weird ptr like in mass constraints
+				std::vector<ParticleFitObject*> VertexFitObjects{};
 				for(int j=0; j<fit.at(i).size(); j++){
 					//TEST for now only add TPFOs to the VFO, we will try JFO later
 					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
-					VertexFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
+					VertexFitObjects.push_back(FO_vec.at( fit.at(i).at(j) ));
 					}//end track req
 
 				}//end j
@@ -642,7 +640,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 
 
 	//end cov testing
-		p->setCovMatrix(cov4vec);
+	//TEMP REMOVE	p->setCovMatrix(cov4vec);
 		p->setMass(root->mass);
 		p->setCharge(charge);
 		p->addParticleID(newPDG);
