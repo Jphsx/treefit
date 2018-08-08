@@ -454,6 +454,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
       				vfo->addConstraints( *fitter, int(VertexFitObject::VXYZ) );
 				// prepare for fit
       				vfo->initForFit();
+				//add the vfo to vertex objects to get positional information
+				VertexObjects.push_back(vfo);
 					
 			}//end if					
 									
@@ -488,6 +490,22 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		 FitObjects = FO_vec;
 		std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;
 		
+		//if tpfos print vfo cov matrix
+	std::cout<<"vertex cov?:"<<std::endl;
+	for(int k = 0; k < VertexObjects.size(); k++){
+		for (unsigned int i=0; i<3; i++){
+         	for (unsigned int j=i; j<3; j++){
+              		std::cout << "Cov " << i << " " << j << " " << VertexObjects.at(k)->getCov(i,j) ;
+          }
+        }
+	std::cout<<std::endl;
+	std::cout<<"vertex params?:"<<std::endl;
+	
+		for(int i=0; i<3; i++){
+			std::cout<< VertexObjects.at(k)->getParam(i)<<" ";
+		}
+	std::cout<<std::endl;
+	}//end k
 	
 		
 		return fitter;
@@ -780,6 +798,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//also clear fitparts after each fit and FOs
 		TFit->fitparts.clear();
 		FitObjects.clear();//this vector will not change capacity when cleared size will be 0 though
+		VertexObjects.clear();
 		//delete fitter?
 		delete fitter;
 	}//fitTable iteration
@@ -878,6 +897,7 @@ std::cout<<"seg at the end??"<<std::endl;
 	//might need to run a destructor here first
 	TFit->clearEvent();
 	FitObjects.clear();//clear the bestfit
+	VertexObjects.clear();
 	
 std::cout<<"seg at the end??"<<std::endl;
 	//renull fitter

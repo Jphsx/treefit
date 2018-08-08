@@ -109,6 +109,11 @@ class treeFitter : public marlin::Processor {
 	easy access
 	*************/
 	std::vector<ParticleFitObject*> FitObjects{};
+
+	/*************
+	Also use a separate vector to store the vertex fit objects
+	*************/
+	std::vector<VertexFitObject*> VertexObjects{};
 	
 	/************
 	Function to created fit particles from the fit objects
