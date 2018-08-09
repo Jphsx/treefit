@@ -859,6 +859,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	int index=0;
 	//use index for iterating over treefactory vector, since we cant have gaps in its array
 	for(unsigned int i=0; i<bestfit.size(); i++){
+
+		if(bestfit.at(i).size > 0){
 			std::cout<<"where is fault????"<<std::endl;
 			//nodeId should by construction match fit index with ttrees index
 			//iterate over the fit particles
@@ -888,7 +890,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			ttrees.at(index)->TreeFillAndClear();
 			std::cout<<"weve went past trees"<<std::endl;
 			index++;	
-		
+		}
 		
 	}
 	recop.clear();
