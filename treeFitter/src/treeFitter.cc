@@ -439,6 +439,12 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				//get the fit subset to add to VertexFitObjects
 				std::vector<int> fitsubset = TreeFit::getVertexSet(fit.at(i), i, fit);
 				
+				std::cout<<"VERTEX FIT SUBSET FOR NODE: "<< i;
+				for(int j=0; j<fitsubset.size(); j++){
+					std::cout<<fitsubset.at(j)<<" ";
+				}
+				std::cout<<std::endl;
+
 				for(int j=0; j<fitsubset.size(); j++){
 					//TEST for now only add TPFOs to the VFO, we will try JFO later (JFO segfaults)
 					if(TFit->recoparts.at( fitsubset.at(j) )->isTrack){
