@@ -11,6 +11,7 @@
 
 <marlin>
 	<execute>
+
 	<processor name="MyPhotonResponseAdjuster"/>
 	<!-- <processor name="MyTrackResponseAdjuster" /> -->
    	<processor name="MyTreeFitter"/>  
@@ -46,7 +47,7 @@
 	
 	<processor name="MyTreeFitter" type="treeFitter">   
 		<!-- tree parameters -->
-		<parameter name="preorderPdgs" type="IntVec"> 221 211 -211 111 22 13 -13  </parameter>
+		<parameter name="preorderPdgs" type="IntVec"> 221 211 -211 111 22 11 -11  </parameter>
 		<parameter name="preorderSerial" type="string" value = "0,1,),2,),3,4,),5,),6,),),)" />
 <!--		<parameter name="preorderMass" type="FloatVec"> 0.547862 -1 -1 0.1349766 -1 -1  </parameter> -->
 		
