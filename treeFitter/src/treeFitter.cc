@@ -437,10 +437,10 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				///add tpfos to vfo (we dont need the weird ptr like in mass constraints
 				std::vector<ParticleFitObject*> VertexFitObjects{};
 				for(int j=0; j<fit.at(i).size(); j++){
-					//TEST for now only add TPFOs to the VFO, we will try JFO later
-					//if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
-					VertexFitObjects.push_back(FO_vec.at( fit.at(i).at(j) ));
-					//}//end track req
+					//TEST for now only add TPFOs to the VFO, we will try JFO later (JFO segfaults)
+					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
+						VertexFitObjects.push_back(FO_vec.at( fit.at(i).at(j) ));
+					}//end track req
 
 				}//end j
 
