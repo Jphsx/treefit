@@ -208,7 +208,7 @@ populated the global pfo vectors with particles from that collection for this ev
 ******************/
 bool treeFitter::FindPFOs( LCEvent* evt ) {
 
-	bool collectionFound = false;/pnfs/desy.de/ilc/prod/ilc/mc-opt/ild/rec/calib/resonance/ILD_l5_o1_v02_nobg/v01-19-05-p01/u038
+	bool collectionFound = false;
 
   	// clear old global pfovector
 	_pfovec.clear();
