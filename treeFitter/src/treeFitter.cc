@@ -208,7 +208,7 @@ populated the global pfo vectors with particles from that collection for this ev
 ******************/
 bool treeFitter::FindPFOs( LCEvent* evt ) {
 
-	bool collectionFound = false;
+	bool collectionFound = false;/pnfs/desy.de/ilc/prod/ilc/mc-opt/ild/rec/calib/resonance/ILD_l5_o1_v02_nobg/v01-19-05-p01/u038
 
   	// clear old global pfovector
 	_pfovec.clear();
@@ -438,9 +438,9 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				std::vector<ParticleFitObject*> VertexFitObjects{};
 				for(int j=0; j<fit.at(i).size(); j++){
 					//TEST for now only add TPFOs to the VFO, we will try JFO later
-					if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
+					//if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
 					VertexFitObjects.push_back(FO_vec.at( fit.at(i).at(j) ));
-					}//end track req
+					//}//end track req
 
 				}//end j
 
