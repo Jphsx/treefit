@@ -166,6 +166,21 @@ void TreeFit::printTable(){
 	
 
 }
+std::vector<int> TreeFit::getVertexSet(std::vector<int> combo, int nodeId, std<vector<std::vector<int> > fit){
+	
+	
+	std::vector<int> subset = combo;
+	//loop over the fit for elements after the given node
+	for(int i=nodeId+1; i<fit.size(); i++){
+		//if this node is non leaf do set math
+		if( fit.at(i).size() > 0 ){
+			subset = Combinatorics::subtractSets(subset, fit.at(i));
+		}
+	}
+
+	return subset;
+
+}
 //Testing framework////////////////
 /*int main(){ 
 

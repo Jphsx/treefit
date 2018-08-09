@@ -50,6 +50,9 @@ class TreeFit{
 	void generatefitcombinations(Node* root, std::vector<int> parentcombo);
 
 	void addFitToTable(Node* root);
+
+	//determine the subset of particles in set to share a common vertex
+	std::vector<int> getVertexSet(std::vector<int> combo, int nodeId, std<vector<std::vector<int> > fit); 
 		
 
 };
