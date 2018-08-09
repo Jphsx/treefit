@@ -166,7 +166,7 @@ void TreeFit::printTable(){
 	
 
 }
-std::vector<int> TreeFit::getVertexSet(std::vector<int> combo, int nodeId, std<vector<std::vector<int> > fit){
+std::vector<int> TreeFit::getVertexSet(std::vector<int> combo, int nodeId, std::vector<std::vector<int> > fit){
 	
 	
 	std::vector<int> subset = combo;
