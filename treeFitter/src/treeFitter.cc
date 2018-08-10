@@ -609,8 +609,8 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			std::cout<<"BEGINNING JACOBIAN TEST"<<std::endl;
 			int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-//TEMP REMOVE FOR VFO TEST			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId), _trackFitObject );
-//TEMP REMOVE			Particle::printCovarianceMatrix(cov4vec, 4);
+			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId), _trackFitObject );
+			Particle::printCovarianceMatrix(cov4vec, 4);
 
 	//	//start major testing		std::vector<double> jac{};
 	/*		double * jac;		
@@ -668,7 +668,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 
 
 	//end cov testing
-	//TEMP REMOVE	p->setCovMatrix(cov4vec);
+		p->setCovMatrix(cov4vec);
 		p->setMass(root->mass);
 		p->setCharge(charge);
 		p->addParticleID(newPDG);
@@ -790,7 +790,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			std::cout<<"going to store in lcio "<<std::endl;
 			//uncomment this after we know tpfo fits	
-		//TEMP REMOVE	createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
+			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
 			
 		}
 		
@@ -883,8 +883,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//ading cov stuff
 			int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-		//TEMP REMOVE	float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i), _trackFitObject);
-		//TEMP REMOVE	ttrees.at(index)->addFitParentErrors(cov4vec);
+			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i), _trackFitObject);
+			ttrees.at(index)->addFitParentErrors(cov4vec);
 
 			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->TreeFillAndClear();
