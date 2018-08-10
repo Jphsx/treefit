@@ -529,7 +529,7 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 	//the functions only look at localParams.size() so we need to make this 5
 	//then fake particle parameters will be consistent with the vfo added parameters
 	//i think the vfo params are start1, start2, x, y, z
-	std::vector<int> fakeParams{ 1,2,3,4,5 };
+	std::vector<double> fakeParams{ 1,2,3,4,5 };
 	fake->localParams = fakeParams;
 	std::vector<Particle*> fakeParts = parts;
 	fakeParts.push_back(fake);
@@ -537,7 +537,7 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 	std::vector<int> fakeCombo = combo;
 	fakeCombo.push_back( fakeParts.size() -1 );
 
-	std::vector<std::vector<std::vector<double> > > global3d = matrix1DTo3D(globalcov, dim, fakeParts, fakeCombo);
+	std::vector<std::vector<std::vector<double> > > global3d = matrix1DTo3D(globalCov, dim, fakeParts, fakeCombo);
 	
 	//with the 3d vector remove the last row and column
 	std::vector<std::vector<std::vector<double> > > trimmed3d(global3d.size()-1);
@@ -565,18 +565,21 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 
 	//get Nparams
 	int Nparams = getNparams(parts, subCombo);
+
+	//our sub matrix of the global matrix
+	double subcov*
 	
 	//if we are doing vertex fitting with ONLY 1 VERTEX CONSTRAINT
 	//we need to trim off the vfo elements of the covariance matrix
 	if(FO_Option == 2){
 		double* trimmedcov = removeVFOSectors(globalCov, dim, parts, subCombo);
-		double* subcov = getSubGlobalCov(trimmedcov,dim-5, parts, globalCombo, subCombo);
+		subcov = getSubGlobalCov(trimmedcov,dim-5, parts, globalCombo, subCombo);
 			//if we use tpfo we need to rescale globalCov
 		subcov = rescaleGlobalCov(subcov, getNparams( parts, subCombo),  parts, subCombo);
 	}
 	else{		
 		//get the sub covariance matrix
-		double* subcov = getSubGlobalCov(globalCov,dim, parts, globalCombo, subCombo);	
+		subcov = getSubGlobalCov(globalCov,dim, parts, globalCombo, subCombo);	
 	}
 	//get the jacobian for this submatrix
 	//the jacobian retrieved is actually the transpose
