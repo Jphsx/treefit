@@ -391,9 +391,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 			
 			if(node->mass != -1){
 				//make a new constraint
-				std::cout<<" THE NODE MASS "<<node->mass<<std::endl;
 				MassConstraint* mc = new MassConstraint(node->mass);
-				//MassConstraint mc(double(node->mass));
 
 				//get the FOs by iterating over j
 				std::vector<ParticleFitObject*>* mcFitObjects = new vector<ParticleFitObject*>();
@@ -403,17 +401,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 					//add to the array of FOs
 					//we have to use an array because ParticleConstraint  is weird
 					mcFitObjects->push_back(FO_vec.at( fit.at(i).at(j) ));
-//trying to add each guy individually and
-//make sure to do a cast for each type
-					/*if(TFit->recoparts.at( fit.at(i).at(j) )->isTrack){
-						//track push back casted tpfo
-					//	mc->addToFOList(*(TrackParticleFitObject*)FO_vec.at( fit.at(i).at(j) ));
-						mc->addToFOList(*(LeptonFitObject*)FO_vec.at(fit.at(i).at(j) ));
-					}
-					else{
-						//not a track add jfo
-					}	mc->addToFOList(*(JetFitObject*)FO_vec.at( fit.at(i).at(j) ));
-					*/
+
 				}//end j
 				//add FOs to constraint
 				mc->setFOList( mcFitObjects );
@@ -479,27 +467,15 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//do the fit
 		fitter->fit();
 		//save the FOs globally so we can easily
-		//access/print the fitted particles
-		//check fit here directly
-		std::vector<TLorentzVector> fittlv{};
-		TLorentzVector temp;
-		for(int i=0; i<FO_vec.size(); i++){
-			if(FO_vec.at(i) != NULL){
-			temp.SetPxPyPzE(FO_vec.at(i)->getPx(),FO_vec.at(i)->getPy(),FO_vec.at(i)->getPz(),FO_vec.at(i)->getE());
-			fittlv.push_back(temp);
-			}
-		}
-		TLorentzVector parent;
-		for(int i=0; i<fittlv.size(); i++){
-			parent += fittlv.at(i);
-		}
-		std::cout<<"THE PARENT "<<parent.E()<<" "<<parent.M()<<std::endl;;
-		//Particle::printTLorentzVector(parent);
 		
-
+		
+		 //save the fit objects to be looked at later/ stored in lcio
 		 FitObjects = FO_vec;
+		//printout the fit information
 		std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;
 		
+
+		//keep this for now
 		//if tpfos print vfo cov matrix
 	std::cout<<"vertex cov?:"<<std::endl;
 	for(int k = 0; k < VertexObjects.size(); k++){
@@ -548,11 +524,7 @@ void treeFitter::createFitParticlesfromFitObjects(){
 ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVec* recparcol, Node* root, std::vector<std::vector<int> > fit, OPALFitterGSL *  fitter){
 		
 		
-		//if(root->isLeaf) return NULL;// this should never happen
-		//guarante debug print
-		std::cout<<std::endl;
-		std::cout<<std::endl;
-		std::cout<<"in create output"<<std::endl;
+		
 		//create a reconstructed particle for non leaf node
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
 		ParticleIDImpl* newPDG = new ParticleIDImpl();
@@ -565,8 +537,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		//this nodeID is index of fit combination
 		TLorentzVector parentParticle;
 		float charge=0.0;
-		std::cout<<"SEG1"<<std::endl;
-		std::cout<<"root node id "<<root->nodeId<<std::endl;
+		
 		//try printing fit
 		for(int i=0; i<fit.size(); i++){
 			for(int j=0; j<fit.at(i).size(); j++){
@@ -588,82 +559,16 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		
 		p->setMomentum(mom);
 		p->setEnergy(parentParticle.E());
-		//give the reco part an E,theta,phi cov matrix
-		//we need to construct the lower diagonal manually
-		//TODO constuct matrix for every single particle resonance
-	//	float* cov = new float[10];
-	//	int index = 0;
-	/*	for(int i=0; i<=2; i++){
-			for(int j=0; j<=i; j++){
-				cov[index]=jfo->getCov(i,j);
-				index++;	
-			}
-		}*/
-	//	for(int i=0; i<10; i++){
-	//		cov[i] = 0.0;
-//		}
 
-		//here is some testing for cov calculuation
-		//after we do this also lets do some covariance/jacobian printouts for testing
-			//start with fit.at(0) for the combo
+		
 			std::cout<<"BEGINNING JACOBIAN TEST"<<std::endl;
 			int gcovdim;
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
 			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId), _trackFitObject );
 			Particle::printCovarianceMatrix(cov4vec, 4);
-
-	//	//start major testing		std::vector<double> jac{};
-	/*		double * jac;		
-			jac = Covariance::constructJacobian(TFit->fitparts, fit.at(root->nodeId) , _trackFitObject);
-			std::cout<<"about to get dim"<<std::endl;
-			int dim = Covariance::getNparams(TFit->fitparts, fit.at(root->nodeId) );
-			std::cout<<"about the print jac "<<std::endl;
-			Covariance::printCovarianceMatrix(jac,4,9);
-			std::vector<std::vector<std::vector<double> > > rebuiltmat{};
-			//int gcovdim;
-			double* newcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-			rebuiltmat = Covariance::matrix1DTo3D(newcov,gcovdim, TFit->fitparts, fit.at(root->nodeId));
-
-
-			//build some sub matrices and print them
-			// combo is in fit.at(root->nodeId)
-			//make and print sub matrix from (1st and 3rd parts) (2nd and 3rd) and (3rd only)
-			std::cout<<"making the test vecs"<<std::endl;
-			std::vector<int> combo1test{};
-			std::vector<int> combo2test{};
-			std::vector<int> combo3test{};
-			combo1test.push_back( fit.at(root->nodeId).at(0) );
-			combo1test.push_back( fit.at(root->nodeId).at(2) );
-			combo2test.push_back( fit.at(root->nodeId).at(1) );
-			combo2test.push_back( fit.at(root->nodeId).at(2) );
-			combo3test.push_back( fit.at(root->nodeId).at(2) );
-
-			std::cout<<"finished test vecs"<<std::endl;
-
-			std::cout<<"doing submatrix testing"<<std::endl;
-			//std::vector<double> testvec;
-			double * testvec;
-			std::cout<<"test1"<<std::endl;
-			testvec = Covariance::getSubGlobalCov( newcov, gcovdim,  TFit->fitparts, fit.at(root->nodeId), combo1test);
-			Covariance::printCovarianceMatrix(testvec,6,6);
-			std::cout<<"test2"<<std::endl;
-			testvec = Covariance::getSubGlobalCov( newcov, gcovdim,  TFit->fitparts, fit.at(root->nodeId), combo2test);
-			Covariance::printCovarianceMatrix(testvec,6,6);
-			std::cout<<"test3"<<std::endl;
-			Covariance::getSubGlobalCov( newcov, gcovdim,  TFit->fitparts, fit.at(root->nodeId), combo3test);
-			Covariance::printCovarianceMatrix(testvec,3,3);
-
-		*/
 		
 
 			std::cout<<"END JACOBIAN TEST"<<std::endl;
-
-
-
-
-
-
-
 
 
 
@@ -682,7 +587,6 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		//if we have a nonleaf child make a reconstructed particle for that resonance
 		std::vector<int> parentSet = fit.at(root->nodeId);
 		std::vector<int> childSet{};
-				std::cout<<"SEG2"<<std::endl;
 		for(int i=0; i<root->children.size(); i++){
 				//subtract all non leaf  children sets from parent, the remaining is the leaves to add 
 			if(!root->children.at(i)->isLeaf){
@@ -690,9 +594,9 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 				parentSet = Combinatorics::subtractSets(parentSet,childSet);
 			}
 		}
-				std::cout<<"SEG2F"<<std::endl;
+
 		//the remaining (if any) particles on parentSet are leaves that can be added immediately
-				std::cout<<"SEG3"<<std::endl;
+
 		for(int i=0; i<parentSet.size(); i++){
 			if(TFit->recoparts.at(parentSet.at(i))->isTrack){
 				//this is a track dont add reconstructedParticle*
@@ -707,15 +611,15 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			//regardless what it is add the recopart to the collection
 			recparcol->addElement(TFit->fitparts.at(parentSet.at(i))->part);
 		}
-				std::cout<<"SEG3F"<<std::endl;
+
 		//now deal with the non leaves, iterate through children again and create the other particles
-				std::cout<<"SEG4"<<std::endl;
+
 		for(int i=0; i<root->children.size(); i++){
 			if(!root->children.at(i)->isLeaf){
 				p->addParticle( createLCOutputParticleTree(recparcol, root->children.at(i),fit,fitter) );
 			}
 		}
-				std::cout<<"SEG4F"<<std::endl;
+				
 		std::cout<<"created this parent particle :: "<<std::endl;
 		Particle::printReconstructedParticle(p);
 		//add this particle
@@ -783,7 +687,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//make a temp vec to give to tfit, to make sure fitparts in synchronized in size
 		std::vector<Particle*> fit_vec(TFit->recoparts.size());
 		TFit->fitparts = fit_vec;
-//following code reduced to 1 function call
+
 		createFitParticlesfromFitObjects();
 	
 		if(fitter->getProbability() > _fitProbabilityCut &&  dim > 0){
@@ -830,10 +734,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	}
 	std::cout<<std::endl;
 
-	std::cout<<"nothere "<<std::endl;
-		std::cout<<FitObjects.size()<<" FO size "<<std::endl;
-		std::cout<<TFit->fitparts.size()<<" fitparts size"<<std::endl;
-	std::cout<<"edit"<<std::endl;
+	
 	//remake fitparticles
 		//this creation makes sure fitparts will be the correct size
 		std::vector<Particle*> fit_vec(TFit->recoparts.size());
@@ -841,14 +742,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		createFitParticlesfromFitObjects();
 		
 
-	std::cout<<"print bestfit"<<std::endl;
-		for(int i=0; i<bestfit.size(); i++){
-			std::cout<< i <<"     ";
-		for(int k=0; k<bestfit.at(i).size(); k++){
-			std::cout<<bestfit.at(i).at(k)<<" ";
-		}
-		std::cout<<std::endl;	
-	}
+	
 	//iterate through the fit, create the needed fit particles
 	//put the particles on new vectors, now indexed by a pdg vector
 	//re-vectoring will get rid of gaps in used reco/fit particle vector

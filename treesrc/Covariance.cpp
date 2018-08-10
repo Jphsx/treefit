@@ -370,7 +370,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::matrix1DTo3D(double*
 				paramThreshold += *(param_it);
 				R++;
 		}
-		std::cout << " R , i "<< R << " "<< i <<std::endl;
+
 
 		for(int j=0; j<nparams.size(); j++){
 			//ith row jth column
@@ -386,7 +386,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::matrix1DTo3D(double*
 	
 
 	//test print of the sectored matrix
-	printSectoredCovarianceMatrix( cov);
+	//printSectoredCovarianceMatrix( cov);
 
 
 	return cov;
@@ -410,7 +410,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 	std::vector<int> indices{};
 	//do a simple match
 
-	std::cout<<"SUB SIZE, GLOBLSIZE "<< subCombo.size() << " "<< globalCombo.size() <<std::endl;
+
 	for(int i=0; i<subCombo.size(); i++){
 	
 		for(int j=0; j<globalCombo.size(); j++){
@@ -420,7 +420,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 			}
 		}		
 	}
-	std::cout<<"just did index matching"<<std::endl;
+
 	
 	//now create memory space for the new submatrix
 	std::vector<std::vector<std::vector<double> > > subcov(subCombo.size());
@@ -459,7 +459,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 		J++;
 	}
 
-	printSectoredCovarianceMatrix(subcov );
+	//printSectoredCovarianceMatrix(subcov );
 	
 	//print the submatrix
 	//transform to 1d and return
@@ -552,6 +552,9 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 			trimmed3d.at(i).at(j) = global3d.at(i).at(j);
 		}
 	}
+	std::cout<<"PRINTING TRIMMED 3d MATRIX"<<std::endl;
+	printSectoredCovarianceMatrix( trimmed3d );
+	
 	//put the matrix back to 1d
 	double* trimmed1d = matrix3DTo1D( trimmed3d, getnparamsvec(parts, combo) );
 
