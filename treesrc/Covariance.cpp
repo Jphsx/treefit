@@ -567,7 +567,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 	int Nparams = getNparams(parts, subCombo);
 
 	//our sub matrix of the global matrix
-	double subcov*
+	double* subcov;
 	
 	//if we are doing vertex fitting with ONLY 1 VERTEX CONSTRAINT
 	//we need to trim off the vfo elements of the covariance matrix
