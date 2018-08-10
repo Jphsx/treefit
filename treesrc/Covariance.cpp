@@ -65,7 +65,7 @@ void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vect
 			std::cout<<std::endl;
 		}
 	}
-	std::cout<<"finished print"<<std::endl;
+
 }
 double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat, std::vector<int> nparams ){
 	//make vector and copy it? no
@@ -92,8 +92,6 @@ double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat, std::v
 
 	std::vector<double> mat_1d{};
 	while(its.at(Nparts-1) < mat.at(Nparts-1).end()){
-		
-			std::cout<<"parsed "<<std::endl;
 		
 			for(int i=0; i<mat.size(); i++){
 				
@@ -286,9 +284,9 @@ double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<
 	std::vector<int> nparams = getnparamsvec(parts,combo);
 	int Nparts = getNparts(combo);
 	
-	std::cout<<"NPARTS "<<Nparts<<std::endl;
+
 	int Nparams = getNparams(parts,combo);
-	std::cout<<"NPARAMS "<< Nparams<<std::endl;
+
 	
 	//this will preserve its position in the matrix
 	std::vector<Particle*> p{};
@@ -300,7 +298,7 @@ double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<
 
 	std::vector<std::vector<double> > jacobian(Nparts);
 	
-	std::cout<<"going into the big matrix "<<std::endl;
+
 	for(int i = 0; i < Nparts; i++){
 		if(p.at(i)->isTrack){
 			if( FO_Option == 1){
@@ -315,13 +313,13 @@ double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<
 			jacobian.at(i) =(constructJFOJacobian(p.at(i) ));
 		}
 	}
-	std::cout<<"finished big matrix"<<std::endl;
+
 
 	double* jac1d = matrix2DTo1D(jacobian, nparams);
 
 
 
-	std::cout<<"finished parsing"<<std::endl;
+
 	
 
 	
@@ -352,7 +350,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::matrix1DTo3D(double*
 			cov.at(i).at(j) = covsubmatrix;
 		}
 	}
-	std::cout<<"allocated mem"<<std::endl;
+
 	//extrapolate the gencov into the 3d matrix
 	//keep looping over parameters over entire cov
 	std::vector<double>::iterator it=_globalcov.begin();
@@ -552,8 +550,8 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 			trimmed3d.at(i).at(j) = global3d.at(i).at(j);
 		}
 	}
-	std::cout<<"PRINTING TRIMMED 3d MATRIX"<<std::endl;
-	printSectoredCovarianceMatrix( trimmed3d );
+	//std::cout<<"PRINTING TRIMMED 3d MATRIX"<<std::endl;
+//	printSectoredCovarianceMatrix( trimmed3d );
 	
 	//put the matrix back to 1d
 	double* trimmed1d = matrix3DTo1D( trimmed3d, getnparamsvec(parts, combo) );

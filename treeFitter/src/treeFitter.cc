@@ -181,10 +181,9 @@ void treeFitter::processEvent( LCEvent * evt ) {
 		
 	}
 
-	std::cout<<"seg at the collection??"<<std::endl;
 	//add collection to event
 	evt->addCollection( recparcol,  _outputParticleCollectionName.c_str() );
-	std::cout<<"seg after the collection??"<<std::endl;	
+
 	
 	return;
 }
@@ -195,10 +194,10 @@ void treeFitter::end(){
 	//if(_fitAnalysis){
 	//	rootFile->Write();
 	//}
-	std::cout<<"deleting TFit"<<std::endl;
+
 	delete TFit->ParticleTree;
 	TFit = NULL;
-	std::cout<<"deleted TFIT"<<std::endl;
+
 	file->Write();
   	return;
 }
@@ -427,11 +426,12 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				//get the fit subset to add to VertexFitObjects
 				std::vector<int> fitsubset = TreeFit::getVertexSet(fit.at(i), i, fit);
 				
-				std::cout<<"VERTEX FIT SUBSET FOR NODE: "<< i;
+				//print out the vertex subsets
+				std::cout<<"Node: "<<i <<"Vertex Subset { ";
 				for(int j=0; j<fitsubset.size(); j++){
 					std::cout<<fitsubset.at(j)<<" ";
 				}
-				std::cout<<std::endl;
+				std::cout<<" } "<<std::endl;
 
 				for(int j=0; j<fitsubset.size(); j++){
 					//TEST for now only add TPFOs to the VFO, we will try JFO later (JFO segfaults)
@@ -473,24 +473,12 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		 FitObjects = FO_vec;
 		//printout the fit information
 		std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;
-		
+		std::cout<<"Cov Dimension: ";
+		int dim;
+		fitter->getGlobalCovarianceMatrix(dim);
+		std::cout<< dim <<std::endl;
 
-		//keep this for now
-		//if tpfos print vfo cov matrix
-	std::cout<<"vertex cov?:"<<std::endl;
-	for(int k = 0; k < VertexObjects.size(); k++){
-		for (unsigned int i=0; i<3; i++){
-         	for (unsigned int j=i; j<3; j++){
-              		std::cout << "Cov " << i << " " << j << " " << VertexObjects.at(k)->getCov(i,j) ;
-          }
-        }
-	std::cout<<std::endl;
-	std::cout<<"vertex params?:"<<std::endl;
-	
-		for(int i=0; i<3; i++){
-			std::cout<< VertexObjects.at(k)->getParam(i)<<" ";
-		}
-	std::cout<<std::endl;
+		
 	}//end k
 	
 		
@@ -538,19 +526,12 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		TLorentzVector parentParticle;
 		float charge=0.0;
 		
-		//try printing fit
-		for(int i=0; i<fit.size(); i++){
-			for(int j=0; j<fit.at(i).size(); j++){
-				std::cout<<"node "<<i<<" size "<< fit.at(i).size() << "element j" << fit.at(i).at(j)<<std::endl;
-			}
-		}
-		std::cout<<"FIT PRINTED"<<std::endl;
 		for(int i=0; i<fit.at(root->nodeId).size(); i++){
 			//each element in the array at this fit location is an index of reco/FO/fit particle
 			parentParticle += TFit->fitparts.at(fit.at(root->nodeId).at(i))->v;
 			charge += TFit->recoparts.at(fit.at(root->nodeId).at(i))->part->getCharge();
 		}
-				std::cout<<"SEG1F"<<std::endl;
+				
 		//set px,py,pz
 		float* mom = new float[3];
 		mom[0] = parentParticle.Px();
@@ -561,18 +542,11 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		p->setEnergy(parentParticle.E());
 
 		
-			std::cout<<"BEGINNING JACOBIAN TEST"<<std::endl;
-			int gcovdim;
-			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
-			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId), _trackFitObject );
-			Particle::printCovarianceMatrix(cov4vec, 4);
+
+		int gcovdim;
+		double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
+		float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId), _trackFitObject );
 		
-
-			std::cout<<"END JACOBIAN TEST"<<std::endl;
-
-
-
-	//end cov testing
 		p->setCovMatrix(cov4vec);
 		p->setMass(root->mass);
 		p->setCharge(charge);
@@ -620,8 +594,11 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 			}
 		}
 				
-		std::cout<<"created this parent particle :: "<<std::endl;
+		std::cout<<"Created this parent particle :: "<<std::endl;
 		Particle::printReconstructedParticle(p);
+		std::cout<<"Covariance Matrix: "<<std::endl;
+		Particle::printCovarianceMatrix(cov4vec, 4);
+		
 		//add this particle
 		recparcol->addElement(p);
 		return p;
@@ -637,9 +614,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		
 		TFit->addrecopart(pc);
 	}	
-	//prep fitparticles to match the size of recoparts
-	//std::vector<Particle*>  fitparts(TFit->recoparts.size());
-	//TFit->fitparts = fitparts;
+	
 
 	std::cout<<"Reconstructed Particles "<<std::endl;
 	TFit->printParticles(TFit->recoparts);
@@ -675,7 +650,6 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//if there is no matrix we need to skip this event
 		int dim;
 		fitter->getGlobalCovarianceMatrix(dim);
-		std::cout<<" the fit cov matrix dimension !!!! "<< dim <<std::endl;
 		
 		//check and see if this is the best fit and exceeds the minimal probability cut
 		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut && dim > 0){
@@ -718,7 +692,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	}//fitTable iteration
 	
 	//redo the best fit, and send the particles to the TTrees in the Rootfiles
-	std::cout<<"is fault here"<<std::endl;
+	
 	//make sure there was at least 1 fit
 
 	if(bestfitprob != -2.0){
@@ -727,19 +701,21 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	int dim=0;
 	double* globalcov = fitter->getGlobalCovarianceMatrix(dim);
 
+	/*
 	std::cout<<"PRINTING GLOBAL COV"<<std::endl;
 	for(int i=0; i<(dim*dim ); i++){
 		if(i%dim == 0){ std::cout<<std::endl; }
 		std::cout<<globalcov[i]<<" ";		
 	}
 	std::cout<<std::endl;
+	*/
 
 	
 	//remake fitparticles
-		//this creation makes sure fitparts will be the correct size
-		std::vector<Particle*> fit_vec(TFit->recoparts.size());
-		TFit->fitparts = fit_vec;
-		createFitParticlesfromFitObjects();
+	//this creation makes sure fitparts will be the correct size
+	std::vector<Particle*> fit_vec(TFit->recoparts.size());
+	TFit->fitparts = fit_vec;
+	createFitParticlesfromFitObjects();
 		
 
 	
@@ -755,23 +731,19 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	for(unsigned int i=0; i<bestfit.size(); i++){
 
 		if(bestfit.at(i).size() > 0){
-			std::cout<<"where is fault????"<<std::endl;
+
 			//nodeId should by construction match fit index with ttrees index
 			//iterate over the fit particles
-			std::cout<<"best fit size "<< bestfit.size() << std::endl;
+
 			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
-				std::cout<<"is it in here??"<<std::endl;
-				std::cout<<"size at i "<<i<<" "<<bestfit.at(i).size() <<std::endl;
-				std::cout<<"getting recop"<<std::endl;
+				
 				recop.push_back(TFit->recoparts.at( bestfit.at(i).at(k) ));
-				std::cout<<"getting fitp"<<std::endl;
 				fitp.push_back(TFit->fitparts.at( bestfit.at(i).at(k) ));
-				std::cout<<"got p's "<<std::endl;
+			
 				
 			}
-			std::cout<<"is the fault at trees"<<std::endl;
+
 			ttrees.at(index)->addParticleSets(fitp,recop);
-			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
 	
 			//ading cov stuff
@@ -779,10 +751,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			double* gcov = fitter->getGlobalCovarianceMatrix(gcovdim);
 			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i), _trackFitObject);
 			ttrees.at(index)->addFitParentErrors(cov4vec);
-
-			std::cout<<"is the fault at trees"<<std::endl;
 			ttrees.at(index)->TreeFillAndClear();
-			std::cout<<"weve went past trees"<<std::endl;
+
 			index++;	
 		}
 		
@@ -792,20 +762,16 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	delete fitter;
 	}//end bestfit   
 
-	std::cout<<"seg at the end??"<<std::endl;
+
 
 	//advance to next event
 	evtNo++;
-std::cout<<"seg at the end??"<<std::endl;
+	//clean up everything
 	_pfovec.clear();
 	_trackvec.clear();
-std::cout<<"seg at the end??"<<std::endl;
-	//might need to run a destructor here first
 	TFit->clearEvent();
 	FitObjects.clear();//clear the bestfit
 	VertexObjects.clear();
-	
-std::cout<<"seg at the end??"<<std::endl;
 	//renull fitter
 	fitter = NULL;
 	return;
