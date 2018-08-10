@@ -319,14 +319,6 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		OPALFitterGSL *  fitter = new OPALFitterGSL();
 
 		//make a FO vector to contain both neutral and charged FOs, the index of the FO should match the index of the recopart in TFit	
-		//printing fit for testing
-		for(int i=0; i<fit.size(); i++){
-		std::cout<< i <<"     ";
-		for(int k=0; k<fit.at(i).size(); k++){
-			std::cout<<fit.at(i).at(k)<<" ";
-		}
-		std::cout<<std::endl;	
-	}
 		
 		
 		//this array should match reco parts in size, but only the final particles
@@ -479,7 +471,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		std::cout<< dim <<std::endl;
 
 		
-	}//end k
+	
 	
 		
 		return fitter;
