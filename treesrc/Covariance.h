@@ -44,9 +44,12 @@ class Covariance{
 	static void printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> > > cov );
 	//TODO 
 	
-	//manipulation for tpfo cov matrix rescaling
+	//manipulation for tpfo cov matrix rescaling and calculation
 	static double* rescaleGlobalCov(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
-	static void rescaleSector(std::vector<double>& covSector);	
+	static void rescaleSector(std::vector<double>& covSector);
+	//currently this will only work for a single vertex fit
+	//since multiple vertex fits wont work, i dont know how to manipulate the global cov which is created from multiple vertex constraints (unknown dimensions/ parameter order)
+	static double* removeVFOSectors(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> combo);	
 
 	//produce covariance sub matrix
 	static double* getSubGlobalCov( double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
@@ -56,6 +59,8 @@ class Covariance{
 	static double* matrix3DTo1D( std::vector<std::vector<std::vector<double> > > mat, std::vector<int> nparams );
 	//turn 1d covariance matrix into a more manageable 3d matrix
 	static std::vector<std::vector<std::vector<double> > > matrix1DTo3D(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
+
+	
 
 };
 #endif

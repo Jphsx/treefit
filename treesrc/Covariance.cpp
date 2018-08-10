@@ -519,17 +519,63 @@ double* Covariance::rescaleGlobalCov(double* globalCov, int dim, std::vector<Par
 	
 	
 }
+double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> combo){
+	//for 1 vertex constraint the vfo sector is 5 parameters and it will be the last diagonal chunk in the global cov
+	//this part is a little hacky:
+	//add an artificial particle to parts so matrix 1d to 3d sees vfo as another particle
+	//also add this artificial particle to the combo
+	//this will allow the use of 1d->3d without restructuring
+	Particle* fake = new Particle()
+	//the functions only look at localParams.size() so we need to make this 5
+	//then fake particle parameters will be consistent with the vfo added parameters
+	//i think the vfo params are start1, start2, x, y, z
+	std::vector<int> fakeParams{ 1,2,3,4,5 };
+	fake->localParams = fakeParams;
+	std::vector<Particle*> fakeParts = parts;
+	fakeParts.push_back(fake);
+	
+	std::vector<int> fakeCombo = combo;
+	fakeCombo.push_back( fakeParts.size() -1 );
+
+	std::vector<std::vector<std::vector<double> > > global3d = matrix1DTo3D(globalcov, dim, fakeParts, fakeCombo);
+	
+	//with the 3d vector remove the last row and column
+	std::vector<std::vector<std::vector<double> > > trimmed3d(global3d.size()-1);
+	//memory allocation
+	std::vector<std::vector<double> > trimmed3d_col(global3d.size()-1);
+	for(int i=0; i<trimmed3d.size(); i++){
+		trimmed3d.at(i) = trimmed3d_col;
+	}
+	//iterate over the new 3d matrix and transfer sectors from the global3d onto it
+	for(int i=0; i<trimmed3d.size(); i++){ 
+		for(int j=0; j<trimmed3d.size(); j++){
+			trimmed3d.at(i).at(j) = global3d.at(i).at(j);
+		}
+	}
+	//put the matrix back to 1d
+	double* trimmed1d = matrix3DTo1D( trimmed3d, parts, combo );
+
+	return trimmed1d;
+		
+
+
+}
 float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo,  int FO_Option){
 	
 
 	//get Nparams
 	int Nparams = getNparams(parts, subCombo);
 	
-	//get the sub covariance matrix
-	double* subcov = getSubGlobalCov(globalCov,dim, parts, globalCombo, subCombo);
-	//if we use tpfo we need to rescale globalCov
+	//if we are doing vertex fitting with ONLY 1 VERTEX CONSTRAINT
+	//we need to trim off the vfo elements of the covariance matrix
 	if(FO_Option == 2){
+		double* trimmedcov = removeVFOSectors(globalCov, dim, parts, subCombo)
+		double* subcov = getSubGlobalCov(trimmedcov,dim-5, parts, globalCombo, subCombo);
+			//if we use tpfo we need to rescale globalCov
 		subcov = rescaleGlobalCov(subcov, getNparams( parts, subCombo),  parts, subCombo);
+	else{		
+		//get the sub covariance matrix
+		double* subcov = getSubGlobalCov(globalCov,dim, parts, globalCombo, subCombo);	
 	}
 	//get the jacobian for this submatrix
 	//the jacobian retrieved is actually the transpose
