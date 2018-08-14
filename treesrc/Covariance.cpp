@@ -205,21 +205,32 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	  dPz/dk dPz/dtheta dPz/dphi
 	  dE/dk dE/dtheta dE/dphi */
 	
+
+	//for readability
+	double px = p->v.Px();
+	double py = p->v.Py();
+	double pz = p->v.Pz();
+	double pt = sqrt( px*px + py*py);
+	double q = p->part->getCharge();
+	double E = p->part->getEnergy();
+	double cosPhi = cos(p->v.Phi());
+	double sinPhi = sin(p->v.Phi());
+
 	std::vector<double> jacobian{};
 	
-	jacobian.push_back( -p->v.Perp() * p->v.Px() );//"dPx/dk" );
-	jacobian.push_back( p->v.Pz()*p->v.Px()/ p->v.Perp());//"dPx/dtheta" );
-	jacobian.push_back( -p->v.Py());//"dPx/dphi" );
+	jacobian.push_back( -px*pt/q );//"dPx/dk" );
+	jacobian.push_back( pz*cosPhi );//"dPx/dtheta" );
+	jacobian.push_back( -py );//"dPx/dphi" );
 	
-	jacobian.push_back( -p->v.Perp() * p->v.Py() );//"dPy/dk" );
-	jacobian.push_back( p->v.Pz()*p->v.Py()/ p->v.Perp() );//"dPy/dtheta" );
-	jacobian.push_back( p->v.Px() );//"dPy/dphi" );
+	jacobian.push_back( -py*pt/q );//"dPy/dk" );
+	jacobian.push_back( pz*sinPhi );//"dPy/dtheta" );
+	jacobian.push_back( px );//"dPy/dphi" );
 	
-	jacobian.push_back( -p->v.Perp()*p->v.P() );//"dPz/dk" );
-	jacobian.push_back( -p->v.Perp());//"dPz/dtheta" );
+	jacobian.push_back( 0.0 );//"dPz/dk" );
+	jacobian.push_back( -pt );//"dPz/dtheta" );
 	jacobian.push_back( 0.0);//"dPz/dphi" );
 	
-	jacobian.push_back( 1.0);//"dE/dk" );
+	jacobian.push_back( -(pt*pt*pt)/(q*E) );//"dE/dk" );
 	jacobian.push_back( 0.0);//"dE/dtheta" );
 	jacobian.push_back( 0.0);//"dE/dphi" );
 	
@@ -238,15 +249,11 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	double cosLambda = 1 / sqrt(1 + p->track->getTanLambda()*p->track->getTanLambda() );
 	double P = (eB/fabs(p->track->getOmega()))/cosLambda;
 	double sinLambda = p->track->getTanLambda()*cosLambda;
-//test	double cosPhi = cos(p->track->getPhi());
-//test	double sinPhi = sin(p->track->getPhi());
+	double cosPhi = cos(p->track->getPhi());
+	double sinPhi = sin(p->track->getPhi());
 	
 	double adjustedphi = p->track->getPhi();
-	if(adjustedphi<0){
-		adjustedphi = 2*3.14159 + adjustedphi;
-	}
-	double cosPhi = cos(adjustedphi);
-	double sinPhi = sin(adjustedphi);
+	
 
 	double px = P*cosLambda*cosPhi;
 	double py = P*cosLambda*sinPhi;
