@@ -238,9 +238,15 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	double cosLambda = 1 / sqrt(1 + p->track->getTanLambda()*p->track->getTanLambda() );
 	double P = (eB/fabs(p->track->getOmega()))/cosLambda;
 	double sinLambda = p->track->getTanLambda()*cosLambda;
-	double cosPhi = cos(p->track->getPhi());
-	double sinPhi = sin(p->track->getPhi());
-
+//test	double cosPhi = cos(p->track->getPhi());
+//test	double sinPhi = sin(p->track->getPhi());
+	
+	double adjustedphi = p->track->getPhi();
+	if(adjustedphi<0){
+		adjustedphi = 2*3.14159 + adjustedphi;
+	}
+	double cosPhi = cos(adjustedphi);
+	double sinPhi = sin(adjustedphi);
 
 	double px = P*cosLambda*cosPhi;
 	double py = P*cosLambda*sinPhi;
