@@ -224,7 +224,7 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	double P = sqrt( pt*pt + pz*pz);
 
 	
-	.
+	
 
 	std::vector<double> jacobian{};
 	
