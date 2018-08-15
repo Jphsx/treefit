@@ -263,8 +263,9 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 
 	double px = q*eB/omega  * cosPhi;
 	double py = q*eB/omega  * sinPhi;
-	double pz = q*eB * p->track->getTanLambda();
+	double pz = q*eB/omega * p->track->getTanLambda();
 	double pt = sqrt( px*px + py*py);
+	double P = sqrt( pt*pt + pz*pz);
 	double E = sqrt( pt*pt + pz*pz + p->part->getMass() * p->part->getMass() );
 
 	
@@ -287,15 +288,15 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 
 	jacobian.push_back(0);//dpz/dd0'
 	jacobian.push_back(0);//dpz/dphi
-	jacobian.push_back(0); //dpz/dome
+	jacobian.push_back(-pz/omega); //dpz/dome
 	jacobian.push_back(0);//dpz/dz0
-	jacobian.push_back(eB*q);//dpz/dtanl
+	jacobian.push_back(pt);//dpz/dtanl
 
 	jacobian.push_back(0);//de/dd0
 	jacobian.push_back(0);//de/dphi
-	jacobian.push_back( -(pt*pt)/(omega*E) );//de/dome 
+	jacobian.push_back( -(P*P)/(omega*E) );//de/dome 
 	jacobian.push_back(0);//de/dz0
-	jacobian.push_back( q*eB*pz/E );//de/dtanl
+	jacobian.push_back( pt*pz/E );//de/dtanl
 	
 
 	return jacobian;
