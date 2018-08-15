@@ -219,25 +219,29 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	double pz = p->v.Pz();
 	double pt = sqrt( px*px + py*py);
 	double q = p->part->getCharge();
+	double k = q/pt;
 	double E = p->part->getEnergy();
+	double P = sqrt( pt*pt + pz*pz);
+
 	
+	.
 
 	std::vector<double> jacobian{};
 	
-	jacobian.push_back( -px*pt/q );//"dPx/dk" );
-	jacobian.push_back( pz*px/pt );//"dPx/dtheta" );
+	jacobian.push_back( -px/k );//"dPx/dk" );
+	jacobian.push_back( 0 );//"dPx/dtheta" );
 	jacobian.push_back( -py );//"dPx/dphi" );
 	
-	jacobian.push_back( -py*pt/q );//"dPy/dk" );
-	jacobian.push_back( pz*py/pt );//"dPy/dtheta" );
+	jacobian.push_back( -py/k );//"dPy/dk" );
+	jacobian.push_back( 0 );//"dPy/dtheta" );
 	jacobian.push_back( px );//"dPy/dphi" );
 	
-	jacobian.push_back( 0.0 );//"dPz/dk" );
-	jacobian.push_back( -pt );//"dPz/dtheta" );
+	jacobian.push_back( -pz/k );//"dPz/dk" );
+	jacobian.push_back( -P/pt );//"dPz/dtheta" );
 	jacobian.push_back( 0.0);//"dPz/dphi" );
 	
-	jacobian.push_back( -(pt*pt*pt)/(q*E) );//"dE/dk" );
-	jacobian.push_back( 0.0);//"dE/dtheta" );
+	jacobian.push_back( -P*P/(k*E) );//"dE/dk" );
+	jacobian.push_back( -pz*P*P/(k*E*pt*pt) );//"dE/dtheta" );
 	jacobian.push_back( 0.0);//"dE/dphi" );
 	
 	std::cout<<"made LFO "<<std::endl;
@@ -251,23 +255,19 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
   	const double eV2GeV = 1e-9;
   	const double eB = p->Bfield*c*mm2m*eV2GeV;
  
- 	
-	double cosLambda = 1 / sqrt(1 + p->track->getTanLambda()*p->track->getTanLambda() );
-	double P = (eB/fabs(p->track->getOmega()))/cosLambda;
-	double sinLambda = p->track->getTanLambda()*cosLambda;
-	double cosPhi = cos(p->track->getPhi());
-	double sinPhi = sin(p->track->getPhi());
-	
-	double adjustedphi = p->track->getPhi();
-	
-
-	double px = P*cosLambda*cosPhi;
-	double py = P*cosLambda*sinPhi;
-	double pz = P*sinLambda;
-	double E = sqrt( P*P + p->part->getMass() * p->part->getMass() );
-
-	double omega = p->track->getOmega();
+ 	double omega = p->track->getOmega();
 	double q = p->part->getCharge();
+	
+	double cosPhi = cos(p->track->getPhi());
+	double sinPhi = sin(p->track->getPhi());	
+
+	double px = q*eB/omega  * cosPhi;
+	double py = q*eB/omega  * sinPhi;
+	double pz = q*eB * p->track->getTanLambda();
+	double pt = sqrt( px*px + py*py);
+	double E = sqrt( pt*pt + pz*pz + p->part->getMass() * p->part->getMass() );
+
+	
 	//omega = fabs(omega);
 	
 
@@ -275,27 +275,27 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	
 	jacobian.push_back(0); //dpx/dd0
 	jacobian.push_back(-py); //dpx/dphi ...
- 	jacobian.push_back(-px/omega  * q); //dpx/dome
+ 	jacobian.push_back(-px/omega); //dpx/dome
 	jacobian.push_back(0); //dpx/dz0
 	jacobian.push_back(0); //dpx/dtanl
 
 	jacobian.push_back(0); //dpy/dd0
 	jacobian.push_back(px); //dpy/dphi
-	jacobian.push_back(-py/omega  * q); //dpy/dome
+	jacobian.push_back(-py/omega); //dpy/dome
 	jacobian.push_back(0);//dpy/dz0
 	jacobian.push_back(0); //dpy/dtanl
 
 	jacobian.push_back(0);//dpz/dd0'
 	jacobian.push_back(0);//dpz/dphi
-	jacobian.push_back(-pz/omega  * q); //dpz/dome
+	jacobian.push_back(0); //dpz/dome
 	jacobian.push_back(0);//dpz/dz0
-	jacobian.push_back(eB/omega   * q);//dpz/dtanl
+	jacobian.push_back(eB*q);//dpz/dtanl
 
 	jacobian.push_back(0);//de/dd0
 	jacobian.push_back(0);//de/dphi
-	jacobian.push_back( -(P*P)/(omega*E)  * q );//de/dome 
+	jacobian.push_back( -(pt*pt)/(omega*E) );//de/dome 
 	jacobian.push_back(0);//de/dz0
-	jacobian.push_back( (pz*P*cosLambda)/E );//de/dtanl
+	jacobian.push_back( q*eB*pz/E );//de/dtanl
 	
 
 	return jacobian;
