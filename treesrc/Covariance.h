@@ -60,7 +60,8 @@ class Covariance{
 	//turn 1d covariance matrix into a more manageable 3d matrix
 	static std::vector<std::vector<std::vector<double> > > matrix1DTo3D(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
 
-	
+	//testing function force diagonalized matrix
+	static double* forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > 3dmat);//TODO write this
 
 };
 #endif

@@ -67,6 +67,11 @@ void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vect
 	}
 
 }
+//testing function makes all offdiagonal zeroes
+/*double* forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > 3dmat){
+		
+
+}*/
 double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat, std::vector<int> nparams ){
 	//make vector and copy it? no
 	//add all sizes together
@@ -621,13 +626,13 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 	
 	//do the matrix calculation
 	//figure out all matrix dimensions
-	//TMatrixD Dmatrix(4,Nparams, jacobian, "F");
-	TMatrixD Dmatrix(Nparams,4,jacobian,"F");
+	TMatrixD Dmatrix(4,Nparams, jacobian, "F");
+	//TMatrixD Dmatrix(Nparams,4,jacobian,"F");
 	TMatrixD Vmatrix(Nparams,Nparams, subcov, "F");
  
         TMatrixD Covmatrix(4,4); 
-	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
-	//Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
+	//Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
+	Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
 
 	//turn matrix into storable double*
 	double* newcov = new double[Nparams*Nparams];
