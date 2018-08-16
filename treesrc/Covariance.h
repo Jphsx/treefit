@@ -61,7 +61,7 @@ class Covariance{
 	static std::vector<std::vector<std::vector<double> > > matrix1DTo3D(double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
 
 	//testing function force diagonalized matrix
-	static double* forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > 3dmat);//TODO write this
+	//static double* forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > 3dmat);//TODO write this
 
 };
 #endif
