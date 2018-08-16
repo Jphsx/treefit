@@ -580,7 +580,7 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 	double* trimmed1d = matrix3DTo1D( trimmed3d, getnparamsvec(parts, combo) );
 
 	//print for jpsi testing
-	std::cout<<"trimmed global"
+	std::cout<<"trimmed global"<<std::endl;;
 	printCovarianceMatrix(trimmed1d, 10,10);
 
 	return trimmed1d;
