@@ -84,7 +84,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::forcediagonalmatrix(
 			}	
 		}
 	}
-	m		
+			
 	return diagmat;
 }
 double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat, std::vector<int> nparams ){
