@@ -419,7 +419,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				std::vector<int> fitsubset = TreeFit::getVertexSet(fit.at(i), i, fit);
 				
 				//print out the vertex subsets
-				std::cout<<"Node: "<<i <<"Vertex Subset { ";
+				std::cout<<"Node: "<<i <<" Vertex Subset { ";
 				for(int j=0; j<fitsubset.size(); j++){
 					std::cout<<fitsubset.at(j)<<" ";
 				}
@@ -540,7 +540,12 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId), _trackFitObject );
 		
 		p->setCovMatrix(cov4vec);
-		p->setMass(root->mass);
+		if(mass != -1){ //we didnt give a mass so this is a vertex fit only, we must calculate mass
+			p->setMass(root->mass);
+		}
+		else{
+			p->setMass(parentParticle.M());
+		}
 		p->setCharge(charge);
 		p->addParticleID(newPDG);
 		p->setParticleIDUsed(newPDG);
@@ -658,19 +663,13 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	
 		if(fitter->getProbability() > _fitProbabilityCut &&  dim > 0){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
-			std::cout<<"going to store in lcio "<<std::endl;
 			//uncomment this after we know tpfo fits	
 			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
 			
 		}
 		
-		//print every fit
-		std::cout<<"Fitted Particles in Fit "<< j <<std::endl;
-		TFit->printParticles(TFit->fitparts);
-		//TODO save each fit passing a certain probability
-		//cut to output collection
-		//For local plots save the best fit probability fit
-		//this is the event we will plot
+		
+		
 		
 		//before we move on to the next set of combinations
 		//clear the fit (fit is the fit combo from the fit table)

@@ -161,7 +161,7 @@ double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > 
 	std::vector<double> mat_1d{};
 	while(its.at(Nparts-1).at(Nparts-1) < mat.at(Nparts-1).at(Nparts-1).end()){
 		
-			std::cout<<"parsed "<<std::endl;
+			
 		
 		for(int i=0; i<mat.size(); i++){
 
@@ -595,15 +595,15 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 	}
 	//std::cout<<"PRINTING TRIMMED 3d MATRIX"<<std::endl;
 //	printSectoredCovarianceMatrix( trimmed3d );
-	std::cout<<"test forcing diags 0"<<std::endl;
-	trimmed3d = forcediagonalmatrix(trimmed3d);
+//	std::cout<<"test forcing diags 0"<<std::endl;
+//	trimmed3d = forcediagonalmatrix(trimmed3d);
 	
 	//put the matrix back to 1d
 	double* trimmed1d = matrix3DTo1D( trimmed3d, getnparamsvec(parts, combo) );
 
 	//print for jpsi testing
-	std::cout<<"trimmed global"<<std::endl;;
-	printCovarianceMatrix(trimmed1d, 10,10);
+//	std::cout<<"trimmed global"<<std::endl;;
+//	printCovarianceMatrix(trimmed1d, 10,10);
 
 	return trimmed1d;
 		
@@ -614,8 +614,9 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 	
 
 	//test print of global cov
-	std::cout<<"testing full cov print"<<std::endl;
-	printCovarianceMatrix(globalCov,15,15);
+//	std::cout<<"testing full cov print"<<std::endl;
+//	printCovarianceMatrix(globalCov,15,15);
+
 	//get Nparams
 	int Nparams = getNparams(parts, subCombo);
 
@@ -630,8 +631,8 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 			//if we use tpfo we need to rescale globalCov
 		subcov = rescaleGlobalCov(subcov, getNparams( parts, subCombo),  parts, subCombo);
 
-		std::cout<<"testing cov rescaling "<<std::endl;
-		printCovarianceMatrix(subcov,10,10);
+		//std::cout<<"testing cov rescaling "<<std::endl;
+		//printCovarianceMatrix(subcov,10,10);
 	}
 	else{		
 		//get the sub covariance matrix
@@ -660,7 +661,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 			index++;
 		}
 	}
-	printCovarianceMatrix(newcov,4,4);
+	//printCovarianceMatrix(newcov,4,4);
 	//convert the matrix to lower diagonal
 	double* newLDcov = get4VecLD(newcov);
 	float* newLDcovf = new float[10];
