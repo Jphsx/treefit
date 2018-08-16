@@ -579,6 +579,10 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 	//put the matrix back to 1d
 	double* trimmed1d = matrix3DTo1D( trimmed3d, getnparamsvec(parts, combo) );
 
+	//print for jpsi testing
+	std::cout<<"trimmed global"
+	printCovarianceMatrix(trimmed1d, 10,10);
+
 	return trimmed1d;
 		
 
@@ -587,6 +591,9 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo,  int FO_Option){
 	
 
+	//test print of global cov
+	std::cout<<"testing full cov print"<<std::endl;
+	printCovarianceMatrix(globalCov,15,15);
 	//get Nparams
 	int Nparams = getNparams(parts, subCombo);
 
