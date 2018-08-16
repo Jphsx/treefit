@@ -276,25 +276,25 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	
 	jacobian.push_back(0); //dpx/dd0
 	jacobian.push_back(-py); //dpx/dphi ...
- 	jacobian.push_back(-px*pt/(q*eB) ); //dpx/dome
+ 	jacobian.push_back(-px/omega ); //dpx/dome
 	jacobian.push_back(0); //dpx/dz0
 	jacobian.push_back(0); //dpx/dtanl
 
 	jacobian.push_back(0); //dpy/dd0
 	jacobian.push_back(px); //dpy/dphi
-	jacobian.push_back(-py*pt/(q*eB) ); //dpy/dome
+	jacobian.push_back(-py/omega ); //dpy/dome
 	jacobian.push_back(0);//dpy/dz0
 	jacobian.push_back(0); //dpy/dtanl
 
 	jacobian.push_back(0);//dpz/dd0'
 	jacobian.push_back(0);//dpz/dphi
-	jacobian.push_back(-pz*pt/(q*eB) ); //dpz/dome
+	jacobian.push_back(-pz/omega ); //dpz/dome
 	jacobian.push_back(0);//dpz/dz0
 	jacobian.push_back(pt);//dpz/dtanl
 
 	jacobian.push_back(0);//de/dd0
 	jacobian.push_back(0);//de/dphi
-	jacobian.push_back( -(P*P)*pt/(q*eB*E) );//de/dome 
+	jacobian.push_back( (-pt*pt - pz*pz)/(omega*E) );//de/dome 
 	jacobian.push_back(0);//de/dz0
 	jacobian.push_back( pt*pz/E );//de/dtanl
 	
