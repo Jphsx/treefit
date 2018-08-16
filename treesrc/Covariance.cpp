@@ -68,7 +68,7 @@ void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vect
 
 }
 //testing function makes all offdiagonal zeroes
-std::vector<std::vector<std::vector<double> > > Covariance::forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > 3dmat){
+std::vector<std::vector<std::vector<double> > > Covariance::forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > a3dmat){
 		
 	//first just try zeroing covariance sectors
 	std::vector<double> blanksector(25);
@@ -76,7 +76,7 @@ std::vector<std::vector<std::vector<double> > > Covariance::forcediagonalmatrix(
 		blanksector.at(i) = 0.0;
 	}
 	
-	std::vector<std::vector<std::vector<double> > > diagmat= 3dmat;	
+	std::vector<std::vector<std::vector<double> > > diagmat= a3dmat;	
 	for(int i=0; i<2; i++){
 		for(int j=0; j<2; j++){
 			if(i != j){
