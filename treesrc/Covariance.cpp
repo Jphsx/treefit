@@ -607,6 +607,9 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 		subcov = getSubGlobalCov(trimmedcov,dim-5, parts, globalCombo, subCombo);
 			//if we use tpfo we need to rescale globalCov
 		subcov = rescaleGlobalCov(subcov, getNparams( parts, subCombo),  parts, subCombo);
+
+		std::cout<<"testing cov rescaling "<<std::endl;
+		printCovarianceMatrix(subcov,10,10);
 	}
 	else{		
 		//get the sub covariance matrix
