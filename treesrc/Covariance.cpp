@@ -596,7 +596,7 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 	//std::cout<<"PRINTING TRIMMED 3d MATRIX"<<std::endl;
 //	printSectoredCovarianceMatrix( trimmed3d );
 	std::cout<<"test forcing diags 0"<<std::endl;
-	trimmed3d = forcediagonalmatix(trimmed3d);
+	trimmed3d = forcediagonalmatrix(trimmed3d);
 	
 	//put the matrix back to 1d
 	double* trimmed1d = matrix3DTo1D( trimmed3d, getnparamsvec(parts, combo) );
