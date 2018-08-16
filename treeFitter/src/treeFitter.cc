@@ -464,11 +464,11 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		 //save the fit objects to be looked at later/ stored in lcio
 		 FitObjects = FO_vec;
 		//printout the fit information
-		std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;
-		std::cout<<"Cov Dimension: ";
-		int dim;
-		fitter->getGlobalCovarianceMatrix(dim);
-		std::cout<< dim <<std::endl;
+	//	std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;
+	//	std::cout<<"Cov Dimension: ";
+	//	int dim;
+	//	fitter->getGlobalCovarianceMatrix(dim);
+	//	std::cout<< dim <<std::endl;
 
 		
 	
@@ -642,11 +642,17 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			}
 		}
 		
+		//print to track fit info
+		std::cout<<"FIT: "<<j<<" Results - "<<std::endl;
 		fitter = fitParticles(fit);
 		//get the global covariance for this fit, we need to make sure it created one
 		//if there is no matrix we need to skip this event
+		//printout the fit information
+		std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;
+		std::cout<<"Cov Dimension: ";
 		int dim;
 		fitter->getGlobalCovarianceMatrix(dim);
+		std::cout<< dim <<std::endl;
 		
 		//check and see if this is the best fit and exceeds the minimal probability cut
 		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut && dim > 0){
