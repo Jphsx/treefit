@@ -540,7 +540,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, fit.at(0), fit.at(root->nodeId), _trackFitObject );
 		
 		p->setCovMatrix(cov4vec);
-		if(mass != -1){ //we didnt give a mass so this is a vertex fit only, we must calculate mass
+		if(root->mass != -1){ //we didnt give a mass so this is a vertex fit only, we must calculate mass
 			p->setMass(root->mass);
 		}
 		else{
