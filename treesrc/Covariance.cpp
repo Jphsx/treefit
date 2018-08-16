@@ -68,10 +68,25 @@ void Covariance::printSectoredCovarianceMatrix(std::vector<std::vector<std::vect
 
 }
 //testing function makes all offdiagonal zeroes
-/*double* forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > 3dmat){
+std::vector<std::vector<std::vector<double> > > Covariance::forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > 3dmat){
 		
-
-}*/
+	//first just try zeroing covariance sectors
+	std::vector<double> blanksector(25);
+	for(int i=0; i<25; i++){
+		blanksector.at(i) = 0.0;
+	}
+	
+	std::vector<std::vector<std::vector<double> > > diagmat= 3dmat;	
+	for(int i=0; i<2; i++){
+		for(int j=0; j<2; j++){
+			if(i != j){
+				diagmat.at(i).at(j) = blanksector;	
+			}	
+		}
+	}
+	m		
+	return diagmat;
+}
 double* Covariance::matrix2DTo1D( std::vector<std::vector<double>  > mat, std::vector<int> nparams ){
 	//make vector and copy it? no
 	//add all sizes together
@@ -580,6 +595,8 @@ double* Covariance::removeVFOSectors(double* globalCov, int dim, std::vector<Par
 	}
 	//std::cout<<"PRINTING TRIMMED 3d MATRIX"<<std::endl;
 //	printSectoredCovarianceMatrix( trimmed3d );
+	std::cout<<"test forcing diags 0"<<std::endl;
+	trimmed3d = forcediagonalmatix(trimmed3d);
 	
 	//put the matrix back to 1d
 	double* trimmed1d = matrix3DTo1D( trimmed3d, getnparamsvec(parts, combo) );
@@ -626,13 +643,13 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 	
 	//do the matrix calculation
 	//figure out all matrix dimensions
-	TMatrixD Dmatrix(4,Nparams, jacobian, "F");
-	//TMatrixD Dmatrix(Nparams,4,jacobian,"F");
+	//TMatrixD Dmatrix(4,Nparams, jacobian, "F");
+	TMatrixD Dmatrix(Nparams,4,jacobian,"F");
 	TMatrixD Vmatrix(Nparams,Nparams, subcov, "F");
  
         TMatrixD Covmatrix(4,4); 
-	//Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
-	Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
+	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
+	//Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
 
 	//turn matrix into storable double*
 	double* newcov = new double[Nparams*Nparams];
