@@ -296,20 +296,20 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	
 	jacobian.push_back(0); //dpx/dd0
 	//jacobian.push_back(-py); //dpx/dphi ...
-	jacobian.push_back(px);
+	jacobian.push_back(-py);
  	jacobian.push_back(-px/omega ); //dpx/dome
 	jacobian.push_back(0); //dpx/dz0
 	jacobian.push_back(0); //dpx/dtanl
 
 	jacobian.push_back(0); //dpy/dd0
 	//jacobian.push_back(px); //dpy/dphi
-	jacobian.push_back(-py);
+	jacobian.push_back(px);
 	jacobian.push_back(-py/omega ); //dpy/dome
 	jacobian.push_back(0);//dpy/dz0
 	jacobian.push_back(0); //dpy/dtanl
 
 	jacobian.push_back(0);//dpz/dd0'
-	jacobian.push_back(0);//dpz/dphi
+	jacobian.push_back(pz);//dpz/dphi // was 0
 	jacobian.push_back(-pz/omega ); //dpz/dome
 	jacobian.push_back(0);//dpz/dz0
 	jacobian.push_back(pt);//dpz/dtanl
