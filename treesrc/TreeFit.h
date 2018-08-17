@@ -45,6 +45,10 @@ class TreeFit{
 	void addrecopart(Particle* pc);
 
 	void printParticles(std::vector<Particle*> parts);
+
+	static void printComparison(std::vector<Particle*> reco, std::vector<Particle*> fit, std::vector<int> combo);
+	static void printParentComparison(TLorentzVector recoparent, TLorentzVector fitparent, int nodeId, Node* root);
+
 	std::vector<std::vector<int> > makepdgcombinations(std::vector<std::vector<int> > combinations);
 	std::vector<int> getpdgcombo(std::vector<int> combo);
 	void generatefitcombinations(Node* root, std::vector<int> parentcombo);

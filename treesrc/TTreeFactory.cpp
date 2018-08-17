@@ -35,8 +35,8 @@ void TTreeFactory::addFittedParticle(Particle* fitcontainer){
 void TTreeFactory::addReconstructedParticle(Particle* recocontainer){
 	recoLocalParams.push_back(recocontainer->localParams);
 	recoLocalErrors.push_back(recocontainer->localErrors);
-	printParams(recocontainer->localParams);
-	printParams(recocontainer->localErrors);
+	//printParams(recocontainer->localParams);
+	//printParams(recocontainer->localErrors);
 	
 }
 void TTreeFactory::addpdg( int pdg){
@@ -58,7 +58,7 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 
 		fitsum += fitcontainer.at(i)->v;
 		recosum += recocontainer.at(i)->v;
-		std::cout<<"FIT ";
+		/*std::cout<<"FIT ";
      std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
 		fitcontainer.at(i)->v.Px()<< " " <<
 		fitcontainer.at(i)->v.Py()<< " " <<
@@ -74,9 +74,9 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 		recocontainer.at(i)->v.P() << " " <<
 		recocontainer.at(i)->v.E() << " " <<
 		recocontainer.at(i)->v.M() << " " <<std::endl;
-	}
+	}*/
 	RecoEnergy = recosum.E();
-	std::cout<<"RECO ";
+	/*std::cout<<"RECO ";
      std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
 		recosum.Px()<< " " <<
 		recosum.Py()<< " " <<
@@ -84,15 +84,16 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 		recosum.P() << " " <<
 		recosum.E() << " " <<
 		recosum.M() << " " <<std::endl;
+	*/
 	FitEnergy = fitsum.E();
-	std::cout<<"FIT ";
+	/*std::cout<<"FIT ";
 	std::cout<<"TLV: (Px,Py,Pz,P,E,M) "<<
 		fitsum.Px()<< " " <<
 		fitsum.Py()<< " " <<
 		fitsum.Pz()<< " " <<
 		fitsum.P() << " " <<
 		fitsum.E() << " " <<
-		fitsum.M() << " " <<std::endl;
+		fitsum.M() << " " <<std::endl; */
 	RecoMass = recosum.M();
 
 	//populate the parent vectors

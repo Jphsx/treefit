@@ -181,6 +181,47 @@ std::vector<int> TreeFit::getVertexSet(std::vector<int> combo, int nodeId, std::
 	return subset;
 
 }
+void TreeFit::printComparison(std::vector<Particle*> reco, std::vector<Particle*> fit, std::vector<int> combo){
+	//TODO write this
+	
+	//loop over combo
+	for(int i=0; i<combo.size(); i++){
+		//print particles at combo indices
+		std::cout<<"Particle: "<<reco.at(combo.at(i))->part->getType() <<std::endl;
+		std::cout<<"Reco: ";
+		Particle::printReconstructedParticle(reco.at(combo.at(i))->part );
+		std::cout<<"Fit : ";
+		Particle::printReconstructedParticle(fit.at(combo.at(i))->part);
+		if(reco.at(combo.at(i))->isTrack){
+			std::cout<<"Reco: ";
+			Particle::printTrack(reco.at(combo.at(i))->track);
+			std::cout<<"Fit : ";
+			Particle::printTrack(fit.at(combo.at(i))->track);
+			std::cout<<"Reco Error Matrix "<<std::endl;
+			Particle::printCovarianceMatrix(reco.at(combo.at(i))->track->getCovMatrix(), reco.at(combo.at(i))->localParams.size());				
+			std::cout<<"Fit Error Matrix " <<std::endl;
+			Particle::printCovarianceMatrix(fit.at(combo.at(i))->track->getCovMatrix(), fit.at(combo.at(i))->localParams.size());
+		}
+		else{
+			std::cout<<"Reco Error Matrix "<<std::endl;
+			Particle::printCovarianceMatrix(reco.at(combo.at(i))->part->getCovMatrix(), reco.at(combo.at(i))->localParams.size());				
+			std::cout<<"Fit Error Matrix " <<std::endl;
+			Particle::printCovarianceMatrix(fit.at(combo.at(i))->part->getCovMatrix(), fit.at(combo.at(i))->localParams.size());
+		}
+	
+	}
+	
+}
+void TreeFit::printParentComparison(TLorentzVector recoparent, TLorentzVector fitparent, int nodeId, Node* root){
+	Node* parentNode = Tree::getNode(root, nodeId);
+	std::cout<<"Parent Particle: "<<parentNode->pdg<<std::endl;
+	std::cout<<"Reco: ";
+	Particle::printTLorentzVector(recoparent);	
+	std::cout<<"Fit : ";
+	Particle::printTLorentzVector(fitparent);
+	std::cout<<std::endl;
+
+}
 //Testing framework////////////////
 /*int main(){ 
 

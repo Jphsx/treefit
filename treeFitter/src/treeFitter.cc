@@ -627,6 +627,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//highest fit probability
 	double bestfitprob=-2.0;
 	std::vector<std::vector<int> > bestfit{};
+	int bestfitnum=-1;
 
 	//do the fits
 	OPALFitterGSL*  fitter = NULL; 
@@ -658,6 +659,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		if(fitter->getProbability() > bestfitprob && fitter->getProbability() > _fitProbabilityCut && dim > 0){
 			bestfit = fit;
 			bestfitprob = fitter->getProbability();
+			bestfitnum = j;
  		}
 
 		//make the fit particles from the FOs
@@ -725,20 +727,34 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//iterate over each nodeId in fit
 	int index=0;
 	//use index for iterating over treefactory vector, since we cant have gaps in its array
+	std::cout<<std::endl;
+	std::cout<<"Detailed Fit for highest fit probability Fit "<<bestfitnum<<std::endl;
+	
+	TreeFit::printComparison(TFit->recoparts, TFit->fitparts, bestfit.at(0));
+
+
 	for(unsigned int i=0; i<bestfit.size(); i++){
 
 		if(bestfit.at(i).size() > 0){
 
 			//nodeId should by construction match fit index with ttrees index
 			//iterate over the fit particles
+			
+			//for printing each resonance here
+			TLorentzVector fitsum; //fitsum is the parent fitted particle
+			TLorentzVector recosum;
 
 			for(unsigned int k=0; k<bestfit.at(i).size(); k++){
 				
 				recop.push_back(TFit->recoparts.at( bestfit.at(i).at(k) ));
 				fitp.push_back(TFit->fitparts.at( bestfit.at(i).at(k) ));
-			
+				//we can make the parent here also for printing info
+				fitsum += fitp.at(k)->v;
+				recosum += recop.at(k)->v;
 				
 			}
+			//add print details for each parent created
+			TreeFit::printParentComparison(recop, fitp, i, TFit->ParticleTree);
 
 			ttrees.at(index)->addParticleSets(fitp,recop);
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
