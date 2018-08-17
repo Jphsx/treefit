@@ -754,7 +754,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 				
 			}
 			//add print details for each parent created
-			TreeFit::printParentComparison(recop, fitp, i, TFit->ParticleTree);
+			TreeFit::printParentComparison(recop, fitp, i, TFit->ParticleTree->Root);
 
 			ttrees.at(index)->addParticleSets(fitp,recop);
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
