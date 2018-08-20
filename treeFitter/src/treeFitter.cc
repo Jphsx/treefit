@@ -11,6 +11,8 @@
 //typedef CLHEP::HepLorentzVector LorentzVector ;
 //typedef CLHEP::Hep3Vector Vector3D ;
 
+#include "ThreeVector.h"
+
 // MarlinKinfit stuff
 #include "LeptonFitObject.h"
 #include "JetFitObject.h"
