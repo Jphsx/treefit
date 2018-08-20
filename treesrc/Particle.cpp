@@ -304,6 +304,9 @@ void Particle::printTrack(Track* t){
 		t->getOmega()<<" "<<
 		t->getZ0()<<" "<<
 		t->getTanLambda()<<std::endl;
+	std::cout<<"Reference Point (x,y,z): ";
+	float* ref = t->getReferencePoint();
+	std::cout<<ref[0]<<" "<<ref[1]<<" "<<ref[2]<<std::endl; 
 }
 void Particle::printReconstructedParticle(ReconstructedParticle* p){
 	const double* mom = p->getMomentum();	

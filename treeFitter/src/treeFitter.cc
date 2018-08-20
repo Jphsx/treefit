@@ -460,6 +460,15 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		fitter->fit();
 		//save the FOs globally so we can easily
 		
+		//if there was a vertex fit, go through and print all vertex information
+		for(int i=0; i< VertexObjects.size(); i++){
+			std::cout<<"Fitted Vertex (x,y,z): ";
+			 ThreeVector vertex;
+        		 VertexObjects.at(i)->getVertexEx(vertex);
+			 std::cout<<vertex.getX()<<" "<<vertex.getY()<<" "<<vertex.getZ()<<std::endl;
+			
+		}
+		
 		
 		 //save the fit objects to be looked at later/ stored in lcio
 		 FitObjects = FO_vec;
