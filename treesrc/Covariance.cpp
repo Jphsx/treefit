@@ -562,7 +562,7 @@ void Covariance::rescaleSector(std::vector<double>& covSector){
 	std::vector<double> rescaled1d;
 	for(int i=0; i<cov2d.size(); i++){
 		for(int j=0; j<cov2d.at(i).size(); j++){
-			rescaled1d.push_back( cov2d.at(i).at(j) * scaleFactor.at(i) * scaleFactor.at(j) );
+			rescaled1d.push_back( cov2d.at(i).at(j) * scaleFactor.at(j) );
 			
 		}
 	}
