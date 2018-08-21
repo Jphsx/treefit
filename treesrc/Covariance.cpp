@@ -538,7 +538,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 void Covariance::rescaleSector(std::vector<double>& covSector){
 	//scale factors for the parameters d0,phi,omega,z0,tanLambda	
 	std::vector<double> scaleFactor{1.e-2, 1., 1.e-3, 1.e-2, 1.};
-	std::vector<std::vector<double> cov2d(5);
+	std::vector<std::vector<double> > cov2d(5);
 	std::vector<double> col(5);
 	for(int i=0; i<cov2d.size(); i++){
 		cov2d.at(i) = col;
