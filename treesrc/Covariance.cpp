@@ -649,6 +649,25 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 	//TMatrixD Dmatrix(4,Nparams, jacobian, "F");
 	TMatrixD Dmatrix(Nparams,4,jacobian,"F");
 	TMatrixD Vmatrix(Nparams,Nparams, subcov, "F");
+
+	//for a good check lets print the jacobian to make sure it is what we want
+	
+	double* jcbn = Dmatrix.GetElements();
+	int jcbn_rows = Dmatrix.GetNrows();
+	int jcbn_cols = Dmatrix.GetNcols();
+
+	//print this matrix
+	int ind=0;
+	std::cout<<"JACOBIAN DMATRIX"<<std::endl;
+	for(int i=0; i<jcbn_rows; i++){
+		for(int j=0; j<jcbn_cols; j++){
+			std::cout<<jcbn[ind]<<" ";
+			ind++;
+		}
+		std::cout<<std::endl;
+		
+	}
+
  
         TMatrixD Covmatrix(4,4); 
 	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
