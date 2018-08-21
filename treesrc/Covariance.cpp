@@ -538,13 +538,49 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 void Covariance::rescaleSector(std::vector<double>& covSector){
 	//scale factors for the parameters d0,phi,omega,z0,tanLambda	
 	std::vector<double> scaleFactor{1.e-2, 1., 1.e-3, 1.e-2, 1.};
+	std::vector<std::vector<double> cov2d(5);
+	std::vector<double> col(5);
+	for(int i=0; i<cov2d.size(); i++){
+		cov2d.at(i) = col;
+	}
+
+	//populate 2d vec
 	int threshold = 5;
-	int sFindex = 0;
+	int j =0;
+	int k = 0;
+	for(int i=0; i<covSector.size(); i++){
+		if( i== threshold){
+			j++;
+			threshold+=5;
+			k=0;
+		}
+		cov2d.at(j).at(k) = covSector.at(i);	
+		k++;	
+		
+	}
+
+	std::vector<double> rescaled1d;
+	for(int i=0; i<cov2d.size(); i++){
+		for(int j=0; j<cov2d.at(i).size); j++){
+			rescaled1d.push_back( cov2d.at(i).at(j) * scaleFactor.at(i) * scaleFactor.at(j) );
+			
+		}
+	}
+	//print sectors before and after?
+	for(int i=0; i<rescaled1d.size(); i++){
+		covSector.at(i) = rescaled1d.at(i);
+	}
+
+	
+
+	
+	/*int sFindex = 0;
 	for(int i=0; i<covSector.size(); i++){
 		covSector.at(i) = covSector.at(i) * scaleFactor.at(sFindex);
 		sFindex++;
 		if(sFindex == threshold) sFindex =0;
 	}
+	*/
 }
 double* Covariance::rescaleGlobalCov(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> combo){
 	
