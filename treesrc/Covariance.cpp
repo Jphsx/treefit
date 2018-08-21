@@ -340,7 +340,7 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 
 	jacobian.push_back(0);//de/dd0
 	jacobian.push_back(0);//de/dphi
-	jacobian.push_back( (-eB*eB*q*q-eB*eB*tanLamba*tanLambda*q*q)/(omega*omega*omega*E) );//de/dome 
+	jacobian.push_back( (-eB*eB*q*q-eB*eB*tanLambda*tanLambda*q*q)/(omega*omega*omega*E) );//de/dome 
 	jacobian.push_back(0);//de/dz0
 	jacobian.push_back( eB*eB*q*q*tanLambda/(E*omega*omega) );//de/dtanl
 
