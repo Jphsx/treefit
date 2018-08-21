@@ -622,7 +622,7 @@ double* Covariance::rescaleGlobalCov(double* globalCov, int dim, std::vector<Par
 			if(p.at(i)->isTrack && p.at(j)->isTrack){
 				rescaleSector( cov3d.at(i).at(j) );
 			}
-			if( (p.at(i)->isTrack && !p.at(j)->isTrack) || (!p.at(i)->isTrack && p.at(j)->isTrack){
+			if( (p.at(i)->isTrack && !p.at(j)->isTrack) || (!p.at(i)->isTrack && p.at(j)->isTrack) ){
 				//THIS Is a complicated mixed sector
 				//TODO rescaling of mixed sectors
 			}
