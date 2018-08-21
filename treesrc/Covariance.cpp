@@ -537,7 +537,7 @@ double* Covariance::getSubGlobalCov( double* globalcov, int dim, std::vector<Par
 }
 void Covariance::rescaleSector(std::vector<double>& covSector){
 	//scale factors for the parameters d0,phi,omega,z0,tanLambda	
-	std::vector<double> scaleFactor{1.e-2, 1., 1.e-3, 1.e-2, 1.};
+	std::vector<double> scaleFactor{1.0e-2, 1.0, 1.0e-3, 1.0e-2, 1.0};
 	std::vector<std::vector<double> > cov2d(5);
 	std::vector<double> col(5);
 	for(int i=0; i<cov2d.size(); i++){
@@ -563,6 +563,8 @@ void Covariance::rescaleSector(std::vector<double>& covSector){
 	for(int i=0; i<cov2d.size(); i++){
 		for(int j=0; j<cov2d.at(i).size(); j++){
 			rescaled1d.push_back( cov2d.at(i).at(j) *scaleFactor.at(i)* scaleFactor.at(j) );
+			std::cout<<" cov i j sf i j"<< cov2d.at(i).at(j) <<" "<<scaleFactor.at(i)<<" "<<scaleFactor.at(j);
+			std::cout<<std::endl;
 			
 		}
 	}
@@ -596,7 +598,7 @@ double* Covariance::rescaleGlobalCov(double* globalCov, int dim, std::vector<Par
 	}
 	
 	//locate the tracks on the vector p
-	for(int k=0; k<p.size(); k++){
+	/*for(int k=0; k<p.size(); k++){
 		//if it is a track rescale at the corresponding sector/index
 		if(p.at(k)->isTrack){
 			
@@ -613,6 +615,18 @@ double* Covariance::rescaleGlobalCov(double* globalCov, int dim, std::vector<Par
 			}
 					
 
+		}
+	}*/
+	for(int i=0; i<cov3d.size(); i++){
+		for( int j=0; j<cov3d.at(i).size(); j++){
+			if(p.at(i)->isTrack && p.at(j)->isTrack){
+				rescaleSector( cov3d.at(i).at(j) );
+			}
+			if( (p.at(i)->isTrack && !p.at(j)->isTrack) || (!p.at(i)->isTrack && p.at(j)->isTrack){
+				//THIS Is a complicated mixed sector
+				//TODO rescaling of mixed sectors
+			}
+			//if both are not tracks, do nothing						
 		}
 	}
 	//transform 3d back to 1d and return it
