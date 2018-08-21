@@ -281,6 +281,8 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	double cosPhi = cos(p->track->getPhi());
 	double sinPhi = sin(p->track->getPhi());	
 
+	double tanLambda = p->track->getTanLambda();
+
 	double px = q*eB/omega  * cosPhi;
 	double py = q*eB/omega  * sinPhi;
 	double pz = q*eB/omega * p->track->getTanLambda();
@@ -293,16 +295,14 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	
 
 	std::vector<double> jacobian{};
-	
+	/*
 	jacobian.push_back(0); //dpx/dd0
-	//jacobian.push_back(-py); //dpx/dphi ...
 	jacobian.push_back(-py);
  	jacobian.push_back(-px/omega ); //dpx/dome
 	jacobian.push_back(0); //dpx/dz0
 	jacobian.push_back(0); //dpx/dtanl
 
 	jacobian.push_back(0); //dpy/dd0
-	//jacobian.push_back(px); //dpy/dphi
 	jacobian.push_back(px);
 	jacobian.push_back(-py/omega ); //dpy/dome
 	jacobian.push_back(0);//dpy/dz0
@@ -319,7 +319,30 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	jacobian.push_back( (-pt*pt - pz*pz)/(omega*E) );//de/dome 
 	jacobian.push_back(0);//de/dz0
 	jacobian.push_back( pt*pz/E );//de/dtanl
-	
+*/
+	jacobian.push_back(0); //dpx/dd0
+	jacobian.push_back(-eB*q*sinPhi/omega);
+ 	jacobian.push_back(-eB*q*cosPhi/(omega*omega) ); //dpx/dome
+	jacobian.push_back(0); //dpx/dz0
+	jacobian.push_back(0); //dpx/dtanl
+
+	jacobian.push_back(0); //dpy/dd0
+	jacobian.push_back(eB*q*cosPhi/omega);
+	jacobian.push_back( -eB*q*sinPhi/(omega*omega)); //dpy/dome
+	jacobian.push_back(0);//dpy/dz0
+	jacobian.push_back(0); //dpy/dtanl
+
+	jacobian.push_back(0);//dpz/dd0'
+	jacobian.push_back(0);//dpz/dphi // was 0
+	jacobian.push_back(-eB*q*tanLambda/(omega*omega)); //dpz/dome
+	jacobian.push_back(0);//dpz/dz0
+	jacobian.push_back(eB*q/omega);//dpz/dtanl
+
+	jacobian.push_back(0);//de/dd0
+	jacobian.push_back(0);//de/dphi
+	jacobian.push_back( (-eB*eB*q*q-eB*eB*tanLamba*tanLambda*q*q)/(omega*omega*omega*E) );//de/dome 
+	jacobian.push_back(0);//de/dz0
+	jacobian.push_back( eB*eB*q*q*tanLambda/(E*omega*omega) );//de/dtanl
 
 	return jacobian;
 }
