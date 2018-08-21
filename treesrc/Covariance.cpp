@@ -652,7 +652,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 
 	//for a good check lets print the jacobian to make sure it is what we want
 	
-	double* jcbn = Dmatrix.GetElements();
+	double* jcbn = Dmatrix.GetMatrixArray();
 	int jcbn_rows = Dmatrix.GetNrows();
 	int jcbn_cols = Dmatrix.GetNcols();
 
