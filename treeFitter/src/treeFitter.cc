@@ -315,6 +315,20 @@ bool treeFitter::FindMCParticles( LCEvent* evt ){
   
   	return collectionFound;
 }
+void treeFitter::printVertices(){
+	//if there was a vertex fit, go through and print all vertex information
+		for(int i=0; i< VertexObjects.size(); i++){
+			if( VertexObjects.at(i) == NULL) continue;
+			
+			std::cout<<"Node: "<<i<<" Fitted Vertex (x,y,z): ";
+			 ThreeVector vertex = VertexObjects.at(i)->getVertex(vertex);
+			 std::cout<<vertex.getX()<<" "<<vertex.getY()<<" "<<vertex.getZ()<<std::endl;
+			
+			std::cout<<"Vertex Errors (dx,dy,dz): "<<
+			std::cout<< VertexObjects.at(i)->getError(0) <<" "<< VertexObjects.at(i)->getError(1) << " " <<VertexObjects.at(i)->getError(2)<<std::endl;
+			
+		}
+}
 //input a fit from the fit table 
 OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//general procedure
@@ -326,6 +340,8 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		//this array should match reco parts in size, but only the final particles
 		//used will be populated into the array
  		std::vector<ParticleFitObject*> FO_vec(TFit->recoparts.size());
+		//vertex size should follow the fit convention
+		std::vector<VertexFitObject*> VFO_vec(fit.size());
 		
 		//use the first node it populate all the FOs
 		//adding this index var for readability
@@ -420,6 +436,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				//get the fit subset to add to VertexFitObjects
 				std::vector<int> fitsubset = TreeFit::getVertexSet(fit.at(i), i, fit);
 				
+				
 				//print out the vertex subsets
 				std::cout<<"Node: "<<i <<" Vertex Subset { ";
 				for(int j=0; j<fitsubset.size(); j++){
@@ -447,7 +464,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				// prepare for fit
       				vfo->initForFit();
 				//add the vfo to vertex objects to get positional information
-				VertexObjects.push_back(vfo);
+				VFO_vec.at(i) = (vfo);
 					
 			}//end if					
 									
@@ -460,30 +477,13 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		
 		//do the fit
 		fitter->fit();
-		//save the FOs globally so we can easily
-		
-		//if there was a vertex fit, go through and print all vertex information
-		for(int i=0; i< VertexObjects.size(); i++){
-			std::cout<<"Fitted Vertex (x,y,z): ";
-			 ThreeVector vertex;
-        		 VertexObjects.at(i)->getVertexEx(vertex);
-			 std::cout<<vertex.getX()<<" "<<vertex.getY()<<" "<<vertex.getZ()<<std::endl;
-			
-		}
-		
-		
-		 //save the fit objects to be looked at later/ stored in lcio
-		 FitObjects = FO_vec;
-		//printout the fit information
-	//	std::cout<<"Fit Probability: "<<fitter->getProbability()<<" Error: "<<fitter->getError()<<" Chi2: "<<fitter->getChi2()<<" DOF: "<< fitter->getDoF()<< " Iterations: "<<fitter->getIterations()<<std::endl;
-	//	std::cout<<"Cov Dimension: ";
-	//	int dim;
-	//	fitter->getGlobalCovarianceMatrix(dim);
-	//	std::cout<< dim <<std::endl;
 
+
+		//save the fit objects to be looked at later/ stored in lcio
+		FitObjects = FO_vec;
+		VertexObjects = VFO_vec;
 		
-	
-	
+		
 		
 		return fitter;
 }
@@ -508,7 +508,10 @@ void treeFitter::createFitParticlesfromFitObjects(){
 			}
 			
 						
-		}
+	}
+
+
+	
 }
 
 //recursive function called by createLCOutput, creates the tree of recoparts/tracks to be put onto output LCIO
@@ -563,6 +566,15 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		p->setType(root->pdg);
 		p->setGoodnessOfPID(fitter->getProbability());
 		
+		//set the vertex info if it is available
+		if( VertexObjects->at(root->nodeId) != NULL){
+			const float* vtx[3];
+			ThreeVector vec = VertexObjects->at(root->nodeId)->getVertex();
+			vtx[0] = vec.getX();
+			vtx[1] = vec.getY();
+			vtx[2] = vec.getZ();
+			p->setReferencePoint(vtx);	
+		}
 		
 
 		//go through children, identify the leaves and add them
@@ -684,6 +696,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//if we pass, save this particle hypothesis and fit to the outputcollection
 			//uncomment this after we know tpfo fits	
 			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
+			//print out all the vertex info if possible
+			printVertices()
 			
 		}
 		
@@ -697,6 +711,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		TFit->fitparts.clear();
 		FitObjects.clear();//this vector will not change capacity when cleared size will be 0 though
 		VertexObjects.clear();
+		VertexSubsets.clear();
 		//delete fitter?
 		delete fitter;
 	}//fitTable iteration
@@ -712,13 +727,13 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	double* globalcov = fitter->getGlobalCovarianceMatrix(dim);
 
 	
-	std::cout<<"PRINTING GLOBAL COV"<<std::endl;
+	/*std::cout<<"PRINTING GLOBAL COV"<<std::endl;
 	for(int i=0; i<(dim*dim ); i++){
 		if(i%dim == 0){ std::cout<<std::endl; }
 		std::cout<<globalcov[i]<<" ";		
 	}
 	std::cout<<std::endl;
-	
+	*/
 	
 	//remake fitparticles
 	//this creation makes sure fitparts will be the correct size
@@ -768,6 +783,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 			ttrees.at(index)->addParticleSets(fitp,recop);
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
+			ttrees.at(index)-addVertexDetails(VertexObjects.at(i));
 	
 			//ading cov stuff
 			int gcovdim;

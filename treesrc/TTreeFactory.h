@@ -7,6 +7,8 @@
 #include "TTree.h"
 #include "TFile.h"
 #include "TLorentzVector.h"
+#include "ThreeVector.h"
+
 
 class TTreeFactory{
 
@@ -22,6 +24,10 @@ class TTreeFactory{
   	std::vector<std::vector<double> > recoLocalErrors{};
 	std::vector<std::vector<double> > fitLocalParams{};
 	std::vector<std::vector<double> > fitLocalErrors{};
+	
+	//vertex information
+	std::vector<double> vertex{};
+	std::vector<double> vertexErrors{};
 
 	//this is the indexing array
 	std::vector<double> pdgs{};
@@ -49,6 +55,7 @@ class TTreeFactory{
 	void addParticleSets(std::vector<Particle*> fitcontainer, std::vector<Particle*> recocontainer);
 	void addpdg( int pdg );
 	void addFitDetails(double fitprob, double chisq); 
+	void addVertexDetails(VertexFitObject* vfo);
 	//TODO MonteCarlo stuff?
 
 	//parent error population

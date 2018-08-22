@@ -21,6 +21,9 @@ TTreeFactory::TTreeFactory(int nodeId, int pdg, TFile* f){
         tree->Branch("fitLocalErrors.", &fitLocalErrors);
 	tree->Branch("pdgs.",&pdgs);
 
+	tree->Branch("vertex.", &vertex);
+	tree->Branch("vertexErrors.", &vertexErrors);
+
 	tree->Branch("recoParentParams.", &recoParentParams);
 	tree->Branch("recoParentErrors.", &recoParentErrors);
 	tree->Branch("fitParentParams.", &fitParentParams);
@@ -30,6 +33,7 @@ void TTreeFactory::addFittedParticle(Particle* fitcontainer){
 	fitLocalParams.push_back(fitcontainer->localParams);
 	fitLocalErrors.push_back(fitcontainer->localErrors);
 	//TODO fit pulls
+
 	
 }
 void TTreeFactory::addReconstructedParticle(Particle* recocontainer){
@@ -122,6 +126,18 @@ void TTreeFactory::addFitParentErrors(float* cov){
 	fitParentErrors.push_back((double)cov[9]);		
 
 }
+void TTreeFactory::addVertexDetails(VertexFitObject* vfo){
+
+	ThreeVector vtx = vfo->getVertex();
+	vertex.push_back(vtx.getX());
+	vertex.push_back(vtx.getY());
+	vertex.push_back(vtx.getZ());
+	
+	vertexErrors.push_back(vfo->getError(0));
+	vertexErrors.push_back(vfo->getError(1));
+	vertexErrors.push_back(vfo->getError(2));
+
+}
 void TTreeFactory::TreeFillAndClear(){
 	//fill the tree
 	tree->Fill();
@@ -141,6 +157,9 @@ void TTreeFactory::TreeFillAndClear(){
 	fitParentParams.clear();
 	fitParentErrors.clear();
 	pdgs.clear();
+
+	vertex.clear();
+	vertexErrors.clear();
 	
 }
 void TTreeFactory::printParams(std::vector<double> params){

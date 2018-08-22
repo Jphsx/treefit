@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "TLorentzVector.h"
+#include "ThreeVector.h"
 #include "EVENT/ReconstructedParticle.h"
 #include "EVENT/Track.h"
 #include "EVENT/MCParticle.h"
@@ -12,6 +13,7 @@
 #include "LeptonFitObject.h"
 #include "TrackParticleFitObject.h"
 #include "JetFitObject.h"
+#include "VertexFitObject.h"
 
 #include "IMPL/ParticleIDImpl.h"
 #include "IMPL/ReconstructedParticleImpl.h"
