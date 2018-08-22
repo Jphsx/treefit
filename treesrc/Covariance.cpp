@@ -185,7 +185,7 @@ double* Covariance::matrix3DTo1D( std::vector<std::vector<std::vector<double> > 
 
 }
 std::vector<double> Covariance::constructJFOJacobian(Particle* p){
-	std::cout<<"in the JFO jac "<<std::endl;
+	
 	//std::vector< std::vector<string> > jacobian{};
 	/*
 	  dPx/de dPx/dtheta dPx/dphi
@@ -218,14 +218,14 @@ std::vector<double> Covariance::constructJFOJacobian(Particle* p){
 	jacobian.push_back( 0.0);// dE/dtheta
 	jacobian.push_back( 0.0);// dE/dphi
 	
-	std::cout<<"made jfo "<<std::endl;
+	
 	return jacobian;
 	
 
 
 }
 std::vector<double> Covariance::constructLFOJacobian(Particle* p){
-	std::cout<<"in the lfo jac "<<std::endl;
+	
 	
 	/* dPx/dk dPx/dtheta dPx/dphi
 	  dPy/dk dPy/dtheta dPy/dphi
@@ -264,7 +264,7 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	jacobian.push_back( -pz*P*P/(k*E*pt*pt) );//"dE/dtheta" );
 	jacobian.push_back( 0.0);//"dE/dphi" );
 	
-	std::cout<<"made LFO "<<std::endl;
+	
 	return jacobian;
 
 }
@@ -295,7 +295,7 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	
 
 	std::vector<double> jacobian{};
-	/*
+	
 	jacobian.push_back(0); //dpx/dd0
 	jacobian.push_back(-py);
  	jacobian.push_back(-px/omega ); //dpx/dome
@@ -319,7 +319,7 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	jacobian.push_back( (-pt*pt - pz*pz)/(omega*E) );//de/dome 
 	jacobian.push_back(0);//de/dz0
 	jacobian.push_back( pt*pz/E );//de/dtanl
-*/
+/*
 	jacobian.push_back(0); //dpx/dd0
 	jacobian.push_back(-eB*q*sinPhi/omega);
  	jacobian.push_back(-eB*q*cosPhi/(omega*omega) ); //dpx/dome
@@ -343,7 +343,7 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	jacobian.push_back( (-eB*eB*q*q-eB*eB*tanLambda*tanLambda*q*q)/(omega*omega*omega*E) );//de/dome 
 	jacobian.push_back(0);//de/dz0
 	jacobian.push_back( eB*eB*q*q*tanLambda/(E*omega*omega) );//de/dtanl
-
+*/
 	return jacobian;
 }
 double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<int> combo,  int FO_Option){
@@ -563,8 +563,8 @@ void Covariance::rescaleSector(std::vector<double>& covSector){
 	for(int i=0; i<cov2d.size(); i++){
 		for(int j=0; j<cov2d.at(i).size(); j++){
 			rescaled1d.push_back( cov2d.at(i).at(j) *scaleFactor.at(i)* scaleFactor.at(j) );
-			std::cout<<" cov i j sf i j"<< cov2d.at(i).at(j) <<" "<<scaleFactor.at(i)<<" "<<scaleFactor.at(j);
-			std::cout<<std::endl;
+			//std::cout<<" cov i j sf i j"<< cov2d.at(i).at(j) <<" "<<scaleFactor.at(i)<<" "<<scaleFactor.at(j);
+			//std::cout<<std::endl;
 			
 		}
 	}
@@ -706,8 +706,8 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 			//if we use tpfo we need to rescale globalCov
 		subcov = rescaleGlobalCov(subcov, getNparams( parts, subCombo),  parts, subCombo);
 
-		std::cout<<"testing cov rescaling "<<std::endl;
-		printCovarianceMatrix(subcov,10,10);
+		//std::cout<<"testing cov rescaling "<<std::endl;
+		//printCovarianceMatrix(subcov,10,10);
 	}
 	else{		
 		//get the sub covariance matrix
@@ -725,7 +725,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 
 	//for a good check lets print the jacobian to make sure it is what we want
 	
-	double* jcbn = Dmatrix.GetMatrixArray();
+/*	double* jcbn = Dmatrix.GetMatrixArray();
 	int jcbn_rows = Dmatrix.GetNrows();
 	int jcbn_cols = Dmatrix.GetNcols();
 
@@ -741,7 +741,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 		
 	}
 
- 
+ */
         TMatrixD Covmatrix(4,4); 
 	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
 	//Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
