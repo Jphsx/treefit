@@ -363,7 +363,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				if(_trackFitObject == 2){
 					FO_vec.at(recoindex) = new TrackParticleFitObject(  //tpfo does not preserve the mass constraint
 					TFit->recoparts.at(recoindex)->track,
-					TFit->recoparts.at(recoindex)->part->getMass());printVertice
+					TFit->recoparts.at(recoindex)->part->getMass());
 					TrackParticleFitObject* tpfo = (TrackParticleFitObject*) FO_vec.at(recoindex);
 					tpfo->setBfield(TFit->recoparts.at(recoindex)->Bfield);
 				}
@@ -568,7 +568,7 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		
 		//set the vertex info if it is available
 		if( VertexObjects.at(root->nodeId) != NULL){
-			float* vtx[3];
+			float* vtx = new float[3];
 			ThreeVector vec = VertexObjects.at(root->nodeId)->getVertex();
 			vtx[0] = (float) vec.getX();
 			vtx[1] = (float) vec.getY();
@@ -697,7 +697,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			//uncomment this after we know tpfo fits	
 			createLCOutputParticleTree(recparcol,TFit->ParticleTree->Root, fit, fitter);
 			//print out all the vertex info if possible
-			printVertices()
+			printVertices();
 			
 		}
 		
