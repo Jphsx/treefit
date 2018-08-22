@@ -321,7 +321,7 @@ void treeFitter::printVertices(){
 			if( VertexObjects.at(i) == NULL) continue;
 			
 			std::cout<<"Node: "<<i<<" Fitted Vertex (x,y,z): ";
-			 ThreeVector vertex = VertexObjects.at(i)->getVertex(vertex);
+			 ThreeVector vertex = VertexObjects.at(i)->getVertex();
 			 std::cout<<vertex.getX()<<" "<<vertex.getY()<<" "<<vertex.getZ()<<std::endl;
 			
 			std::cout<<"Vertex Errors (dx,dy,dz): "<<
@@ -363,7 +363,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				if(_trackFitObject == 2){
 					FO_vec.at(recoindex) = new TrackParticleFitObject(  //tpfo does not preserve the mass constraint
 					TFit->recoparts.at(recoindex)->track,
-					TFit->recoparts.at(recoindex)->part->getMass());
+					TFit->recoparts.at(recoindex)->part->getMass());printVertice
 					TrackParticleFitObject* tpfo = (TrackParticleFitObject*) FO_vec.at(recoindex);
 					tpfo->setBfield(TFit->recoparts.at(recoindex)->Bfield);
 				}
@@ -567,12 +567,12 @@ ReconstructedParticleImpl* treeFitter::createLCOutputParticleTree(LCCollectionVe
 		p->setGoodnessOfPID(fitter->getProbability());
 		
 		//set the vertex info if it is available
-		if( VertexObjects->at(root->nodeId) != NULL){
-			const float* vtx[3];
-			ThreeVector vec = VertexObjects->at(root->nodeId)->getVertex();
-			vtx[0] = vec.getX();
-			vtx[1] = vec.getY();
-			vtx[2] = vec.getZ();
+		if( VertexObjects.at(root->nodeId) != NULL){
+			float* vtx[3];
+			ThreeVector vec = VertexObjects.at(root->nodeId)->getVertex();
+			vtx[0] = (float) vec.getX();
+			vtx[1] = (float) vec.getY();
+			vtx[2] = (float) vec.getZ();
 			p->setReferencePoint(vtx);	
 		}
 		
@@ -711,7 +711,6 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		TFit->fitparts.clear();
 		FitObjects.clear();//this vector will not change capacity when cleared size will be 0 though
 		VertexObjects.clear();
-		VertexSubsets.clear();
 		//delete fitter?
 		delete fitter;
 	}//fitTable iteration
@@ -783,7 +782,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 			ttrees.at(index)->addParticleSets(fitp,recop);
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
-			ttrees.at(index)-addVertexDetails(VertexObjects.at(i));
+			ttrees.at(index)->addVertexDetails(VertexObjects.at(i));
 	
 			//ading cov stuff
 			int gcovdim;
