@@ -148,7 +148,14 @@ void treeFitter::init() {
 		nonleafnode = Tree::getNode(TFit->ParticleTree->Root, i);
 		if(!nonleafnode->isLeaf){
 			//get naming details for this node
-			ttrees.push_back(new TTreeFactory(i, nonleafnode->pdg, file));
+			TTreeFactory* ttf = new TTree(i,nonleafnode->pdg, file);
+			if(nonleafnode->VC != -1){
+				//if VC at this node is != -1 prep the ttree to accept vertex info
+				ttf->initVertexVars();
+			}
+			ttrees.push_back(ttf);
+			
+			
 		}
 	}		
 	
@@ -761,7 +768,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	for(unsigned int i=0; i<bestfit.size(); i++){
 
 		if(bestfit.at(i).size() > 0){
-
+			
+			
 			//nodeId should by construction match fit index with ttrees index
 			//iterate over the fit particles
 			

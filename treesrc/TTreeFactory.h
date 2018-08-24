@@ -16,9 +16,14 @@ class TTreeFactory{
 	public:
 	//initialize the TTree with constructor
 	TTreeFactory(int nodeId, int pdg, TFile* f);
-	
+
+	//vertex variable management
+	void initVertexVars();
+	bool usingVertex{};
+	void clearVertex();
 		
 	TTree* tree{};
+	
 
 	std::vector<std::vector<double> > recoLocalParams{};
   	std::vector<std::vector<double> > recoLocalErrors{};
