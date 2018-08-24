@@ -30,7 +30,7 @@ TTreeFactory::TTreeFactory(int nodeId, int pdg, TFile* f){
 	tree->Branch("fitParentParams.", &fitParentParams);
 	tree->Branch("fitParentErrors.", &fitParentErrors);
 }
-void initVertexVars(){
+void TTreeFactor::initVertexVars(){
 	tree->Branch("vertex.", &vertex);
 	tree->Branch("vertexErrors.",&vertexErrors);
 	usingVertex=true;
