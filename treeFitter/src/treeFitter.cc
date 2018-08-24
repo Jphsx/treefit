@@ -438,11 +438,12 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 				
 				
 				//print out the vertex subsets
-				std::cout<<"Node: "<<i <<" Vertex Subset { ";
+				/*std::cout<<"Node: "<<i <<" Vertex Subset { ";
 				for(int j=0; j<fitsubset.size(); j++){
 					std::cout<<fitsubset.at(j)<<" ";
 				}
 				std::cout<<" } "<<std::endl;
+				*/
 
 				for(int j=0; j<fitsubset.size(); j++){
 					//TEST for now only add TPFOs to the VFO, we will try JFO later (JFO segfaults)
@@ -782,7 +783,9 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 			ttrees.at(index)->addParticleSets(fitp,recop);
 			ttrees.at(index)->addFitDetails(fitter->getProbability(), fitter->getChi2());
-			ttrees.at(index)->addVertexDetails(VertexObjects.at(i));
+			if(VertexObjects.at(i) != NULL){
+				ttrees.at(index)->addVertexDetails(VertexObjects.at(i));
+			}
 	
 			//ading cov stuff
 			int gcovdim;

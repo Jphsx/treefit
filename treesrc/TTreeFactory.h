@@ -43,6 +43,7 @@ class TTreeFactory{
 	
 	//this nodes resonance mass
 	double RecoMass{};
+	double FitMass{};
 	double FitProbability{};
 	double Chisq{};
 	

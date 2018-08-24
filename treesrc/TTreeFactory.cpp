@@ -13,6 +13,7 @@ TTreeFactory::TTreeFactory(int nodeId, int pdg, TFile* f){
 	tree->Branch("RecoEnergy", &RecoEnergy);
   	tree->Branch("FitEnergy", &FitEnergy);
         tree->Branch("RecoMass", &RecoMass);
+	tree->Branch("FitMass", &FitMass);
   	tree->Branch("FitProbability", &FitProbability );
 	tree->Branch("Chisq", &Chisq);
         tree->Branch("recoLocalParams.", &recoLocalParams);
@@ -100,6 +101,7 @@ void TTreeFactory::addParticleSets(std::vector<Particle*> fitcontainer, std::vec
 		fitsum.E() << " " <<
 		fitsum.M() << " " <<std::endl; */
 	RecoMass = recosum.M();
+	FitMass = fitsum.M();
 
 	//populate the parent vectors
 	recoParentParams.push_back(recosum.Px());
