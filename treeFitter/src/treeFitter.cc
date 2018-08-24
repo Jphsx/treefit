@@ -148,7 +148,7 @@ void treeFitter::init() {
 		nonleafnode = Tree::getNode(TFit->ParticleTree->Root, i);
 		if(!nonleafnode->isLeaf){
 			//get naming details for this node
-			TTreeFactory* ttf = new TTree(i,nonleafnode->pdg, file);
+			TTreeFactory* ttf = new TTreeFactory(i,nonleafnode->pdg, file);
 			if(nonleafnode->VC != -1){
 				//if VC at this node is != -1 prep the ttree to accept vertex info
 				ttf->initVertexVars();
