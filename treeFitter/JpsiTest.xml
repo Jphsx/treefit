@@ -17,7 +17,7 @@
  	</execute>
 
 	<global>
-		<parameter name="LCIOInputFiles"> /pnfs/desy.de/ilc/prod/ilc/mc-opt/ild/rec/calib/resonance/ILD_l5_o1_v02_nobg/v01-19-05-p01/u038/rv01-19-05-p01.sv01-19-05-p01.mILD_l5_o1_v02_nobg.PJpsi_muPmuM_20Gev.n001_1.d_rec_u038.slcio </parameter>
+		<parameter name="LCIOInputFiles"> /pnfs/desy.de/ilc/prod/ilc/mc-opt/ild/rec/calib/resonance/ILD_l5_o1_v02_nobg/v01-19-05-p01/u038/rv01-19-05-p01.sv01-19-05-p01.mILD_l5_o1_v02_nobg.PJpsi_muPmuM_20Gev.n001_1.d_rec_u038.slcio /pnfs/desy.de/ilc/prod/ilc/mc-opt/ild/rec/calib/resonance/ILD_l5_o1_v02_nobg/v01-19-05-p01/u038/rv01-19-05-p01.sv01-19-05-p01.mILD_l5_o1_v02_nobg.PJpsi_muPmuM_20Gev.n001_2.d_rec_u038.slcio /pnfs/desy.de/ilc/prod/ilc/mc-opt/ild/rec/calib/resonance/ILD_l5_o1_v02_nobg/v01-19-05-p01/u038/rv01-19-05-p01.sv01-19-05-p01.mILD_l5_o1_v02_nobg.PJpsi_muPmuM_20Gev.n001_4.d_rec_u038.slcio </parameter>
    		<parameter name="SkipNEvents" value="0" />
    		<parameter name="MaxRecordNumber" value="0" /> <!-- 0 is all events -->
    		<parameter name="SupressCheck" value="false" />
@@ -41,15 +41,15 @@
 		<!-- tree parameters -->
 		<parameter name="preorderPdgs" type="IntVec"> 443 13 -13 </parameter>
 		<parameter name="preorderSerial" type="string" value = "0,1,),2,),)" />
-<!--		<parameter name="preorderMass" type="FloatVec"> 3.096916 -1 -1  </parameter>  -->
+		<parameter name="preorderMass" type="FloatVec"> 3.096916 -1 -1  </parameter>  
 
-		<parameter name="preorderMass" type="FloatVec"> -1 -1 -1 </parameter>  
+<!--		<parameter name="preorderMass" type="FloatVec"> -1 -1 -1 </parameter>  -->
 
 		<!-- vertex constraint options -->
-		<parameter name="preorderVertexConstraint" type="IntVec"> 1 -1 -1 </parameter>
+		<parameter name="preorderVertexConstraint" type="IntVec"> -1 -1 -1 </parameter>
 
 		<!-- fit object option -->
-		<parameter name="TrackFitObject" value="2" />
+		<parameter name="TrackFitObject" value="1" />
 
 		<!-- cuts -->
 		<parameter name="FitProbabilityCut" value="-2.0" />
