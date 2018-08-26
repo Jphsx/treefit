@@ -496,7 +496,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		return fitter;
 }
 void treeFitter::moveTracksToVertex(){
-	std::vector<VertexFitObject*> vfos, std::vector<Particle*>& fitparts
+	//std::vector<VertexFitObject*> vfos, std::vector<Particle*>& fitparts
 	//locate the track subset
 	//the tracks are the particles of the i-th node which is the i-th vfo
 	
