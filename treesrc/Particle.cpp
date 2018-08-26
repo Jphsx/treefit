@@ -452,7 +452,7 @@ TLorentzVector Particle::getTLorentzVector(Track* t, double Mass, double B){
 	std::vector<double> txtytz = getTrackPxPyPz(t, B);
 	double P = sqrt(txtytz.at(0)*txtytz.at(0) + txtytz.at(1)*txtytz.at(1) +txtytz.at(2)*txtytz.at(2) );
 	double E = sqrt(P*P + Mass*Mass);
-	tlv->SetXYZM(txtytz.at(0),txtytz.at(1),txtytz.at(2), Mass);
+	tlv.SetXYZM(txtytz.at(0),txtytz.at(1),txtytz.at(2), Mass);
 	//tlv.SetPxPyPzE(txtytz.at(0),txtytz.at(1),txtytz.at(2),E);
 	return tlv;
 }
