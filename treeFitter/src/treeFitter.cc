@@ -495,7 +495,13 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		
 		return fitter;
 }
-//TODO this function
+void treeFitter::moveTracksToVertex(){
+	std::vector<VertexFitObject*> vfos, std::vector<Particle*>& fitparts
+	//locate the track subset
+	//the tracks are the particles of the i-th node which is the i-th vfo
+	
+
+}
 void treeFitter::createFitParticlesfromFitObjects(){
 	for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
@@ -505,6 +511,7 @@ void treeFitter::createFitParticlesfromFitObjects(){
 			if(TFit->recoparts.at(k)->isTrack){
 				if(_trackFitObject == 2){
 					TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
+				//TODO add call for update track to vertex /////////////////
 				}
 				if(_trackFitObject == 1){
 					TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
@@ -804,10 +811,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 			index++;	
 		}
-		
+		recop.clear();
+		fitp.clear();
 	}
-	recop.clear();
-	fitp.clear();
+	
 	delete fitter;
 	}//end bestfit   
 

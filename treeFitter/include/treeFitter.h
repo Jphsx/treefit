@@ -113,9 +113,12 @@ class treeFitter : public marlin::Processor {
 	/*************
 	Also use a separate vector to store the vertex fit objects
 	have a special utility to print out the vertex info
+	Also need to update the track parameters to the new shared vertex
 	*************/
 	std::vector<VertexFitObject*> VertexObjects{};
 	void printVertices();
+	void moveTracksToVertex();
+	
 	
 	/************
 	Function to created fit particles from the fit objects
