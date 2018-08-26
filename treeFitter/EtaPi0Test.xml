@@ -32,7 +32,7 @@
    		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">NewPfoCol</parameter>
    		<parameter name="EnergyScaleFactor" value="0.9437" />
    		<parameter name="Printing" value="5"/>
-	</processor>i
+	</processor>
 
 	<processor name="MyT2RP" type="TrackToReconstructedParticle">
                 <!-- particle assumptions to be applied to tracks -->
