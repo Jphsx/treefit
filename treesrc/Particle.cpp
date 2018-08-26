@@ -145,7 +145,7 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		//TODO change this to direct creation from getPx getPy etc..
 		TLorentzVector tlv;
 		//tlv.SetPxPyPzE(tpfo->getPx(), tpfo->getPy(), tpfo->getPz(), tpfo->getE());
-		tlv.SetXYZM(tpfo->getPx(), tpfo->getPy(); tpfo->getPz(), mass);
+		tlv.SetXYZM(tpfo->getPx(), tpfo->getPy(), tpfo->getPz(), mass);
 		v = tlv;
 		localParams.push_back(track->getD0());
 		localParams.push_back(track->getPhi());
@@ -162,7 +162,7 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		//v = getTLorentzVector(part);
 		TLorentzVector tlv;
 		//tlv.SetPxPyPzE(jfo->getPx(), jfo->getPy(), jfo->getPz(), jfo->getE());
-		tlv.SetXYZM(jfo->getPx(), jfo->getPy(); jfo->getPz(), mass);
+		tlv.SetXYZM(jfo->getPx(), jfo->getPy(), jfo->getPz(), mass);
 		v = tlv;
 		localParams.push_back(part->getEnergy());//E
 		localParams.push_back(v.Theta());//theta
