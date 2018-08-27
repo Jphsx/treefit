@@ -368,7 +368,7 @@ std::vector<double> Covariance::constructSameTrackJacobian(Particle* p1, Particl
 	jacobian.push_back( 0 ); //dd0'/dz0
 	jacobian.push_back( 0 ); //dd0'/dtl
 	
-	jacobian.push_back( sin(phi2-phi1)/(q/omega1 - d02 ); //dphi'/dd0
+	jacobian.push_back( sin(phi2-phi1)/(q1/omega1 - d02 ); //dphi'/dd0
 	jacobian.push_back( (q1/omega1 - d01)*cos(phi2-phi1)/ (q1/omega1 - d02) ); //dphi'/dphi
 	jacobian.push_back( ((q1*q1)/(omega1*omega1))*sin(phi2-phi1)/ (q1/omega1 - d02) ); //dphi'/domega
 	jacobian.push_back( 0 ); //dphi'/dz0
@@ -408,10 +408,14 @@ float* Covariance::transformSameTrackCov(float* oldcov, Particle* p1, Particle* 
 	
 	std::vector<double> jacobian = constructSameTrackJacobian(p1, p2 );
 	//convert this to a 1d vec
-	float* jac = new float[25];
+	double* jac = new double[25];
+	double oldcov_doub = new double[25];
 	for(int i=0; i<jacobian.size(); i++){
-		jac[i] = (float) jacobian.at(i);
-	}	
+		jac[i] =  jacobian.at(i);
+		oldcov_doub[i] = oldcov[i];
+	}
+	
+		
 	TMatrixD Dmatrix(5,5,jac,"F");
 	TMatrixD Vmatrix(5,5, oldcov, "F");
 	TMatrixD Covmatrix(5,5); 
@@ -421,7 +425,7 @@ float* Covariance::transformSameTrackCov(float* oldcov, Particle* p1, Particle* 
 	int index =0;
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
-			newcov[index] = Covmatrix(i,j);
+			newcov[index] = (float) Covmatrix(i,j);
 			index++;
 		}
 	}
