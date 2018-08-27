@@ -117,13 +117,13 @@ class treeFitter : public marlin::Processor {
 	*************/
 	std::vector<VertexFitObject*> VertexObjects{};
 	void printVertices();
-	void moveTracksToVertex();
+	void createFitTracksAtVertex(std::vector<std::vector<int> > fit);
 	
 	
 	/************
 	Function to created fit particles from the fit objects
 	*************/
-	void createFitParticlesfromFitObjects();
+	void createFitParticlesfromFitObjects(std::vector<std::vector<int> > fit);
 
 	/*************
 	Functions to generate the proper output collections

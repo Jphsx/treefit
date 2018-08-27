@@ -495,14 +495,89 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		
 		return fitter;
 }
-void treeFitter::moveTracksToVertex(){
+void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 	//std::vector<VertexFitObject*> vfos, std::vector<Particle*>& fitparts
+	//dont use a reference just make a new particle*
 	//locate the track subset
 	//the tracks are the particles of the i-th node which is the i-th vfo
+
+	std::vector<int> fitsubset{}; 
+
+	//scaleFactors for TPFO
+	std::vector<double> scaleFactor{1.e-2, 1., 1.e-3, 1.e-2, 1., 1., 1.};
+	
+	//loop over vfo
+	for(int i=0; i< VertexObjects.size(); i++){
+		fitsubset = TreeFit::getVertexSet(fit.at(i), i, fit);
+		//fit subset contains the indices of the tracks that need to be changed
+		//loop over the individual particles
+		for(int j=0; j<fitsubset.size(); j++){
+
+			//make a new track
+			TrackImpl* t = new TrackImpl();
+			
+			//get the tpfo local for readability
+			TrackParticleFitObject* tpfo = ( (TrackParticleFitObject*) FitObjects.at( fitsubset.at(j) );	
+			//get the old ref and the new vertex to calculate the new params
+			const float* vtx = new float[3];
+			ThreeVector vec = VertexObjects.at(root->nodeId)->getVertex();
+			vtx[0] = (float) vec.getX();
+			vtx[1] = (float) vec.getY();
+			vtx[2] = (float) vec.getZ();
+
+			const float* ref = TFit->recoparts.at( fitsubset.at(j) )->track->getReferencePoint();
+			//get local vars for readability
+			
+			double phi0 = tpfo->getParam(1)*scaleFactor.at(1);
+			double omega = tpfo->getParam(2)*scaleFactor.at(2);
+			double tanLambda = tpfo->getParam(4)*scaleFactor.at(4);
+
+			double phiNew = atan2(sin(phi0)- omega*(vtx[0]-ref[0]), cos(phi0) + omega*(vtx[1]-ref[1]);
+	
+			//set the new ref at the secondary vertex
+			t->setReferencePoint(vtx);
+
+			//ref point is set ontop of the track
+			t->setD0(0.0); //Impact parameter in r-phi
+
+			//we assume the original reference is IP (0,0,0) in this calculation
+			t->setPhi(phiNew); //phi of track at reference point (secondary vertex)
+			t->setOmega(omega);// signed curvature in 1/mm 
+			t->setZ0(0.0); //Impact parameter in r-z
+			t->setTanLambda(tanLambda);// dip of the track in r-z at primary vertex
+
+			//debugging print out the new track
+
+			std::cout<<"New Track Parameters: (d0,phi,omega,z0,tanLambda) ";
+			std::cout<<0.0<<" "<<phiNew<<" "<<omega<<" "<<0.0<<" "<<tanLambda<<std::endl;
+			
+		//manually make the square covariance matrix 
+		float* cov = new float[25];	
+		int index = 0;
+		for(int i=0; i<=4; i++){
+			for(int j=0; j<=4; j++){
+				cov[index]=tpfo->getCov(i,j)*scaleFactor.at(i)*scaleFactor.at(j);
+				index++;	
+			}
+		}
+
+		//do the transformation and save the new matrix
+	
+		t->setCovMatrix(cov);
+
+
+
+			//make a new fit part
+			TFit->fitparts.at( fitsubset.at(j) ) = new Particle( NULL, t, tpfo->bfield);
+
+		}
+
+		
+	}
 	
 
 }
-void treeFitter::createFitParticlesfromFitObjects(){
+void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> > fit){
 	for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
 				continue;
@@ -510,8 +585,9 @@ void treeFitter::createFitParticlesfromFitObjects(){
 			
 			if(TFit->recoparts.at(k)->isTrack){
 				if(_trackFitObject == 2){
-					TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;
+				//	TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;		
 				//TODO add call for update track to vertex /////////////////
+					createFitTracksAtVertex(fit);
 				}
 				if(_trackFitObject == 1){
 					TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
@@ -705,7 +781,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		std::vector<Particle*> fit_vec(TFit->recoparts.size());
 		TFit->fitparts = fit_vec;
 
-		createFitParticlesfromFitObjects();
+		createFitParticlesfromFitObjects(fit);
 	
 		if(fitter->getProbability() > _fitProbabilityCut &&  dim > 0){
 			//if we pass, save this particle hypothesis and fit to the outputcollection
@@ -753,7 +829,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//this creation makes sure fitparts will be the correct size
 	std::vector<Particle*> fit_vec(TFit->recoparts.size());
 	TFit->fitparts = fit_vec;
-	createFitParticlesfromFitObjects();
+	createFitParticlesfromFitObjects(fit);
 		
 
 	
