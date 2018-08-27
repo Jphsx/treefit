@@ -594,7 +594,7 @@ void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 		}
 		
 		//TODO this function args(covariance, original, primed)
-		float* newCov = transformSameTrackCov(cov, TFit->fitparts.at( fitsubset.at(j) ), updatedTrack);
+		float* newCov = Covariance::transformSameTrackCov(cov, TFit->fitparts.at( fitsubset.at(j) ), updatedTrack);
 		//do the transformation and save the new matrix
 		//TODO rescale this matrix and make cov diagonal
 		t->setCovMatrix(cov);
@@ -616,7 +616,7 @@ void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> >
 			if(FitObjects.at(k)==NULL){
 				continue;
 			} 
-			/
+			
 			if(TFit->recoparts.at(k)->isTrack){
 				if(_trackFitObject == 2){
 					//we cant just immediately make the updated tracks, we need to create the original fit tracks
