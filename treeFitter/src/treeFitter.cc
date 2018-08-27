@@ -517,10 +517,10 @@ void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 			TrackImpl* t = new TrackImpl();
 			
 			//get the tpfo local for readability
-			TrackParticleFitObject* tpfo = ( (TrackParticleFitObject*) FitObjects.at( fitsubset.at(j) );	
+			TrackParticleFitObject* tpfo =  (TrackParticleFitObject*) FitObjects.at( fitsubset.at(j) );	
 			//get the old ref and the new vertex to calculate the new params
 			const float* vtx = new float[3];
-			ThreeVector vec = VertexObjects.at(root->nodeId)->getVertex();
+			ThreeVector vec = VertexObjects.at(i)->getVertex();
 			vtx[0] = (float) vec.getX();
 			vtx[1] = (float) vec.getY();
 			vtx[2] = (float) vec.getZ();
@@ -532,7 +532,7 @@ void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 			double omega = tpfo->getParam(2)*scaleFactor.at(2);
 			double tanLambda = tpfo->getParam(4)*scaleFactor.at(4);
 
-			double phiNew = atan2(sin(phi0)- omega*(vtx[0]-ref[0]), cos(phi0) + omega*(vtx[1]-ref[1]);
+			double phiNew = atan2(sin(phi0)- omega*(vtx[0]-ref[0]), cos(phi0) + omega*(vtx[1]-ref[1]) );
 	
 			//set the new ref at the secondary vertex
 			t->setReferencePoint(vtx);
@@ -829,7 +829,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 	//this creation makes sure fitparts will be the correct size
 	std::vector<Particle*> fit_vec(TFit->recoparts.size());
 	TFit->fitparts = fit_vec;
-	createFitParticlesfromFitObjects(fit);
+	createFitParticlesfromFitObjects(bestfit);
 		
 
 	
