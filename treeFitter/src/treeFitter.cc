@@ -567,10 +567,36 @@ void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 	
 		t->setCovMatrix(cov);
 
+		//create the fit recopart*
+		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
+		//ParticleIDImpl* newPDG = new ParticleIDImpl();
+		//newPDG->setPDG(pdg);
+		//newPDG->setLikelihood(1.0);
+		
+		float* mom = new float[3];
+		//std::vector<double> mom_vec = getTrackPxPyPz( t, tpfo->bfield);
+		mom[0] = tpfo->getPx();
+		mom[1] = tpfo->getPy();
+ 		mom[2] = tpfo->getPz();	
+		
+		//float P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
+		p->setMomentum(mom);
+		p->setEnergy( tpfo->getE() );
+
+		p->setMass(TFit->recoparts.at( fitsubset.at(j) )->part->getMass());
+		p->setCharge(tpfo->getCharge());
+		//p->addParticleID(newPDG);
+		//p->setParticleIDUsed(newPDG);
+		p->setType(TFit->recoparts.at( fitsubset.at(j) )->part->getType());
+		//dont worry about setting the cov in the 
+		//reconstructedparticle, just only use the
+		//track covariance matrix
+		
+
 
 
 			//make a new fit part
-			TFit->fitparts.at( fitsubset.at(j) ) = new Particle( NULL, t, tpfo->bfield);
+			TFit->fitparts.at( fitsubset.at(j) ) = new Particle( p, t, tpfo->bfield);
 
 		}
 
