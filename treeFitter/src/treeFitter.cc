@@ -519,7 +519,7 @@ void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 			//get the tpfo local for readability
 			TrackParticleFitObject* tpfo =  (TrackParticleFitObject*) FitObjects.at( fitsubset.at(j) );	
 			//get the old ref and the new vertex to calculate the new params
-			const float* vtx = new float[3];
+			float vtx = new float[3];
 			ThreeVector vec = VertexObjects.at(i)->getVertex();
 			vtx[0] = (float) vec.getX();
 			vtx[1] = (float) vec.getY();
