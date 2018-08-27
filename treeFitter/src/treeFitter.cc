@@ -553,19 +553,7 @@ void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 			std::cout<<"New Track Parameters: (d0,phi,omega,z0,tanLambda) ";
 			std::cout<<0.0<<" "<<phiNew<<" "<<omega<<" "<<0.0<<" "<<tanLambda<<std::endl;
 			
-		//manually make the square covariance matrix 
-		float* cov = new float[25];	
-		int index = 0;
-		for(int i=0; i<=4; i++){
-			for(int j=0; j<=4; j++){
-				cov[index]=tpfo->getCov(i,j)*scaleFactor.at(i)*scaleFactor.at(j);
-				index++;	
-			}
-		}
-
-		//do the transformation and save the new matrix
-	
-		t->setCovMatrix(cov);
+		
 
 		//create the fit recopart*
 		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
@@ -593,10 +581,27 @@ void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 		//track covariance matrix
 		
 
-
-
+		Particle* updatedTrack = new Particle(p,t,tpfo->bfield);
+		
+		//manually make the square covariance matrix 
+		float* cov = new float[25];	
+		int index = 0;
+		for(int i=0; i<=4; i++){
+			for(int j=0; j<=4; j++){
+				cov[index]=tpfo->getCov(i,j)*scaleFactor.at(i)*scaleFactor.at(j);
+				index++;	
+			}
+		}
+		
+		//TODO this function args(covariance, original, primed)
+		float* newCov = transformSameTrackCov(cov, TFit->fitparts.at( fitsubset.at(j) ), updatedTrack);
+		//do the transformation and save the new matrix
+		//TODO rescale this matrix and make cov diagonal
+		t->setCovMatrix(cov);
 			//make a new fit part
-			TFit->fitparts.at( fitsubset.at(j) ) = new Particle( p, t, tpfo->bfield);
+
+
+			TFit->fitparts.at( fitsubset.at(j) ) = updatedTrack;
 
 		}
 
@@ -611,13 +616,13 @@ void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> >
 			if(FitObjects.at(k)==NULL){
 				continue;
 			} 
-			
+			/
 			if(TFit->recoparts.at(k)->isTrack){
-				//if(_trackFitObject == 2){
-				//	TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;		
-				//TODO add call for update track to vertex /////////////////
-					//createFitTracksAtVertex(fit);
-				//}
+				if(_trackFitObject == 2){
+					//we cant just immediately make the updated tracks, we need to create the original fit tracks
+					//for input in updating the covariance matrix
+					TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;		
+				}
 				if(_trackFitObject == 1){
 					TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
 				}
