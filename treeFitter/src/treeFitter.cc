@@ -508,6 +508,8 @@ void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 	
 	//loop over vfo
 	for(int i=0; i< VertexObjects.size(); i++){
+
+		if(fit.at(i).size != 0){
 		fitsubset = TreeFit::getVertexSet(fit.at(i), i, fit);
 		//fit subset contains the indices of the tracks that need to be changed
 		//loop over the individual particles
@@ -573,7 +575,8 @@ void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
 		}
 
 		
-	}
+		}//end fit condition
+	}//end vfo loop
 	
 
 }
