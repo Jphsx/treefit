@@ -613,11 +613,11 @@ void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> >
 			} 
 			
 			if(TFit->recoparts.at(k)->isTrack){
-				if(_trackFitObject == 2){
+				//if(_trackFitObject == 2){
 				//	TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;		
 				//TODO add call for update track to vertex /////////////////
-					createFitTracksAtVertex(fit);
-				}
+					//createFitTracksAtVertex(fit);
+				//}
 				if(_trackFitObject == 1){
 					TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
 				}
@@ -628,6 +628,11 @@ void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> >
 			}
 			
 						
+	}
+		//if we are dealing with vertex fit it is completely separate
+		//we need to change reference and phi0 by swimming the track to common vtx
+	if(_trackFitObject ==2 ){
+		createFitTracksAtVertex(fit);
 	}
 
 
