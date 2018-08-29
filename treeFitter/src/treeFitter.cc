@@ -727,14 +727,15 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 							}
 						}
 					}
-					TFit->recoparts = newparts;
+					
 				}
 			}//end vfo loop
 			//now refit with adjusted tracks
+			TFit->recoparts = newparts;
 			if(!stopCondition){
 				std::cout<<"refitting"<<std::endl;
 				fitter = fitParticles(fit);
-				TFit->recoparts = recoparts;
+				//TFit->recoparts = recoparts;
 			}
 			
 		}
