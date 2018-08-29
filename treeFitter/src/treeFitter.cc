@@ -719,7 +719,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 							std::cout<<"remade the track"<<std::endl;
 							const float* oldref = recoparts.at(fit.at(i).at(k))->track->getReferencePoint();			
 		
-							if( fabs(newref.at(0)-oldref[0])) <= 1e-4 ){
+							if( fabs(newref.at(0)-oldref[0]) < 1e-4 ){
 								stopCondition = true;
 							}
 							
