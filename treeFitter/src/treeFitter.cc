@@ -704,11 +704,13 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			bool stopCondition = false;
 			for(int i=0; i<VertexObjects.size(); i++){
 				if(VertexObjects.at(i) != NULL){
+					std::cout<<"inside vfos"<<std::endl;
 					ThreeVector vtx = VertexObjects.at(i)->getVertex();
 					std::vector<double> newref{vtx.getX(), vtx.getY(), vtx.getZ()};
 					//get the tracks that need modified
 					for(int k=0; k<fit.at(i).at(k); k++){
 						if( newparts.at( fit.at(i).at(k) )->isTrack ){
+							std::cout<<"found a track to redo"<<std::endl;s
 							//adjust this track 
 							newparts.at(fit.at(i).at(k)) = new Particle(newparts.at(fit.at(i).at(k)), newref );
 							//check stop condition have we converged to ref->fitted vertex?
