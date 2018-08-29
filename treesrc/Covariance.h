@@ -17,6 +17,7 @@
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
 typedef std::string string;
+
 class Covariance{
 
 	public:
