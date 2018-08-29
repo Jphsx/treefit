@@ -715,8 +715,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 							newparts.at(fit.at(i).at(k)) = new Particle(newparts.at(fit.at(i).at(k)), newref );
 							//check stop condition have we converged to ref->fitted vertex?
 							const float* oldref = recoparts.at(fit.at(i).at(k))->track->getReferencePoint();			
-							for(int i=0; i<3; i++){
-								if((newref.at(i) - (double) oldref[i]) <= 0.001){
+							for(int d=0; d<3; d++){
+								if(fabs(newref.at(d) - (double) oldref[d]) <= 0.001){
 									stopCondition=true;
 								}
 								else{
