@@ -518,10 +518,10 @@ void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> >
 						}
 					}
 				
-					TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k),VertexObjects.at(indexOfVFO), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;		
+					TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), VertexObjects.at(indexOfVFO), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;		
 				}
 				if(_trackFitObject == 1){
-					TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
+					TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
 				}
 				
 			}
