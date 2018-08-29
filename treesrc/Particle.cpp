@@ -302,6 +302,86 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 
 }
 //TODO change oldtrk to new oldPart
+std::vector<double> Particle::constructSameTrackJacobian(Track* t1, Track* t2 ){
+ 
+	//p1 is original p2 is p'
+
+	double d01 = t1->getD0();
+ 	double omega1 = t1->getOmega();
+	double q1 = omega1/fabs(omega1);
+	double phi1 = t1->getPhi();
+	double z01 = t1->getZ0();
+	double tanLambda1 = t1->getTanLambda();	
+
+	
+	double d02 = t2->getD0();
+	double phi2 = t2->getPhi();
+	double s = -(phi2-phi1)/omega1;
+
+	std::vector<double> jacobian{};
+	
+	jacobian.push_back( cos(phi2-phi1) ); //dd0'/dd0
+	jacobian.push_back( -(q1/omega1 - d01)*sin(phi2-phi1) ); //dd0'/dphi
+	jacobian.push_back( ((q1*q1)/(omega1*omega1))*(cos(phi2-phi1)-1) ); //dd0'/domega
+	jacobian.push_back( 0 ); //dd0'/dz0
+	jacobian.push_back( 0 ); //dd0'/dtl
+	
+	jacobian.push_back( sin(phi2-phi1)/(q1/omega1 - d02 ); //dphi'/dd0
+	jacobian.push_back( (q1/omega1 - d01)*cos(phi2-phi1)/ (q1/omega1 - d02) ); //dphi'/dphi
+	jacobian.push_back( ((q1*q1)/(omega1*omega1))*sin(phi2-phi1)/ (q1/omega1 - d02) ); //dphi'/domega
+	jacobian.push_back( 0 ); //dphi'/dz0
+	jacobian.push_back( 0 ); //dphi'/dtl
+
+	jacobian.push_back( 0 ); //domega'/dd0
+	jacobian.push_back( 0 ); //domega'/dphi
+	jacobian.push_back( 1 ); //domega'/domega
+	jacobian.push_back( 0 ); //domega'/dz0
+	jacobian.push_back( 0 ); //domega'/dtl
+	
+	jacobian.push_back( 0 ); //dz0'/dd0
+	jacobian.push_back( 0 ); //dz0'/dphi
+	jacobian.push_back( 0 ); //dz0'/domega
+	jacobian.push_back( 1 ); //dz0'/dz0
+	jacobian.push_back( s ); //dz0'/dtl
+
+	jacobian.push_back( 0 ); //dtl'/dd0
+	jacobian.push_back( 0 ); //dtl'/dphi
+	jacobian.push_back( 0 ); //dtl'/domega
+	jacobian.push_back( 0 ); //dtl'/dz0
+	jacobian.push_back( 1 ); //dtl'/dtl
+
+	return jacobian;
+}
+//p1 is unprimed p2 is primed
+//return LowerDiagonal
+float* Particle::transformSameTrackCov(std::vector<double> oldcov, Track* t1, Track* t2){
+	
+	std::vector<double> jacobian = constructSameTrackJacobian(t1, t2 );
+	//convert this to a 1d vec
+	double* jac = new double[25];
+	double* oldcov_ = new double[25];
+	for(int i=0; i<jacobian.size(); i++){
+		jac[i] = jacobian.at(i);
+		oldcov_[i] = oldcov.at(i);
+	}
+	
+		
+	TMatrixD Dmatrix(5,5,jac,"F");
+	TMatrixD Vmatrix(5,5, oldcov_, "F");
+	TMatrixD Covmatrix(5,5); 
+	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
+
+	float* newcov = new float[15];
+	int index =0;
+	for(int i=0; i<=4; i++){
+		for(int j=0; j<=i; j++){
+			newcov[index] = (float) Covmatrix(i,j);
+			index++;
+		}
+	}
+
+	return newcov;
+}
 Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	//this constructor creates a new particle by updating a track to new reference point
 	//and creating an updated reconstructed particle for this track
@@ -382,7 +462,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 		}
 	}
 	//with the full square cov we can now apply the jacobian transformation
-	t->setCovMatrix(Covariance::transformSameTrackCov(cov1d, oldtrk, t) );
+	t->setCovMatrix(transformSameTrackCov(cov1d, oldtrk, t) );
 	track = t;
 	//also set bfield
 	Bfield = oldPart->Bfield;

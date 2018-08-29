@@ -14,11 +14,13 @@
 #include "TrackParticleFitObject.h"
 #include "JetFitObject.h"
 #include "VertexFitObject.h"
-#include "Covariance.h"
 
 #include "IMPL/ParticleIDImpl.h"
 #include "IMPL/ReconstructedParticleImpl.h"
 #include "IMPL/TrackImpl.h"
+
+#include "TMath.h"
+#include "TMatrixD.h"
 
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
@@ -95,7 +97,11 @@ class Particle{
 	static TLorentzVector getTLorentzVector(Track* t, double Mass, double B);
 
 	static void printParticle(Particle* pc);
-	
+
+	//track adjustment
+	//vertex junk
+	static std::vector<double> constructSameTrackJacobian(Particle* p1, Particle* p2 );
+	static float* transformSameTrackCov(float* oldcov, Particle* p1, Particle* p2);
 	
 
 };
