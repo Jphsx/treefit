@@ -392,6 +392,40 @@ float* Particle::transformSameTrackCov(double* oldcov, Track* t1, Track* t2){
 
 	return newcov;
 }
+void Particle::printTrack(Track* t){
+	std::cout<<"Track: (d0,phi,ome,z0,tanL) "<< 
+		t->getD0()<<" "<<
+		t->getPhi()<<" "<<
+		t->getOmega()<<" "<<
+		t->getZ0()<<" "<<
+		t->getTanLambda()<<std::endl;
+	std::cout<<"Reference Point (x,y,z): ";
+	const float* ref = t->getReferencePoint();
+	std::cout<<ref[0]<<" "<<ref[1]<<" "<<ref[2]<<std::endl; 
+}
+void Particle::printCovarianceMatrix(std::vector<float> cov, int npar){
+	//the number of elements in the lower diagonal is
+	//sum( i ) where i= 0->npar
+	int nelem = 0;
+	int k=0;
+	while(k<=npar){
+		nelem = nelem + k;
+		k++;
+	}
+	//reuse k for linebreaking
+	k=0;
+	int kinc=2;
+	for(int i=0; i<nelem; i++){
+		std::cout<<cov[i]<<" ";
+		if(i==k){
+			std::cout<<std::endl;
+			k = k + kinc;
+			kinc++;
+		}
+	}
+	std::cout<<std::endl;
+	
+}
 Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	//this constructor creates a new particle by updating a track to new reference point
 	//and creating an updated reconstructed particle for this track
@@ -477,6 +511,16 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	//also set bfield
 	Bfield = oldPart->Bfield;
 
+	//print testing for track comparison
+	std::cout<<"OldTrack ";
+	printTrack(oldtrk);
+	std::cout<<"NewTrack ";
+	printTrack(t);
+	std::cout<<"old cov"<<std::endl;
+	printCovarianceMatrix(oldcov, 5);
+	std::cout<<"new cov"<<std::endl;
+	printCovarianceMatrix(t->getCovMatrix(),5);
+
 	//now make a reconstructed particle to go with
 	//with the track and store additional details
 	ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
@@ -527,17 +571,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	
 	
 }
-void Particle::printTrack(Track* t){
-	std::cout<<"Track: (d0,phi,ome,z0,tanL) "<< 
-		t->getD0()<<" "<<
-		t->getPhi()<<" "<<
-		t->getOmega()<<" "<<
-		t->getZ0()<<" "<<
-		t->getTanLambda()<<std::endl;
-	std::cout<<"Reference Point (x,y,z): ";
-	const float* ref = t->getReferencePoint();
-	std::cout<<ref[0]<<" "<<ref[1]<<" "<<ref[2]<<std::endl; 
-}
+
 void Particle::printReconstructedParticle(ReconstructedParticle* p){
 	const double* mom = p->getMomentum();	
 	std::cout<<"Particle "<< p->getType() <<": "<<
@@ -622,29 +656,7 @@ void Particle::printLocalErrors(std::vector<double> errors){
 	}
 	std::cout<<std::endl;
 }
-void Particle::printCovarianceMatrix(std::vector<float> cov, int npar){
-	//the number of elements in the lower diagonal is
-	//sum( i ) where i= 0->npar
-	int nelem = 0;
-	int k=0;
-	while(k<=npar){
-		nelem = nelem + k;
-		k++;
-	}
-	//reuse k for linebreaking
-	k=0;
-	int kinc=2;
-	for(int i=0; i<nelem; i++){
-		std::cout<<cov[i]<<" ";
-		if(i==k){
-			std::cout<<std::endl;
-			k = k + kinc;
-			kinc++;
-		}
-	}
-	std::cout<<std::endl;
-	
-}
+
 void Particle::printCovarianceMatrix(float* cov, int npar){
 	int nelem = 0;
 	int k=0;
