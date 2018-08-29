@@ -331,7 +331,7 @@ void treeFitter::printVertices(){
 			 ThreeVector vertex = VertexObjects.at(i)->getVertex();
 			 std::cout<<vertex.getX()<<" "<<vertex.getY()<<" "<<vertex.getZ()<<std::endl;
 			
-			std::cout<<"Vertex Errors (dx,dy,dz): "<<
+			std::cout<<"Vertex Errors (dx,dy,dz): ";
 			std::cout<< VertexObjects.at(i)->getError(0) <<" "<< VertexObjects.at(i)->getError(1) << " " <<VertexObjects.at(i)->getError(2)<<std::endl;
 			
 		}
@@ -702,7 +702,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		if( _trackFitObject == 2 ){
 			
 			bool stopCondition = false;
-	double factor = 1e-2;
+	double factor = 1;
 		while(!stopCondition){
 			for(int i=0; i<VertexObjects.size(); i++){
 				if(VertexObjects.at(i) != NULL){
@@ -719,7 +719,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 							std::cout<<"remade the track"<<std::endl;
 							const float* oldref = recoparts.at(fit.at(i).at(k))->track->getReferencePoint();			
 							std::cout<<"diff "<< fabs(newref.at(0) -(double) oldref[0])<<std::endl;		
-									if( fabs(newref.at(0)-(double)oldref[0]) < 1e-4 ){
+									if( fabs(newref.at(0)-(double)oldref[0]) < 1e-2 ){
 							
 								stopCondition = true;
 							}
