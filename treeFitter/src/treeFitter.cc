@@ -526,7 +526,7 @@ void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> >
 				
 			}
 			if(!TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL,NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), -1, -1, TFit->recoparts.at(k)->Bfield) ;
+				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), -1, -1, TFit->recoparts.at(k)->Bfield) ;
 			}
 			
 						

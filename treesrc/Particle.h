@@ -36,7 +36,7 @@ class Particle{
 	Particle(ReconstructedParticle* p, Track* t, double B);
 
 	//build from fitobjects
-	Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo,VertexFitObject* vfo, int pdg, float mass);
+	Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, VertexFitObject* vfo, int pdg, float mass);
 
 	//build from lfo
 	Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass , float d0, float z0, double B);
