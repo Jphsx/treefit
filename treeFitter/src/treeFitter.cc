@@ -718,16 +718,11 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 							//check stop condition have we converged to ref->fitted vertex?
 							std::cout<<"remade the track"<<std::endl;
 							const float* oldref = recoparts.at(fit.at(i).at(k))->track->getReferencePoint();			
-							for(int d=0; d<3; d++){
-								if(fabs(newref.at(d) - (double) oldref[d]) <= 1e-5){
-									stopCondition=true;
-								}
-								else{
-									std::cout<<"diff on "<<d<<" "<<newref.at(d) - (double) oldref[d]<<std::endl;
-									stopCondition=false;
-									break;
-								}
+		
+							if( fabs(newref.at(0)-oldref[0])) <= 1e-4 ){
+								stopCondition = true;
 							}
+							
 						}
 					}
 					
