@@ -100,8 +100,8 @@ class Particle{
 
 	//track adjustment
 	//vertex junk
-	static std::vector<double> constructSameTrackJacobian(Particle* p1, Particle* p2 );
-	static float* transformSameTrackCov(double* oldcov, Particle* p1, Particle* p2);
+	static std::vector<double> constructSameTrackJacobian(Track* t1, Track* t2 );
+	static float* transformSameTrackCov(double* oldcov, Track* t1, Track* t2);
 	
 
 };

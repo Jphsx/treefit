@@ -302,11 +302,9 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 
 }
 //TODO change oldtrk to new oldPart
-std::vector<double> Particle::constructSameTrackJacobian(Particle* p1, Particle* p2 ){
+std::vector<double> Particle::constructSameTrackJacobian(Track* t1, Track* t2 ){
  
 	//p1 is original p2 is p'
-	Track* t1 = p1->track;
-	Track* t2 = p2->track;
 
 	double d01 = t1->getD0();
  	double omega1 = t1->getOmega();
@@ -328,7 +326,7 @@ std::vector<double> Particle::constructSameTrackJacobian(Particle* p1, Particle*
 	jacobian.push_back( 0 ); //dd0'/dz0
 	jacobian.push_back( 0 ); //dd0'/dtl
 	
-	jacobian.push_back( sin(phi2-phi1)/(q1/omega1 - d02 ); //dphi'/dd0
+	jacobian.push_back( sin(phi2-phi1)/(q1/omega1 - d02 )); //dphi'/dd0
 	jacobian.push_back( (q1/omega1 - d01)*cos(phi2-phi1)/ (q1/omega1 - d02) ); //dphi'/dphi
 	jacobian.push_back( ((q1*q1)/(omega1*omega1))*sin(phi2-phi1)/ (q1/omega1 - d02) ); //dphi'/domega
 	jacobian.push_back( 0 ); //dphi'/dz0
@@ -356,9 +354,9 @@ std::vector<double> Particle::constructSameTrackJacobian(Particle* p1, Particle*
 }
 //p1 is unprimed p2 is primed
 //return LowerDiagonal
-float* Particle::transformSameTrackCov(double* oldcov, Particle* p1, Particle* p2){
+float* Particle::transformSameTrackCov(double* oldcov, Track* t1, Track* t2){
 	
-	std::vector<double> jacobian = constructSameTrackJacobian(p1->track, p2->track );
+	std::vector<double> jacobian = constructSameTrackJacobian(t1, t2 );
 	//convert this to a 1d vec
 	double* jac = new double[25];
 	//double* oldcov_ = new double[25];
@@ -422,7 +420,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 		
 
 	t->setD0(d0New); //Impact parameter in r-phi
-	t->setPhi(phiNew)); //phi of track at reference point (primary vertex)
+	t->setPhi(phiNew); //phi of track at reference point (primary vertex)
 	t->setOmega(omega);// signed curvature in 1/mm 
 	t->setZ0(z0New); //Impact parameter in r-z
 	t->setTanLambda(tanLambda);// dip of the track in r-z at primary vertex
@@ -489,7 +487,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 		
 	double P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
 	p->setMomentum(mom);
-	p->setEnergy( sqrt(P*P + mass*mass );
+	p->setEnergy( sqrt(P*P + mass*mass ));
 
 	p->setMass(mass);
 	p->setCharge(q);
