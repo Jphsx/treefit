@@ -504,17 +504,29 @@ void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> >
 			
 			if(TFit->recoparts.at(k)->isTrack){
 				if(_trackFitObject == 2){
-					//we cant just immediately make the updated tracks, we need to create the original fit tracks
-					//for input in updating the covariance matrix
-					TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;		
+					//find the corresponding VFO for this track k
+					//loop through the fit
+					int indexOfVFO=-1;
+					for(int i=0; i<fit.size(); i++){
+						if(fit.at(i).size()<0){
+							for(int j=0; j<fit.at(i).size(); j++){
+								if(fit.at(i).at(j) == k){
+									indexOfVFO = i;
+									break;
+								}
+							}
+						}
+					}
+				
+					TFit->fitparts.at(k) = new Particle(NULL, (TrackParticleFitObject*) FitObjects.at(k),VertexObjects.at(indexOfVFO), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass()) ;		
 				}
 				if(_trackFitObject == 1){
-					TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
+					TFit->fitparts.at(k) = new Particle(NULL, (LeptonFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), TFit->recoparts.at(k)->track->getD0() ,TFit->recoparts.at(k)->track->getZ0(), TFit->recoparts.at(k)->Bfield);
 				}
 				
 			}
 			if(!TFit->recoparts.at(k)->isTrack){
-				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), -1, -1, TFit->recoparts.at(k)->Bfield) ;
+				TFit->fitparts.at(k) = new Particle( (JetFitObject*) FitObjects.at(k), NULL,NULL, TFit->recoparts.at(k)->recopdg, TFit->recoparts.at(k)->part->getMass(), -1, -1, TFit->recoparts.at(k)->Bfield) ;
 			}
 			
 						

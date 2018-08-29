@@ -45,7 +45,7 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 
 }
 
-Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, float mass ){
+Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, VertexFitObject* vfo, int pdg, float mass ){
 	//can either be jfo or tfo only
 	if(tpfo==NULL){
 		isTrack = false;
@@ -96,6 +96,16 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, flo
 		t->setOmega(tpfo->getParam(2)*scaleFactor.at(2));// signed curvature in 1/mm 
 		t->setZ0(tpfo->getParam(3)*scaleFactor.at(3)); //Impact parameter in r-z
 		t->setTanLambda(tpfo->getParam(4)*scaleFactor.at(4));// dip of the track in r-z at primary vertex
+
+		//set the reference point to the vertex from vfo
+		ThreeVector vtx = vfo->getVertex();
+		float* ref = new float[3];
+		ref[0] = vtx.getX();
+		ref[1] = vtx.getY();
+		ref[2] = vtx.getZ();
+
+		t->setReferencePoint(ref);		
+
 		//manually make the lower diagonal covariance matrix 
 		float* cov = new float[15];	
 		int index = 0;

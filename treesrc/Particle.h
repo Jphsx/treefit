@@ -39,7 +39,7 @@ class Particle{
 	Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, int pdg, float mass);
 
 	//build from lfo
-	Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass , float d0, float z0, double B);
+	Particle(JetFitObject* jfo, LeptonFitObject* lfo, VertexFitObject* vfo, int pdg, float mass , float d0, float z0, double B);
 	
 	//build and adjust track reference
 	Particle(Particle* oldPart, std::vector<double> vtx);
