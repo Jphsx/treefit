@@ -734,6 +734,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			
 				std::cout<<"refitting"<<std::endl;
 				fitter = fitParticles(fit);
+				printVertices();
 				//TFit->recoparts = recoparts;
 			
 		}//end while
