@@ -14,6 +14,7 @@
 #include "TrackParticleFitObject.h"
 #include "JetFitObject.h"
 #include "VertexFitObject.h"
+#include "Covariance.h"
 
 #include "IMPL/ParticleIDImpl.h"
 #include "IMPL/ReconstructedParticleImpl.h"

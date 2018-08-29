@@ -321,7 +321,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	//readability variables
 	double dx = vtx.at(0) - ref.at(0);
 	double dy = vtx.at(1) - ref.at(1);
-	double q = oldtrk->getOmega()/fabs(oldtrk->getOmega);
+	double q = oldtrk->getOmega()/fabs(oldtrk->getOmega());
 	double R = q/oldtrk->getOmega();
 	double d0 = oldtrk->getD0();
 	double phi = oldtrk->getPhi();
@@ -353,7 +353,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	t->setReferencePoint(newref);
 
 	//take the cov matrix, make it square
-	float* oldcov = oldtrk->getCovMatrix();
+	std::vector<float> oldcov = oldtrk->getCovMatrix();
 
 	//easiest quick fix, justmake a 2d array
 	//do memory allocation
@@ -366,9 +366,9 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	//make the square matrix
 	for(int i=0; i<cov.size(); i++){
 		for(int j=0; j<=i; j++){
-			cov.at(i).at(j) = oldcov[index];
+			cov.at(i).at(j) = (double) oldcov[index];
 			//we can also make it symmetric here
-			cov.at(j).at(i) = oldcov[index];
+			cov.at(j).at(i) = (double) oldcov[index];
 			index++;
 		}
 	}
@@ -385,7 +385,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	t->setCovMatrix(Covariance::transformSameTrackCov(cov1d, oldtrk, t) );
 	track = t;
 	//also set bfield
-	Bfield = oldpart->Bfield;
+	Bfield = oldPart->Bfield;
 
 	//now make a reconstructed particle to go with
 	//with the track and store additional details
@@ -403,7 +403,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
  	mom[2] = mom_vec[2];	
 
 	//define mass
-	double mass = oldpart->part->getMass();
+	double mass = oldPart->part->getMass();
 		
 	double P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
 	p->setMomentum(mom);
@@ -413,7 +413,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	p->setCharge(q);
 	//p->addParticleID(newPDG);
 	//p->setParticleIDUsed(newPDG);
-	p->setType(oldpart->part->getType());
+	p->setType(oldPart->part->getType());
 	//dont worry about setting the cov in the 
 	//reconstructedparticle, just only use the
 	//track covariance matrix
@@ -422,7 +422,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	
 	TLorentzVector tlv;
 
-	tlv.SetXYZM(tpfo->getPx(), tpfo->getPy(), tpfo->getPz(), mass);
+	tlv.SetXYZM(mom_vec.at(0), mom_vec.at(1), mom_vec.at(2), mass);
 	v = tlv;
 	localParams.push_back(track->getD0());
 	localParams.push_back(track->getPhi());
