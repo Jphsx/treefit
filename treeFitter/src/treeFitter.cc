@@ -508,7 +508,7 @@ void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> >
 					//loop through the fit
 					int indexOfVFO=-1;
 					for(int i=0; i<fit.size(); i++){
-						if(fit.at(i).size()<0){
+						if(fit.at(i).size()>0){
 							for(int j=0; j<fit.at(i).size(); j++){
 								if(fit.at(i).at(j) == k){
 									indexOfVFO = i;
