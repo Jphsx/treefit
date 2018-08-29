@@ -301,6 +301,142 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 	}
 
 }
+//TODO change oldtrk to new oldPart
+Particle::Particle(Particle* oldPart, std::vector<double> vtx){
+	//this constructor creates a new particle by updating a track to new reference point
+	//and creating an updated reconstructed particle for this track
+
+	Track* oldtrk = oldPart->track;
+	TrackImpl* t = new TrackImpl();\
+	//with the new reference vertex update the parameters
+
+	//get the original reference point for easy manipulation
+	const float* oldref = oldtrk->getReferencePoint();
+	std::vector<double> ref(3);
+	for(int i=0; ref.size(); i++){
+		ref.at(i) = oldref[i];
+	}
+
+
+	//readability variables
+	double dx = vtx.at(0) - ref.at(0);
+	double dy = vtx.at(1) - ref.at(1);
+	double q = oldtrk->getOmega()/fabs(oldtrk->getOmega);
+	double R = q/oldtrk->getOmega();
+	double d0 = oldtrk->getD0();
+	double phi = oldtrk->getPhi();
+	double z0 = oldtrk->getZ0();
+	double omega = oldtrk->getOmega();
+	double tanLambda = oldtrk->getTanLambda();
+	
+
+	//phi2
+	double phiNew = atan2(sin(phi)- dx/(R-d0) , cos(phi) + dy/(R-d0)  );
+	
+	double d0New = d0 + dx*sin(phi) - dy*cos(phi) + (dx*cos(phi) + dy*sin(phi))*tan( (phiNew-phi)/2 );
+
+	double s = -(phiNew-phi)/omega;
+	double z0New = z0 + s*tanLambda;
+		
+
+	t->setD0(d0New); //Impact parameter in r-phi
+	t->setPhi(phiNew)); //phi of track at reference point (primary vertex)
+	t->setOmega(omega);// signed curvature in 1/mm 
+	t->setZ0(z0New); //Impact parameter in r-z
+	t->setTanLambda(tanLambda);// dip of the track in r-z at primary vertex
+	//set the reference point as the new vertex
+	float* newref = new float[3];
+	newref[0] = vtx.at(0);
+	newref[1] = vtx.at(1);
+	newref[2] = vtx.at(2);
+
+	t->setReferencePoint(newref);
+
+	//take the cov matrix, make it square
+	float* oldcov = oldtrk->getCovMatrix();
+
+	//easiest quick fix, justmake a 2d array
+	//do memory allocation
+	std::vector<std::vector<double> > cov(5);
+	std::vector<double> covcol(5);
+	for(int i=0; i<cov.size(); i++){
+		cov.at(i) = covcol;
+	}
+	int index=0;
+	//make the square matrix
+	for(int i=0; i<cov.size(); i++){
+		for(int j=0; j<=i; j++){
+			cov.at(i).at(j) = oldcov[index];
+			//we can also make it symmetric here
+			cov.at(j).at(i) = oldcov[index];
+			index++;
+		}
+	}
+	//convert the cov matrix back to 1d for transformation
+	index = 0;
+	double* cov1d = new double[25];
+	for(int i=0; i<cov.size(); i++){
+		for(int j=0; j<cov.at(i).size(); j++){
+			cov1d[index] = cov.at(i).at(j);
+			index++;
+		}
+	}
+	//with the full square cov we can now apply the jacobian transformation
+	t->setCovMatrix(Covariance::transformSameTrackCov(cov1d, oldtrk, t) );
+	track = t;
+	//also set bfield
+	Bfield = oldpart->Bfield;
+
+	//now make a reconstructed particle to go with
+	//with the track and store additional details
+	ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
+	//ParticleIDImpl* newPDG = new ParticleIDImpl();
+	//newPDG->setPDG(pdg);
+	//newPDG->setLikelihood(1.0);
+
+	//recalculate E/P
+		
+	float* mom = new float[3];
+	std::vector<double> mom_vec = getTrackPxPyPz( t, Bfield);
+	mom[0] = mom_vec[0];
+	mom[1] = mom_vec[1];
+ 	mom[2] = mom_vec[2];	
+
+	//define mass
+	double mass = oldpart->part->getMass();
+		
+	double P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
+	p->setMomentum(mom);
+	p->setEnergy( sqrt(P*P + mass*mass );
+
+	p->setMass(mass);
+	p->setCharge(q);
+	//p->addParticleID(newPDG);
+	//p->setParticleIDUsed(newPDG);
+	p->setType(oldpart->part->getType());
+	//dont worry about setting the cov in the 
+	//reconstructedparticle, just only use the
+	//track covariance matrix
+	part = p;
+	
+	
+	TLorentzVector tlv;
+
+	tlv.SetXYZM(tpfo->getPx(), tpfo->getPy(), tpfo->getPz(), mass);
+	v = tlv;
+	localParams.push_back(track->getD0());
+	localParams.push_back(track->getPhi());
+	localParams.push_back(track->getOmega());
+	localParams.push_back(track->getZ0());
+	localParams.push_back(track->getTanLambda());
+	localErrors.push_back(std::sqrt(track->getCovMatrix()[0]));//d0 
+        localErrors.push_back(std::sqrt(track->getCovMatrix()[2]));//phi
+        localErrors.push_back(std::sqrt(track->getCovMatrix()[5]));//ome
+        localErrors.push_back(std::sqrt(track->getCovMatrix()[9]));//z0
+        localErrors.push_back(std::sqrt(track->getCovMatrix()[14]));//tanL
+	
+	
+}
 void Particle::printTrack(Track* t){
 	std::cout<<"Track: (d0,phi,ome,z0,tanL) "<< 
 		t->getD0()<<" "<<

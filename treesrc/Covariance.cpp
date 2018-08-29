@@ -319,45 +319,24 @@ std::vector<double> Covariance::constructTPFOJacobian(Particle* p){
 	jacobian.push_back( (-pt*pt - pz*pz)/(omega*E) );//de/dome 
 	jacobian.push_back(0);//de/dz0
 	jacobian.push_back( pt*pz/E );//de/dtanl
-/*
-	jacobian.push_back(0); //dpx/dd0
-	jacobian.push_back(-eB*q*sinPhi/omega);
- 	jacobian.push_back(-eB*q*cosPhi/(omega*omega) ); //dpx/dome
-	jacobian.push_back(0); //dpx/dz0
-	jacobian.push_back(0); //dpx/dtanl
 
-	jacobian.push_back(0); //dpy/dd0
-	jacobian.push_back(eB*q*cosPhi/omega);
-	jacobian.push_back( -eB*q*sinPhi/(omega*omega)); //dpy/dome
-	jacobian.push_back(0);//dpy/dz0
-	jacobian.push_back(0); //dpy/dtanl
 
-	jacobian.push_back(0);//dpz/dd0'
-	jacobian.push_back(0);//dpz/dphi // was 0
-	jacobian.push_back(-eB*q*tanLambda/(omega*omega)); //dpz/dome
-	jacobian.push_back(0);//dpz/dz0
-	jacobian.push_back(eB*q/omega);//dpz/dtanl
-
-	jacobian.push_back(0);//de/dd0
-	jacobian.push_back(0);//de/dphi
-	jacobian.push_back( (-eB*eB*q*q-eB*eB*tanLambda*tanLambda*q*q)/(omega*omega*omega*E) );//de/dome 
-	jacobian.push_back(0);//de/dz0
-	jacobian.push_back( eB*eB*q*q*tanLambda/(E*omega*omega) );//de/dtanl
-*/
 	return jacobian;
 }
-std::vector<double> Covariance::constructSameTrackJacobian(Particle* p1, Particle* p2 ){
+std::vector<double> Covariance::constructSameTrackJacobian(Track* t1, Track* t2 ){
  
-	double q1 = p1->part->getCharge();
-	double d01 = p1->track->getD0();
- 	double omega1 = p1->track->getOmega();
-	double phi1 = p1->track->getPhi();
-	double z01 = p1->track->getZ0();
-	double tanLambda1 = p1->track->getTanLambda();	
+	//p1 is original p2 is p'
+
+	double d01 = t1->getD0();
+ 	double omega1 = t1->getOmega();
+	double q1 = omega1/fabs(omega1);
+	double phi1 = t1->getPhi();
+	double z01 = t1->getZ0();
+	double tanLambda1 = t1->getTanLambda();	
 
 	
-	double d02 = p2->track->getD0();
-	double phi2 = p2->track->getPhi();
+	double d02 = t2->getD0();
+	double phi2 = t2->getPhi();
 	double s = -(phi2-phi1)/omega1;
 
 	std::vector<double> jacobian{};
@@ -394,41 +373,34 @@ std::vector<double> Covariance::constructSameTrackJacobian(Particle* p1, Particl
 
 	return jacobian;
 }
-//here the tracks are different q1 != q2 and omega1 != omega 2
-/*std::vector<double> Covariance::constructTwoTrackJacobian(Particle* p1, Particle* p2 ){
-
-}*/
-//this is a mixture of particle and track, ORDER MATTERS
-/*std::vector<double> Covariance::constructMixedTrackJacobian(Particle* p1, Particle* p2){
-
-
-}*/
 //p1 is unprimed p2 is primed
-float* Covariance::transformSameTrackCov(float* oldcov, Particle* p1, Particle* p2){
+//return LowerDiagonal
+float* Covariance::transformSameTrackCov(std::vector<double> oldcov, Track* t1, Track* t2){
 	
-	std::vector<double> jacobian = constructSameTrackJacobian(p1, p2 );
+	std::vector<double> jacobian = constructSameTrackJacobian(t1, t2 );
 	//convert this to a 1d vec
 	double* jac = new double[25];
-	double oldcov_doub = new double[25];
+	double* oldcov_ = new double[25];
 	for(int i=0; i<jacobian.size(); i++){
-		jac[i] =  jacobian.at(i);
-		oldcov_doub[i] = oldcov[i];
+		jac[i] = jacobian.at(i);
+		oldcov_[i] = oldcov.at(i);
 	}
 	
 		
 	TMatrixD Dmatrix(5,5,jac,"F");
-	TMatrixD Vmatrix(5,5, oldcov, "F");
+	TMatrixD Vmatrix(5,5, oldcov_, "F");
 	TMatrixD Covmatrix(5,5); 
 	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
 
-	float* newcov = new float[25];
+	float* newcov = new float[15];
 	int index =0;
-	for(int i=0; i<4; i++){
-		for(int j=0; j<4; j++){
+	for(int i=0; i<=4; i++){
+		for(int j=0; j<=i; j++){
 			newcov[index] = (float) Covmatrix(i,j);
 			index++;
 		}
 	}
+
 	return newcov;
 }
 double* Covariance::constructJacobian(std::vector<Particle*> parts, std::vector<int> combo,  int FO_Option){

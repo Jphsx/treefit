@@ -495,122 +495,7 @@ OPALFitterGSL* treeFitter::fitParticles(std::vector< std::vector<int>> fit){
 		
 		return fitter;
 }
-void treeFitter::createFitTracksAtVertex(std::vector<std::vector<int> > fit){
-	//std::vector<VertexFitObject*> vfos, std::vector<Particle*>& fitparts
-	//dont use a reference just make a new particle*
-	//locate the track subset
-	//the tracks are the particles of the i-th node which is the i-th vfo
 
-	std::vector<int> fitsubset{}; 
-
-	//scaleFactors for TPFO
-	std::vector<double> scaleFactor{1.e-2, 1., 1.e-3, 1.e-2, 1., 1., 1.};
-	
-	//loop over vfo
-	for(int i=0; i< VertexObjects.size(); i++){
-
-		if(fit.at(i).size() != 0){
-		fitsubset = TreeFit::getVertexSet(fit.at(i), i, fit);
-		//fit subset contains the indices of the tracks that need to be changed
-		//loop over the individual particles
-		for(int j=0; j<fitsubset.size(); j++){
-
-			//make a new track
-			TrackImpl* t = new TrackImpl();
-			
-			//get the tpfo local for readability
-			TrackParticleFitObject* tpfo =  (TrackParticleFitObject*) FitObjects.at( fitsubset.at(j) );	
-			//get the old ref and the new vertex to calculate the new params
-			float* vtx = new float[3];
-			ThreeVector vec = VertexObjects.at(i)->getVertex();
-			vtx[0] = (float) vec.getX();
-			vtx[1] = (float) vec.getY();
-			vtx[2] = (float) vec.getZ();
-
-			const float* ref = TFit->recoparts.at( fitsubset.at(j) )->track->getReferencePoint();
-			//get local vars for readability
-			
-			double phi0 = tpfo->getParam(1)*scaleFactor.at(1);
-			double omega = tpfo->getParam(2)*scaleFactor.at(2);
-			double tanLambda = tpfo->getParam(4)*scaleFactor.at(4);
-
-			double phiNew = atan2(sin(phi0)- omega*(vtx[0]-ref[0]), cos(phi0) + omega*(vtx[1]-ref[1]) );
-	
-			//set the new ref at the secondary vertex
-			t->setReferencePoint(vtx);
-
-			//ref point is set ontop of the track
-			t->setD0(0.0); //Impact parameter in r-phi
-
-			//we assume the original reference is IP (0,0,0) in this calculation
-			t->setPhi(phiNew); //phi of track at reference point (secondary vertex)
-			t->setOmega(omega);// signed curvature in 1/mm 
-			t->setZ0(0.0); //Impact parameter in r-z
-			t->setTanLambda(tanLambda);// dip of the track in r-z at primary vertex
-
-			//debugging print out the new track
-
-			std::cout<<"New Track Parameters: (d0,phi,omega,z0,tanLambda) ";
-			std::cout<<0.0<<" "<<phiNew<<" "<<omega<<" "<<0.0<<" "<<tanLambda<<std::endl;
-			
-		
-
-		//create the fit recopart*
-		ReconstructedParticleImpl* p = new ReconstructedParticleImpl();
-		//ParticleIDImpl* newPDG = new ParticleIDImpl();
-		//newPDG->setPDG(pdg);
-		//newPDG->setLikelihood(1.0);
-		
-		float* mom = new float[3];
-		//std::vector<double> mom_vec = getTrackPxPyPz( t, tpfo->bfield);
-		mom[0] = tpfo->getPx();
-		mom[1] = tpfo->getPy();
- 		mom[2] = tpfo->getPz();	
-		
-		//float P = sqrt(mom[0]*mom[0] + mom[1]*mom[1] + mom[2]*mom[2]);
-		p->setMomentum(mom);
-		p->setEnergy( tpfo->getE() );
-
-		p->setMass(TFit->recoparts.at( fitsubset.at(j) )->part->getMass());
-		p->setCharge(tpfo->getCharge());
-		//p->addParticleID(newPDG);
-		//p->setParticleIDUsed(newPDG);
-		p->setType(TFit->recoparts.at( fitsubset.at(j) )->part->getType());
-		//dont worry about setting the cov in the 
-		//reconstructedparticle, just only use the
-		//track covariance matrix
-		
-
-		Particle* updatedTrack = new Particle(p,t,tpfo->bfield);
-		
-		//manually make the square covariance matrix 
-		float* cov = new float[25];	
-		int index = 0;
-		for(int i=0; i<=4; i++){
-			for(int j=0; j<=4; j++){
-				cov[index]=tpfo->getCov(i,j)*scaleFactor.at(i)*scaleFactor.at(j);
-				index++;	
-			}
-		}
-		
-		//TODO this function args(covariance, original, primed)
-		float* newCov = Covariance::transformSameTrackCov(cov, TFit->fitparts.at( fitsubset.at(j) ), updatedTrack);
-		//do the transformation and save the new matrix
-		//TODO rescale this matrix and make cov diagonal
-		t->setCovMatrix(cov);
-			//make a new fit part
-
-
-			TFit->fitparts.at( fitsubset.at(j) ) = updatedTrack;
-
-		}
-
-		
-		}//end fit condition
-	}//end vfo loop
-	
-
-}
 void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> > fit){
 	for(int k=0; k<FitObjects.size(); k++){
 			if(FitObjects.at(k)==NULL){
@@ -634,13 +519,6 @@ void treeFitter::createFitParticlesfromFitObjects(std::vector<std::vector<int> >
 			
 						
 	}
-		//if we are dealing with vertex fit it is completely separate
-		//we need to change reference and phi0 by swimming the track to common vtx
-	if(_trackFitObject ==2 ){
-		createFitTracksAtVertex(fit);
-	}
-
-
 	
 }
 
@@ -799,6 +677,49 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//print to track fit info
 		std::cout<<"FIT: "<<j<<" Results - "<<std::endl;
 		fitter = fitParticles(fit);
+
+		//after the initial fit if there is a vertex fit we need to accomodate for change of reference
+		//int the reconstructed tracks, and then refit the tracks
+		// this will ensure that the fitted covariance matrix corresponds to the correct point in space
+		//copy recoparts
+		std::vector<Particle*> recoparts = TFit->recoparts;
+		//make a new recoparts to replace the original
+		//the new recoparts will have updated tracks
+		std::vector<Particle*> newparts = TFit->recoparts;
+		//copying recoparts to transfer over non track particles
+		if( _trackFitObject == 2 ){
+
+			bool stopCondition = false;
+			for(int i=0; i<VertexObjects.size(); i++){
+				if(VertexObjects.at(i) != NULL){
+					ThreeVector vtx = VertexObjects.at(i)->getVertex();
+					std::vector<double> newref={vtx.getX(), vtx.getY(); vtx.getZ()};
+					//get the tracks that need modified
+					for(int k=0; k<fit.at(i).at(k); k++){
+						if( newparts.at( fit.at(i).at(k) )->isTrack ){
+							//adjust this track 
+							newparts.at(fit.at(i).at(k)) = new Particle(newparts.at(fit.at(i).at(k)), newref );
+							//check stop condition have we converged to ref->fitted vertex?
+							const float* oldref = recoparts.at(fit.at(i).at(k))->track->getReferencePoint();			
+							for(int i=0; i<3; i++){
+								if((newref.at(i) - (double) oldref[i]) <= 0.001){
+									stopCondition=true;
+								}
+								else{
+									stopCondition=false;
+								}
+							}
+						}
+					}
+				}
+			}//end vfo loop
+			//now refit with adjusted tracks
+			if(!stopCondition){
+				fitter = fitParticles(fit);
+			}
+			
+		}
+		
 		//get the global covariance for this fit, we need to make sure it created one
 		//if there is no matrix we need to skip this event
 		//printout the fit information
