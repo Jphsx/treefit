@@ -437,10 +437,10 @@ std::cout<<"BEP"<<std::endl;
 	//get the original reference point for easy manipulation
 	const float* oldref = oldtrk->getReferencePoint();
 	std::vector<double> ref(3);
-	for(int i=0; ref.size(); i++){
+	for(int i=0; i<ref.size(); i++){
 		ref.at(i) = oldref[i];
 	}
-
+std::cout<<"BEEP"<<std::endl;
 
 	//readability variables
 	double dx = vtx.at(0) - ref.at(0);
