@@ -429,7 +429,7 @@ void Particle::printCovarianceMatrix(std::vector<float> cov, int npar){
 Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	//this constructor creates a new particle by updating a track to new reference point
 	//and creating an updated reconstructed particle for this track
-
+std::cout<<"BEP"<<std::endl;
 	Track* oldtrk = oldPart->track;
 	TrackImpl* t = new TrackImpl();\
 	//with the new reference vertex update the parameters
@@ -461,7 +461,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 
 	double s = -(phiNew-phi)/omega;
 	double z0New = z0 + s*tanLambda;
-		
+		std::cout<<"BEP"<<std::endl;
 
 	t->setD0(d0New); //Impact parameter in r-phi
 	t->setPhi(phiNew); //phi of track at reference point (primary vertex)
@@ -475,7 +475,7 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 	newref[2] = vtx.at(2);
 
 	t->setReferencePoint(newref);
-
+std::cout<<"BEP"<<std::endl;
 	//take the cov matrix, make it square
 	std::vector<float> oldcov = oldtrk->getCovMatrix();
 
@@ -505,8 +505,10 @@ Particle::Particle(Particle* oldPart, std::vector<double> vtx){
 			index++;
 		}
 	}
+std::cout<<"BEP"<<std::endl;
 	//with the full square cov we can now apply the jacobian transformation
 	t->setCovMatrix(transformSameTrackCov(cov1d, oldtrk, t) );
+std::cout<<"BEP"<<std::endl;
 	track = t;
 	//also set bfield
 	Bfield = oldPart->Bfield;
