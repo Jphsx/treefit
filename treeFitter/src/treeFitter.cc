@@ -712,14 +712,14 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 					//get the tracks that need modified
 					for(int k=0; k<fit.at(i).size(); k++){
 						if( newparts.at( fit.at(i).at(k) )->isTrack ){
-							std::cout<<"found a track to redo"<<std::endl;
+							std::cout<<"found a track to redo "<< fit.at(i).at(k)<<std::endl;
 							//adjust this track 
 							newparts.at(fit.at(i).at(k)) = new Particle(newparts.at(fit.at(i).at(k)), newref );
 							//check stop condition have we converged to ref->fitted vertex?
 							std::cout<<"remade the track"<<std::endl;
 							const float* oldref = recoparts.at(fit.at(i).at(k))->track->getReferencePoint();			
 							for(int d=0; d<3; d++){
-								if(fabs(newref.at(d) - (double) oldref[d]) <= 1e-3){
+								if(fabs(newref.at(d) - (double) oldref[d]) <= 1e-5){
 									stopCondition=true;
 								}
 								else{
