@@ -305,8 +305,8 @@ Particle::Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass 
 std::vector<double> Particle::constructSameTrackJacobian(Particle* p1, Particle* p2 ){
  
 	//p1 is original p2 is p'
-	Track t1* = p1->track;
-	Track t2* = p2->track;
+	Track* t1 = p1->track;
+	Track* t2 = p2->track;
 
 	double d01 = t1->getD0();
  	double omega1 = t1->getOmega();
@@ -356,20 +356,20 @@ std::vector<double> Particle::constructSameTrackJacobian(Particle* p1, Particle*
 }
 //p1 is unprimed p2 is primed
 //return LowerDiagonal
-float* Particle::transformSameTrackCov(std::vector<double> oldcov, Particle* p1, Particle* p2){
+float* Particle::transformSameTrackCov(double* oldcov, Particle* p1, Particle* p2){
 	
 	std::vector<double> jacobian = constructSameTrackJacobian(p1->track, p2->track );
 	//convert this to a 1d vec
 	double* jac = new double[25];
-	double* oldcov_ = new double[25];
+	//double* oldcov_ = new double[25];
 	for(int i=0; i<jacobian.size(); i++){
 		jac[i] = jacobian.at(i);
-		oldcov_[i] = oldcov.at(i);
+		//oldcov_[i] = oldcov.at(i);
 	}
 	
 		
 	TMatrixD Dmatrix(5,5,jac,"F");
-	TMatrixD Vmatrix(5,5, oldcov_, "F");
+	TMatrixD Vmatrix(5,5, oldcov, "F");
 	TMatrixD Covmatrix(5,5); 
 	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
 
