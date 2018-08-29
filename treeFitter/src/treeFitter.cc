@@ -700,7 +700,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		std::vector<Particle*> newparts = TFit->recoparts;
 		//copying recoparts to transfer over non track particles
 		if( _trackFitObject == 2 ){
-
+			
 			bool stopCondition = false;
 			for(int i=0; i<VertexObjects.size(); i++){
 				if(VertexObjects.at(i) != NULL){
@@ -724,11 +724,14 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 							}
 						}
 					}
+					TFit->recoparts = newparts;
 				}
 			}//end vfo loop
 			//now refit with adjusted tracks
 			if(!stopCondition){
+				std::cout<<"refitting"<<std::endl;
 				fitter = fitParticles(fit);
+				TFit->recoparts = recoparts;
 			}
 			
 		}
