@@ -40,9 +40,6 @@ class Covariance{
 	static std::vector<double> constructJFOJacobian(Particle* p);
 	static std::vector<double> constructLFOJacobian(Particle* p);
 	static std::vector<double> constructTPFOJacobian(Particle* p);
-
-	//vertex junk
-	static std::vector<double> constructSameTrackJacobian(Particle* p1, Particle* p2 );
 	
 	static void printCovarianceMatrix(double* cov, int rows, int columns);//dim = Nparam
 	static void printSectoredCovarianceMatrix(std::vector<std::vector<std::vector<double> > > cov );
@@ -54,7 +51,7 @@ class Covariance{
 	//currently this will only work for a single vertex fit
 	//since multiple vertex fits wont work, i dont know how to manipulate the global cov which is created from multiple vertex constraints (unknown dimensions/ parameter order)
 	static double* removeVFOSectors(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> combo);
-	static float* transformSameTrackCov(float* oldcov, Particle* p1, Particle* p2);
+
 
 	//produce covariance sub matrix
 	static double* getSubGlobalCov( double* globalcov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo);
