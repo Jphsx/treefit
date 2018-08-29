@@ -702,13 +702,13 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		if( _trackFitObject == 2 ){
 			
 			bool stopCondition = false;
-
+	double factor = 1e-2;
 		while(!stopCondition){
 			for(int i=0; i<VertexObjects.size(); i++){
 				if(VertexObjects.at(i) != NULL){
 					std::cout<<"inside vfos"<<std::endl;
 					ThreeVector vtx = VertexObjects.at(i)->getVertex();
-					std::vector<double> newref{vtx.getX(), vtx.getY(), vtx.getZ()};
+					std::vector<double> newref{vtx.getX()*factor, vtx.getY()*factor, vtx.getZ()*factor};
 					//get the tracks that need modified
 					for(int k=0; k<fit.at(i).size(); k++){
 						if( newparts.at( fit.at(i).at(k) )->isTrack ){
@@ -742,6 +742,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}//end while
 			
 		}
+		TFit->recoparts=recoparts;
 		
 		//get the global covariance for this fit, we need to make sure it created one
 		//if there is no matrix we need to skip this event
