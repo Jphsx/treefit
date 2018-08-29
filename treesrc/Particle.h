@@ -37,6 +37,9 @@ class Particle{
 
 	//build from lfo
 	Particle(JetFitObject* jfo, LeptonFitObject* lfo, int pdg, float mass , float d0, float z0, double B);
+	
+	//build and adjust track reference
+	Particle(Particle* oldPart, std::vector<double> vtx);
 
 	//need to write a good destructor here?
 	//TODO ~Particle()
