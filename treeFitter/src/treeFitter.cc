@@ -708,7 +708,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 					ThreeVector vtx = VertexObjects.at(i)->getVertex();
 					std::vector<double> newref{vtx.getX(), vtx.getY(), vtx.getZ()};
 					//get the tracks that need modified
-					for(int k=0; k<fit.at(i).at(k).size(); k++){
+					for(int k=0; k<fit.at(i).size(); k++){
 						if( newparts.at( fit.at(i).at(k) )->isTrack ){
 							std::cout<<"found a track to redo"<<std::endl;
 							//adjust this track 
