@@ -706,7 +706,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		
 		while(!stopCondition){
 		
-		newparts = TFit->fitparts;
+		//newparts = TFit->fitparts;
 			for(int i=0; i<VertexObjects.size(); i++){
 				if(VertexObjects.at(i) != NULL){
 					std::cout<<"inside vfos"<<std::endl;
