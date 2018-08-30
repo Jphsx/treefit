@@ -103,8 +103,8 @@ Particle::Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, VertexFitObj
 		ref[0] = vtx.getX();
 		ref[1] = vtx.getY();
 		ref[2] = vtx.getZ();
-
-		t->setReferencePoint(ref);		
+		//TEMPORARILY REMOVE THIS
+		//t->setReferencePoint(ref);		
 
 		//manually make the lower diagonal covariance matrix 
 		float* cov = new float[15];	
