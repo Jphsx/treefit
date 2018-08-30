@@ -700,7 +700,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		std::vector<Particle*> newparts = TFit->recoparts;
 		//copying recoparts to transfer over non track particles
 		if( _trackFitObject == 2 ){
-			createFitParticlesfromFitObjects(fit);
+			//createFitParticlesfromFitObjects(fit);
 			bool stopCondition = false;
 	double factor = 1;
 		
