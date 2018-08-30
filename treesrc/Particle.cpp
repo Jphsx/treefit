@@ -458,7 +458,10 @@ double factor = 1e-2;
 	//phi2
 	double phiNew = atan2(sin(phi)- dx/(R-d0) , cos(phi) + dy/(R-d0)  );
 	
-	double d0New = d0 + dx*sin(phi) - dy*cos(phi) + (dx*cos(phi) + dy*sin(phi))*tan( (phiNew-phi)/2 );
+	//double d0New = d0 + dx*sin(phi) - dy*cos(phi) + (dx*cos(phi) + dy*sin(phi))*tan( (phiNew-phi)/2 );
+	double a = (-2*dx*sin(phi)+2*dy*cos(phi))/(R-d0);
+	double b = (dx*dx + dy*dy)/( (R-d0)(R-d0) );
+	double d0New = R - (R-d0)*sqrt( 1+a+b  );
 
 	double s = -(phiNew-phi)/omega;
 	double z0New = z0 + s*tanLambda;
