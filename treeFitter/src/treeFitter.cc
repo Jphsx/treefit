@@ -745,7 +745,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			
 		}
 		//TFit->recoparts=recoparts;
-*/		
+		
 		//get the global covariance for this fit, we need to make sure it created one
 		//if there is no matrix we need to skip this event
 		//printout the fit information
