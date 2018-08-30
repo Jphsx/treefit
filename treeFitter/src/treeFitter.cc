@@ -689,7 +689,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//print to track fit info
 		std::cout<<"FIT: "<<j<<" Results - "<<std::endl;
 		fitter = fitParticles(fit);
-/*
+
 		//after the initial fit if there is a vertex fit we need to accomodate for change of reference
 		//int the reconstructed tracks, and then refit the tracks
 		// this will ensure that the fitted covariance matrix corresponds to the correct point in space
@@ -703,7 +703,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			
 			bool stopCondition = false;
 	double factor = 1;
+		
 		while(!stopCondition){
+		createFitParticlesfromFitObjects(fit);
+		newparts = TFit->fitparts;
 			for(int i=0; i<VertexObjects.size(); i++){
 				if(VertexObjects.at(i) != NULL){
 					std::cout<<"inside vfos"<<std::endl;
@@ -717,7 +720,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 							newparts.at(fit.at(i).at(k)) = new Particle(newparts.at(fit.at(i).at(k)), newref );
 							//check stop condition have we converged to ref->fitted vertex?
 							std::cout<<"remade the track"<<std::endl;
-							const float* oldref = TFit->recoparts.at(fit.at(i).at(k))->track->getReferencePoint();			
+							const float* oldref = TFit->recoparts.at(fit.at(i).at(k))->track->getReferencePoint();							
 							std::cout<<"diff "<< fabs(newref.at(0) -(double) oldref[0])<<std::endl;	
 							std::cout<<"new - old "<< newref.at(0) <<" "<<oldref[0]<<std::endl;	
 									if( fabs(newref.at(0)-(double)oldref[0]) < 1e-2 ){
