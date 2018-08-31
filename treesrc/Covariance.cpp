@@ -197,12 +197,12 @@ std::vector<double> Covariance::constructJFOJacobian(Particle* p){
 	double py = p->v.Py();
 	double pz = p->v.Pz();
 	double pt = sqrt( px*px + py*py);
-	double P = sqrt( pt*pt + pz*pz);
-	double q = p->part->getCharge();
+//	double P = sqrt( pt*pt + pz*pz);
+//	double q = p->part->getCharge();
 	double E = p->part->getEnergy();
 	
 	std::vector<double> jacobian{};
-	jacobian.push_back( E*px/(P*P) );// dPx/de
+	/*jacobian.push_back( E*px/(P*P) );// dPx/de
 	jacobian.push_back(  pz*px/pt );// dPx/dtheta
 	jacobian.push_back( -py );// dPx/dphi
 	
@@ -211,6 +211,23 @@ std::vector<double> Covariance::constructJFOJacobian(Particle* p){
 	jacobian.push_back( px );// dPy/dphi
 	
 	jacobian.push_back( E*pz/(P*P) );// dPz/de
+	jacobian.push_back( -pt );// dPz/dtheta
+	jacobian.push_back( 0.0 );// dPz/dphi
+	
+	jacobian.push_back( 1.0);// dE/de
+	jacobian.push_back( 0.0);// dE/dtheta
+	jacobian.push_back( 0.0);// dE/dphi
+	*/
+		//assume E=P
+	jacobian.push_back( px/E );// dPx/de
+	jacobian.push_back(  pz*px/pt );// dPx/dtheta
+	jacobian.push_back( -py );// dPx/dphi
+	
+	jacobian.push_back( py/E );// dPy/de
+	jacobian.push_back( pz*py/pt );// dPy/dtheta
+	jacobian.push_back( px );// dPy/dphi
+	
+	jacobian.push_back( pz/E );// dPz/de
 	jacobian.push_back( -pt );// dPz/dtheta
 	jacobian.push_back( 0.0 );// dPz/dphi
 	
@@ -247,7 +264,7 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	
 
 	std::vector<double> jacobian{};
-	
+/*	
 	jacobian.push_back( -px/k );//"dPx/dk" );
 	jacobian.push_back( 0 );//"dPx/dtheta" );
 	jacobian.push_back( -py );//"dPx/dphi" );
@@ -263,7 +280,22 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	jacobian.push_back( -P*P/(k*E) );//"dE/dk" );
 	jacobian.push_back( -pz*P*P/(k*E*pt*pt) );//"dE/dtheta" );
 	jacobian.push_back( 0.0);//"dE/dphi" );
+*/	
+	jacobian.push_back( -px/k );//"dPx/dk" );
+	jacobian.push_back( 0 );//"dPx/dtheta" );
+	jacobian.push_back( -py );//"dPx/dphi" );
 	
+	jacobian.push_back( -py/k );//"dPy/dk" );
+	jacobian.push_back( 0 );//"dPy/dtheta" );
+	jacobian.push_back( px );//"dPy/dphi" );
+	
+	jacobian.push_back( -pz/k );//"dPz/dk" );
+	jacobian.push_back( -P/pt );//"dPz/dtheta" );
+	jacobian.push_back( 0.0);//"dPz/dphi" );
+	
+	jacobian.push_back( -P*P/(k*E) );//"dE/dk" );
+	jacobian.push_back( -pz*P*P/(k*E*pt*pt) );//"dE/dtheta" );
+	jacobian.push_back( 0.0);//"dE/dphi" );
 	
 	return jacobian;
 
