@@ -12,7 +12,7 @@
 <marlin>
 	<execute>
 	<processor name="MyPhotonResponseAdjuster"/>
-	<processor name="MyT2RP" /> 
+<!--	<processor name="MyT2RP" /> -->
    	<processor name="MyTreeFitter"/>  
 	<processor name="MyLCIOOutputProcessor"/>
  	</execute>
@@ -28,7 +28,8 @@
 	
  	<processor name ="MyPhotonResponseAdjuster" type="PhotonResponseAdjuster">
   		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
-   		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">NewPfoCol</parameter>
+<!--   		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">NewPfoCol</parameter> -->
+		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">AdjustedPFOs</parameter>
    		<parameter name="EnergyScaleFactor" value="0.9437" />
    		<parameter name="Printing" value="5"/>
 	</processor>
@@ -43,7 +44,7 @@
                 <parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
                 <parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">NewPfoCol</parameter>
 
-        </processor>
+        </processor>   
 	
 	<processor name="MyTreeFitter" type="treeFitter">   
 		<!-- tree parameters -->
@@ -62,7 +63,8 @@
 
 		<!-- input/output collection names -->
 		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
-		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">NewPfoCol</parameter>
+<!--		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">NewPfoCol</parameter> -->
+		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">AdjustedPFOs</parameter>
 		<parameter name="McParticleCollectionName" value="MCParticle" />  
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles</parameter>
    
