@@ -689,8 +689,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//print to track fit info
 		std::cout<<"FIT: "<<j<<" Results - "<<std::endl;
 		fitter = fitParticles(fit);
-
-		//after the initial fit if there is a vertex fit we need to accomodate for change of reference
+////////////////??TESTING TRACK fit iteration///////////////////////////////
+/*		//after the initial fit if there is a vertex fit we need to accomodate for change of reference
 		//int the reconstructed tracks, and then refit the tracks
 		// this will ensure that the fitted covariance matrix corresponds to the correct point in space
 		//copy recoparts
@@ -749,6 +749,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		}
 		//TFit->recoparts=recoparts;
 		
+		*/
 		//get the global covariance for this fit, we need to make sure it created one
 		//if there is no matrix we need to skip this event
 		//printout the fit information
