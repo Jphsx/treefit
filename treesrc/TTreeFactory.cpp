@@ -127,10 +127,10 @@ void TTreeFactory::addFitParentErrors(float* cov){
 	  zx zy zz
 	  Ex Ey Ez EE */
 
-	fitParentErrors.push_back((double)cov[0]);
-	fitParentErrors.push_back((double)cov[2]);
-	fitParentErrors.push_back((double)cov[5]);
-	fitParentErrors.push_back((double)cov[9]);		
+	fitParentErrors.push_back(sqrt((double)cov[0]));
+	fitParentErrors.push_back(sqrt((double)cov[2]));
+	fitParentErrors.push_back(sqrt((double)cov[5]));
+	fitParentErrors.push_back(sqrt((double)cov[9]));		
 
 }
 void TTreeFactory::addVertexDetails(VertexFitObject* vfo){
