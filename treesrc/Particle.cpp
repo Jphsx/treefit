@@ -2,7 +2,7 @@
 
 
 Particle::Particle( ){}
-Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
+Particle::Particle(ReconstructedParticle* p, Track* t, double B, int TrackFitObject ){
 	//if no track this is just a neutral particle	
 	if(t==NULL){
 		isTrack = false;
@@ -17,7 +17,7 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
 	Bfield = B;
 	//if its a track populate tlv from track not reco
 	//also populate the local parameterization are error matrices
-	if(isTrack){
+	if(isTrack && TrackFitObject == 2){
 		v = getTLorentzVector(t,p->getMass(),B);
 		localParams.push_back(t->getD0());
 		localParams.push_back(t->getPhi());
@@ -30,7 +30,26 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B ){
             	localErrors.push_back(std::sqrt(t->getCovMatrix()[9]));//z0
             	localErrors.push_back(std::sqrt(t->getCovMatrix()[14]));//tanL
 	}
-	else{
+	if(isTrack && TrackFitObject ==1){
+		//this is lfo
+		//going to need to caculate new cov matrix and parameters
+		//make local parameterization:
+		//d0,phi,k,z0,theta
+		const double c = 2.99792458e8; // m*s^-1        
+  		const double mm2m = 1e-3;
+  		const double eV2GeV = 1e-9;
+  		const double eB = BField*c*mm2m*eV2GeV;
+		double theta = atan( 1/t->getTanLambda() );
+		double d5 = -(sin(theta)*sin(theta));
+		localParams.push_back(t->getOmega()/eB);
+		localParams.push_back(theta);
+		localParams.push_back(t->getPhi());
+		localErrors.push_back(std::sqrt(1/(eB*eB) * t->getCovMatrix()[5] ));
+		localErrors.push_back( d5*d5* t->getCovMatrix()[14] );
+		localErrors.push_back(std::sqrt(t->getCovMatrix()[2]));//phi		
+
+	}
+	if(!isTrack){
 		v = getTLorentzVector(p);
 		localParams.push_back(p->getEnergy());//E
 		localParams.push_back(v.Theta());//theta
