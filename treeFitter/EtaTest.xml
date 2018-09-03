@@ -30,7 +30,8 @@
   		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
 <!--   		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">NewPfoCol</parameter> -->
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">AdjustedPFOs</parameter>
-   		<parameter name="EnergyScaleFactor" value="0.9437" />
+<!--   		<parameter name="EnergyScaleFactor" value="0.9437" /> -->
+		<parameter name="EnergyScaleFactor" value="1.0" />
    		<parameter name="Printing" value="5"/>
 	</processor>
 
