@@ -33,7 +33,7 @@ class Particle{
 	public:
 	Particle();
 	//build from recos/tracks
-	Particle(ReconstructedParticle* p, Track* t, double B);
+	Particle(ReconstructedParticle* p, Track* t, double B, int TrackFitObject);
 
 	//build from fitobjects
 	Particle(JetFitObject* jfo, TrackParticleFitObject* tpfo, VertexFitObject* vfo, int pdg, float mass);
