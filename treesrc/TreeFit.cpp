@@ -195,8 +195,12 @@ void TreeFit::printComparison(std::vector<Particle*> reco, std::vector<Particle*
 		if(reco.at(combo.at(i))->isTrack){
 			std::cout<<"Reco: ";
 			Particle::printTrack(reco.at(combo.at(i))->track);
+			Particle::printLocalParameters(reco.at(combo.at(i))->localParams);
+			Particle::printLocalErrors(reco.at(combo.at(i))->localErrors);
 			std::cout<<"Fit : ";
 			Particle::printTrack(fit.at(combo.at(i))->track);
+			Particle::printLocalParameters(fit.at(combo.at(i))->localParams);
+			Particle::printLocalErrors(fit.at(combo.at(i))->localErrors);
 			std::cout<<"Reco Error Matrix "<<std::endl;
 			Particle::printCovarianceMatrix(reco.at(combo.at(i))->track->getCovMatrix(), reco.at(combo.at(i))->localParams.size());				
 			std::cout<<"Fit Error Matrix " <<std::endl;
