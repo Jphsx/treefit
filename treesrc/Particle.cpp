@@ -38,7 +38,7 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B, int TrackFitObj
 		const double c = 2.99792458e8; // m*s^-1        
   		const double mm2m = 1e-3;
   		const double eV2GeV = 1e-9;
-  		const double eB = BField*c*mm2m*eV2GeV;
+  		const double eB = B*c*mm2m*eV2GeV;
 		double theta = atan( 1/t->getTanLambda() );
 		double d5 = -(sin(theta)*sin(theta));
 		localParams.push_back(t->getOmega()/eB);
