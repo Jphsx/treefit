@@ -41,12 +41,13 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B, int TrackFitObj
   		const double eB = B*c*mm2m*eV2GeV;
 		double theta = atan( 1/t->getTanLambda() );
 		if(theta<0.0) theta += M_PI;
-		double d5 = -(sin(theta)*sin(theta));
+		double tl = t->getTanLambda();
+		double d5 = -(1.0/(1.0+tl*tl));
 		localParams.push_back(t->getOmega()/eB);
 		localParams.push_back(theta);
 		localParams.push_back(t->getPhi());
 		localErrors.push_back(std::sqrt(1/(eB*eB) * t->getCovMatrix()[5] ));
-		localErrors.push_back( d5*d5* t->getCovMatrix()[14] );
+		localErrors.push_back(std::sqrt( d5*d5* t->getCovMatrix()[14] ) );
 		localErrors.push_back(std::sqrt(t->getCovMatrix()[2]));//phi		
 
 	}
