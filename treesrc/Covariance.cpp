@@ -290,11 +290,11 @@ std::vector<double> Covariance::constructLFOJacobian(Particle* p){
 	jacobian.push_back( px );//"dPy/dphi" );
 	
 	jacobian.push_back( -pz/k );//"dPz/dk" );
-	jacobian.push_back( -P/pt );//"dPz/dtheta" );
+	jacobian.push_back( -(P*P)/pt );//"dPz/dtheta" );
 	jacobian.push_back( 0.0);//"dPz/dphi" );
 	
 	jacobian.push_back( -P*P/(k*E) );//"dE/dk" );
-	jacobian.push_back( -pz*P*P/(k*E*pt*pt) );//"dE/dtheta" );
+	jacobian.push_back( -pz*P*P/(pt*E) );//"dE/dtheta" );
 	jacobian.push_back( 0.0);//"dE/dphi" );
 	
 	return jacobian;
