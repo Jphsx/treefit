@@ -35,6 +35,7 @@ Particle::Particle(ReconstructedParticle* p, Track* t, double B, int TrackFitObj
 		//going to need to caculate new cov matrix and parameters
 		//make local parameterization:
 		//d0,phi,k,z0,theta
+		v = getTLorentzVector(t,p->getMass(),B);
 		const double c = 2.99792458e8; // m*s^-1        
   		const double mm2m = 1e-3;
   		const double eV2GeV = 1e-9;
