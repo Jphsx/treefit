@@ -72,6 +72,7 @@ class Covariance{
 	//testing function force diagonalized matrix
 	static std::vector<std::vector<std::vector<double> > > forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > a3dmat);//TODO write this
 	static std::vector<double> getFOCovMatrix(ParticleFitObject* fo );
+	static std::vector<double> getZeroesSubMatrix(int nrowParams, int ncolParams);
 
 };
 #endif
