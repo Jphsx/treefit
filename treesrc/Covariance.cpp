@@ -777,6 +777,103 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 	return newLDcovf;
 
 }
+//returns the full square covariance matrix
+double* Covariance::getFOCovMatrix(ParticleFitObject* fo ){
+	
+	int npars = fo->getNPar();
+	std::vector<double> cov{};
+	for(int i=0; i<npars; i++){
+		for(int j=0; j<npars; j++){
+			cov.push_back(fo->getCov(i,j));
+		}
+	}
+	return cov;
+	
+}
+//float* Covariance::calculateRecoParentErrors( std::vector<Particle*> recop ,int _trackFitObject ){
+void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _trackFitObject) {
+
+		//make the proper jacobian
+		//need to make a fake combo
+		std::vector<int> combo(recop.size());
+		for(int i=0; i<combo.size(); i++){
+			combo.at(i) = i;
+		}
+		double* jacobian = constructJacobian(recop,combo,_trackFitObject);
+
+		//now make the global cov with the reco error matrices
+		//this is going to be a 3d matrix
+		std::vector<std::vector<std::vector<double> > > cov(recop.size());
+		std::vector<std::vector<double> > covcol(recop.size());
+		for(int i=0; i<cov.size(); i++){
+			cov.at(i) = covcol;
+		}
+		
+		//Use particle fit objects to make full covariance matrices for LFOs
+		for(int i=0; i<cov.size(); i++){
+			for(int j=0; j<cov.at(i).size(); j++){
+				//for the diagonal get the cov matrix from fit objects	
+				//j is also index of recop			
+				if(i==j){
+					if( recop.at(j)->isTrack && _trackFitObject==1 ){
+						//this is lfo
+						LeptonFitObject* lfo = new LeptonFitObject(
+							recop.at(j)->track, 
+							recop.at(j)->Bfield, 
+							recop.at(j)->part->getMass());
+						double* cov = getFOCovMatrix(lfo);
+						int index =0;
+						for(int i=0; i<3; i++){
+							for(int j=0; j<3; j++){
+								std::cout<<cov.at(index)<<" ";
+								index++;	
+							}
+						}
+					}
+					if( recop.at(j)->isTrack && _trackFitObject==2 ){
+						//this is tpfo
+						TrackParticleFitObject* tpfo = new TrackParticleFitObject(
+							recop.at(j)->track,
+							recop.at(j)->part->getMass());
+						double* cov = getFOCovMatrix(tpfo );
+						int index =0;
+						for(int i=0; i<5; i++){
+							for(int j=0; j<5; j++){
+								std::cout<<cov.at(index)<<" ";
+								index++;	
+							}
+						}
+					}
+					if( !recop.at(j)->isTrack ){
+						JetFitObject* jfo = new JetFitObject( new JetFitObject(
+							recop.at(j)->localParams.at(0), 
+ 							recop.at(j)->localParams.at(1), 
+							recop.at(j)->localParams.at(2),  
+							recop.at(j)->localErrors.at(0), 
+							recop.at(j)->localErrors.at(1), 
+							recop.at(j)->localErrors.at(2), 
+							recop.at(j)->part->getMass() );
+						double* cov = getFoCovMatrix(jfo);
+						int index =0;
+						for(int i=0; i<3; i++){
+							for(int j=0; j<3; j++){
+								std::cout<<cov.at(index)<<" ";
+								index++;	
+							}
+						}
+					}
+				}			
+			}
+		}		
+		
+		
+		
+
+		
+
+		
+
+}
 
 
 

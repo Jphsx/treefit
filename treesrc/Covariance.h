@@ -14,6 +14,11 @@
 #include <string>
 #include "TMath.h"
 #include "TMatrixD.h"
+
+#include "LeptonFitObject.h"
+#include "JetFitObject.h"
+#include "TrackParticleFitObject.h"
+
 typedef lcio::Track Track ;
 typedef lcio::ReconstructedParticle ReconstructedParticle ;
 typedef std::string string;
@@ -25,6 +30,7 @@ class Covariance{
 	//Options 1=LFO 2=TPFO
 	static float* get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo,  int FO_Option);
 	static double* get4VecLD(double* cov);
+	float* calculateRecoParentErrors( std::vector<Particle*> recop ,int _trackFitObject );
 	
 
 	//the jacobian derivatives are completely dependent on
@@ -64,6 +70,7 @@ class Covariance{
 
 	//testing function force diagonalized matrix
 	static std::vector<std::vector<std::vector<double> > > forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > a3dmat);//TODO write this
+	double* getFOCovMatrix(ParticleFitObject* fo );
 
 };
 #endif
