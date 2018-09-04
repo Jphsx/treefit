@@ -169,6 +169,7 @@ void TTreeFactory::TreeFillAndClear(){
 	fitLocalErrors.clear();
 
 	recoParentParams.clear();
+	recoParentErrors.clear();
 	fitParentParams.clear();
 	fitParentErrors.clear();
 	pdgs.clear();
