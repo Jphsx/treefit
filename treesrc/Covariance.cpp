@@ -757,7 +757,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 	//Covmatrix.Mult( Dmatrix, TMatrixD( Vmatrix, TMatrixD::kMultTranspose, Dmatrix)); 
 
 	//turn matrix into storable double*
-	double* newcov = new double[Nparams*Nparams];
+	double* newcov = new double[16];// this should be 16?
 	int index =0;
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
@@ -864,9 +864,36 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 			
 			}//end col loop
 		}//end row loop		
-			printSectoredCovarianceMatrix(cov );
+	//printSectoredCovarianceMatrix(cov );
+	//now transform the 3d matrix to 1d
+	double*  cov1d = matrix3DTo1D( cov , getnparamsvec(recop, combo));
+
+	TMatrixD Dmatrix(Nparams,4,jacobian,"F");
+	TMatrixD Vmatrix(Nparams,Nparams,cov1d, "F");
+        TMatrixD Covmatrix(4,4); 
+	Covmatrix.Mult( TMatrixD( Dmatrix, TMatrixD::kTransposeMult, Vmatrix) ,Dmatrix);
 		
-		
+	double* newcov = new double[16];
+	int index =0;
+	for(int i=0; i<4; i++){
+		for(int j=0; j<4; j++){
+			std::cout<<Covmatrix(i,j)<<" ";
+			newcov[index] = Covmatrix(i,j);
+			index++;
+		}
+		std::cout<<std::endl;
+	}
+	std::cout<<std::endl;
+	//printCovarianceMatrix(newcov,4,4);
+	//convert the matrix to lower diagonal
+	double* newLDcov = get4VecLD(newcov);
+	float* newLDcovf = new float[10];
+	//convert to float //TODO properly change everything to floats
+	for(int i=0; i<10; i++){
+		newLDcovf[i] = (float) newLDcov[i];
+	}
+
+	//return newLDcovf;
 		
 
 		
