@@ -31,7 +31,7 @@ class Covariance{
 	static float* get4VecCovariance(double* globalCov, int dim, std::vector<Particle*> parts, std::vector<int> globalCombo, std::vector<int> subCombo,  int FO_Option);
 	static double* get4VecLD(double* cov);
 	//float* calculateRecoParentErrors( std::vector<Particle*> recop ,int _trackFitObject );
-	void calculateRecoParentErrors(std::vector<Particle*> recop, int _trackFitObject );
+	static void calculateRecoParentErrors(std::vector<Particle*> recop, int _trackFitObject );
 	
 
 	//the jacobian derivatives are completely dependent on
@@ -71,7 +71,7 @@ class Covariance{
 
 	//testing function force diagonalized matrix
 	static std::vector<std::vector<std::vector<double> > > forcediagonalmatrix(std::vector<std::vector<std::vector<double> > > a3dmat);//TODO write this
-	double* getFOCovMatrix(ParticleFitObject* fo );
+	static double* getFOCovMatrix(ParticleFitObject* fo );
 
 };
 #endif
