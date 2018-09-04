@@ -790,6 +790,14 @@ std::vector<double> Covariance::getFOCovMatrix(ParticleFitObject* fo ){
 	return cov;
 	
 }
+std::vector<double> Covariance::getZeroesSubMatrix(int nrowParams, int ncolParams){
+	std::vector<double> zeroSector(nrowParams*ncolParams);
+	for(int i=0; i<zeroSector.size(); i++){
+		zeroSector.at(i) = 0.0;
+	}
+	return zeroSector;
+
+}
 //float* Covariance::calculateRecoParentErrors( std::vector<Particle*> recop ,int _trackFitObject ){
 void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _trackFitObject) {
 
@@ -821,32 +829,18 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 							recop.at(j)->track, 
 							recop.at(j)->Bfield, 
 							recop.at(j)->part->getMass());
-						std::vector<double> cov = getFOCovMatrix(lfo);
-						int index =0;
-						for(int i=0; i<3; i++){
-							for(int j=0; j<3; j++){
-								std::cout<<cov.at(index)<<" ";
-								index++;	
-							}
-							std::cout<<std::endl;
-						}
-							std::cout<<std::endl;
+						std::vector<double> covsector = getFOCovMatrix(lfo);
+						cov.at(i).at(j) = covsector;
+						
 					}
 					if( recop.at(j)->isTrack && _trackFitObject==2 ){
 						//this is tpfo
 						TrackParticleFitObject* tpfo = new TrackParticleFitObject(
 							recop.at(j)->track,
 							recop.at(j)->part->getMass());
-						std::vector<double> cov = getFOCovMatrix(tpfo );
-						int index =0;
-						for(int i=0; i<5; i++){
-							for(int j=0; j<5; j++){
-								std::cout<<cov.at(index)<<" ";
-								index++;	
-							}
-							std::cout<<std::endl;
-						}
-							std::cout<<std::endl;
+						std::vector<double> covsector = getFOCovMatrix(tpfo );
+						cov.at(i).at(j) = covsector;
+						
 					}
 					if( !recop.at(j)->isTrack ){
 						JetFitObject* jfo = new JetFitObject(
@@ -857,20 +851,20 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 							recop.at(j)->localErrors.at(1), 
 							recop.at(j)->localErrors.at(2), 
 							recop.at(j)->part->getMass() );
-						std::vector<double> cov = getFOCovMatrix(jfo);
-						int index =0;
-						for(int i=0; i<3; i++){
-							for(int j=0; j<3; j++){
-								std::cout<<cov.at(index)<<" ";
-								index++;	
-							}
-							std::cout<<std::endl;
-						}
-							std::cout<<std::endl;
+						std::vector<double> covsector = getFOCovMatrix(jfo);
+						cov.at(i).at(j) = covsector;
+						
 					}
-				}//end i=j			
-			}
-		}		
+				}//end i==j		
+				if(i != j){
+					//this is off diagonal make it zeros
+					cov.at(i).at(j) = getZeroesSubMatrix(recop.at(i)->localParams.size() , recop.at(j)->localParams.size() );
+					
+				}//end i!=j
+			
+			}//end col loop
+		}//end row loop		
+			printSectoredCovarianceMatrix(cov );
 		
 		
 		
