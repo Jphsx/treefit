@@ -839,6 +839,15 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 							recop.at(j)->track,
 							recop.at(j)->part->getMass());
 						std::vector<double> covsector = getFOCovMatrix(tpfo );
+						//covsector needs rescaled
+						 std::vector<double> scaleFactor{1.0e-2, 1.0, 1.0e-3, 1.0e-2, 1.0};
+						int index = 0;
+						for(int i=0; i<5; i++){
+							for(int j=0; j<5; j++){
+								covsector.at(index) = covsector.at(index) * scaleFactor.at(i) * scaleFactor.at(j);
+								index++;
+							}
+						}
 						cov.at(i).at(j) = covsector;
 						
 					}
