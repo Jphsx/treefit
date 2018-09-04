@@ -867,7 +867,7 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 	//printSectoredCovarianceMatrix(cov );
 	//now transform the 3d matrix to 1d
 	double*  cov1d = matrix3DTo1D( cov , getnparamsvec(recop, combo));
-
+	double Nparams = getNparams(recop,combo);
 	TMatrixD Dmatrix(Nparams,4,jacobian,"F");
 	TMatrixD Vmatrix(Nparams,Nparams,cov1d, "F");
         TMatrixD Covmatrix(4,4); 
