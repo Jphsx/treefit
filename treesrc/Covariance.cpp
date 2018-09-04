@@ -828,7 +828,9 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 								std::cout<<cov.at(index)<<" ";
 								index++;	
 							}
+							std::cout<<std::endl;
 						}
+							std::cout<<std::endl;
 					}
 					if( recop.at(j)->isTrack && _trackFitObject==2 ){
 						//this is tpfo
@@ -842,7 +844,9 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 								std::cout<<cov.at(index)<<" ";
 								index++;	
 							}
+							std::cout<<std::endl;
 						}
+							std::cout<<std::endl;
 					}
 					if( !recop.at(j)->isTrack ){
 						JetFitObject* jfo = new JetFitObject(
@@ -860,7 +864,9 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 								std::cout<<cov.at(index)<<" ";
 								index++;	
 							}
+							std::cout<<std::endl;
 						}
+							std::cout<<std::endl;
 					}
 				}//end i=j			
 			}
