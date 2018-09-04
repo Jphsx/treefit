@@ -778,7 +778,7 @@ float* Covariance::get4VecCovariance(double* globalCov, int dim, std::vector<Par
 
 }
 //returns the full square covariance matrix
-double* Covariance::getFOCovMatrix(ParticleFitObject* fo ){
+std::vector<double> Covariance::getFOCovMatrix(ParticleFitObject* fo ){
 	
 	int npars = fo->getNPar();
 	std::vector<double> cov{};
@@ -821,7 +821,7 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 							recop.at(j)->track, 
 							recop.at(j)->Bfield, 
 							recop.at(j)->part->getMass());
-						double* cov = getFOCovMatrix(lfo);
+						std::vector<double> cov = getFOCovMatrix(lfo);
 						int index =0;
 						for(int i=0; i<3; i++){
 							for(int j=0; j<3; j++){
@@ -835,7 +835,7 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 						TrackParticleFitObject* tpfo = new TrackParticleFitObject(
 							recop.at(j)->track,
 							recop.at(j)->part->getMass());
-						double* cov = getFOCovMatrix(tpfo );
+						std::vector<double> = getFOCovMatrix(tpfo );
 						int index =0;
 						for(int i=0; i<5; i++){
 							for(int j=0; j<5; j++){
@@ -845,7 +845,7 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 						}
 					}
 					if( !recop.at(j)->isTrack ){
-						JetFitObject* jfo = new JetFitObject( new JetFitObject(
+						JetFitObject* jfo = new JetFitObject(
 							recop.at(j)->localParams.at(0), 
  							recop.at(j)->localParams.at(1), 
 							recop.at(j)->localParams.at(2),  
@@ -853,7 +853,7 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 							recop.at(j)->localErrors.at(1), 
 							recop.at(j)->localErrors.at(2), 
 							recop.at(j)->part->getMass() );
-						double* cov = getFoCovMatrix(jfo);
+						std::vector<double> = getFOCovMatrix(jfo);
 						int index =0;
 						for(int i=0; i<3; i++){
 							for(int j=0; j<3; j++){
@@ -862,7 +862,7 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 							}
 						}
 					}
-				}			
+				}//end i=j			
 			}
 		}		
 		
