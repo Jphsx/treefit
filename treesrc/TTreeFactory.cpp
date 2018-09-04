@@ -133,6 +133,14 @@ void TTreeFactory::addFitParentErrors(float* cov){
 	fitParentErrors.push_back(sqrt((double)cov[9]));		
 
 }
+void TTreeFactory::addRecoParentErrors(float* cov){
+
+	recoParentErrors.push_back(sqrt((double)cov[0]));
+	recoParentErrors.push_back(sqrt((double)cov[2]));
+	recoParentErrors.push_back(sqrt((double)cov[5]));
+	recoParentErrors.push_back(sqrt((double)cov[9]));
+	
+}
 void TTreeFactory::addVertexDetails(VertexFitObject* vfo){
 
 	ThreeVector vtx = vfo->getVertex();

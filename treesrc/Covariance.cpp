@@ -798,8 +798,8 @@ std::vector<double> Covariance::getZeroesSubMatrix(int nrowParams, int ncolParam
 	return zeroSector;
 
 }
-//float* Covariance::calculateRecoParentErrors( std::vector<Particle*> recop ,int _trackFitObject ){
-void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _trackFitObject) {
+float* Covariance::calculateRecoParentErrors( std::vector<Particle*> recop ,int _trackFitObject ){
+//void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _trackFitObject) {
 
 		//make the proper jacobian
 		//need to make a fake combo
@@ -902,7 +902,7 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 		newLDcovf[i] = (float) newLDcov[i];
 	}
 
-	//return newLDcovf;
+	return newLDcovf;
 		
 
 		

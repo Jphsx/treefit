@@ -66,6 +66,7 @@ class TTreeFactory{
 
 	//parent error population
 	void addFitParentErrors(float* cov);
+	void addRecoParentErrors(float* cov)
 
 	//tree management functions
 	void TreeFillAndClear();

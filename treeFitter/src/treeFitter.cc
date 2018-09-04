@@ -876,8 +876,8 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			ttrees.at(index)->TreeFillAndClear();
 			
 			//TODO IN PROGRESS add this fn to ttrees
-			//ttrees.at(index)->addRecoParentErrors( Covariance::calculateRecoParentErrors( recop , _trackFitObject) );
-			Covariance::calculateRecoParentErrors(recop, _trackFitObject);
+			ttrees.at(index)->addRecoParentErrors( Covariance::calculateRecoParentErrors( recop , _trackFitObject) );
+			//Covariance::calculateRecoParentErrors(recop, _trackFitObject);
 
 			index++;	
 		}
