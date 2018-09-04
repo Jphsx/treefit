@@ -835,7 +835,7 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 						TrackParticleFitObject* tpfo = new TrackParticleFitObject(
 							recop.at(j)->track,
 							recop.at(j)->part->getMass());
-						std::vector<double> = getFOCovMatrix(tpfo );
+						std::vector<double> cov = getFOCovMatrix(tpfo );
 						int index =0;
 						for(int i=0; i<5; i++){
 							for(int j=0; j<5; j++){
@@ -853,7 +853,7 @@ void Covariance::calculateRecoParentErrors( std::vector<Particle*> recop, int _t
 							recop.at(j)->localErrors.at(1), 
 							recop.at(j)->localErrors.at(2), 
 							recop.at(j)->part->getMass() );
-						std::vector<double> = getFOCovMatrix(jfo);
+						std::vector<double> cov = getFOCovMatrix(jfo);
 						int index =0;
 						for(int i=0; i<3; i++){
 							for(int j=0; j<3; j++){
