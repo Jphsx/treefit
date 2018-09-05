@@ -46,10 +46,10 @@
 <!--		<parameter name="preorderMass" type="FloatVec"> -1 -1 -1 </parameter> --> 
 
 		<!-- vertex constraint options -->
-		<parameter name="preorderVertexConstraint" type="IntVec"> 1 -1 -1 </parameter>
+		<parameter name="preorderVertexConstraint" type="IntVec"> -1 -1 -1 </parameter>
 
 		<!-- fit object option -->
-		<parameter name="TrackFitObject" value="2" />
+		<parameter name="TrackFitObject" value="1" />
 
 		<!-- cuts -->
 		<parameter name="FitProbabilityCut" value="-2.0" />
