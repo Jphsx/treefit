@@ -1,0 +1,74 @@
+<!--#############################################################-->
+<!--#                                                           #-->
+<!--#     Example steering file for Marlin                      #-->
+<!--#   for finding and fitting pipigamma candidates consistent #-->
+<!--#     with                                                  #-->
+<!--#                                                           #-->
+<!--#           J/psi -> mu+ mu-                                #--> 
+<!--#                                                           #-->
+<!--#############################################################-->
+
+
+<marlin>
+	<execute>
+	<!-- <processor name="MyT2RP"/> -->
+   	<processor name="MyTreeFitter"/>  
+	<processor name="MyLCIOOutputProcessor"/>
+ 	</execute>
+
+	<global>
+		<parameter name="LCIOInputFiles">  </parameter>
+   		<parameter name="SkipNEvents" value="0" />
+   		<parameter name="MaxRecordNumber" value="0" /> <!-- 0 is all events -->
+   		<parameter name="SupressCheck" value="false" />
+   		<parameter name="GearXMLFile" value="gear_ILD_l5_o1_v02_dd4hep.xml" />
+   		<parameter name="Verbosity"    options= "DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT"> DEBUG </parameter>
+ 	</global>
+	
+	<processor name="MyT2RP" type="TrackToReconstructedParticle">
+		<!-- particle assumptions to be applied to tracks -->		
+		<parameter name="Pdgs" type="IntVec"> 13 -13 </parameter>
+		<parameter name="Charges" type="IntVec"> 1 -1 </parameter>
+		<parameter name="Masses" type="FloatVec"> .1056583715 .1056583715</parameter>
+
+		<!-- input/output collection names -->
+		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
+		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">NewPfoCol</parameter>
+		
+	</processor>
+
+	<processor name="MyTreeFitter" type="treeFitter">   
+		<!-- tree parameters -->
+		<parameter name="preorderPdgs" type="IntVec"> 421 -321 211 </parameter>
+		<parameter name="preorderSerial" type="string" value = "0,1,),2,),)" />
+<!--	<parameter name="preorderMass" type="FloatVec"> 3.096916 -1 -1  </parameter>  --> 
+
+		<parameter name="preorderMass" type="FloatVec"> -1 -1 -1 </parameter> 
+
+		<!-- vertex constraint options -->
+		<parameter name="preorderVertexConstraint" type="IntVec"> 1 -1 -1 </parameter>
+
+		<!-- fit object option -->
+		<parameter name="TrackFitObject" value="2" />
+
+		<!-- cuts -->
+		<parameter name="FitProbabilityCut" value="0.01" />
+
+		<!-- input/output collection names -->
+		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
+		<!-- we still require pfo collection to obtain mass information for the tracks -->
+		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
+		<parameter name="McParticleCollectionName" value="MCParticle" />  
+		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles</parameter>
+   
+ 	</processor>
+
+	<processor name="MyLCIOOutputProcessor" type="LCIOOutputProcessor">
+     		<!--   standard output: full reconstruction keep all collections -->
+     		<parameter name="LCIOOutputFile" type="string" > ./D0fit.slcio </parameter>
+     		<parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
+		<parameter name="DropCollectionTypes" >CalorimeterHit SimCalorimeterHit LCRelation Cluster SimTrackerHit TrackerHitPlane  </parameter>
+ 	</processor>
+
+
+</marlin>
