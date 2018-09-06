@@ -49,9 +49,9 @@
 		<!-- tree parameters -->
 		<parameter name="preorderPdgs" type="IntVec"> 221 211 -211 111 22 22  </parameter>
 		<parameter name="preorderSerial" type="string" value = "0,1,),2,),3,4,),5,),),)" />
-		<parameter name="preorderMass" type="FloatVec"> 0.547862 -1 -1 0.1349766 -1 -1  </parameter> 
+<!--		<parameter name="preorderMass" type="FloatVec"> 0.547862 -1 -1 0.1349766 -1 -1  </parameter> -->
 			
-	<!--	<parameter name="preorderMass" type="FloatVec"> 0.547862 -1 -1 -1 -1 -1 </parameter> -->
+		<parameter name="preorderMass" type="FloatVec"> 0.547862 -1 -1 -1 -1 -1 </parameter> 
 
 		<!-- vertex constraint options -->
 		<parameter name="preorderVertexConstraint" type="IntVec"> -1 -1 -1 -1 -1 -1  </parameter>
@@ -72,7 +72,7 @@
 
 	<processor name="MyLCIOOutputProcessor" type="LCIOOutputProcessor">
      		<!--   standard output: full reconstruction keep all collections -->
-     		<parameter name="LCIOOutputFile" type="string" > ./etapi0fit2c.slcio </parameter>
+     		<parameter name="LCIOOutputFile" type="string" > ./etapi0fit1c.slcio </parameter>
      		<parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
 		<parameter name="DropCollectionTypes" >CalorimeterHit SimCalorimeterHit LCRelation Cluster SimTrackerHit TrackerHitPlane TrackerHit </parameter>
    
