@@ -835,20 +835,32 @@ float* Covariance::calculateRecoParentErrors( std::vector<Particle*> recop ,int 
 					}
 					if( recop.at(j)->isTrack && _trackFitObject==2 ){
 						//this is tpfo
-						TrackParticleFitObject* tpfo = new TrackParticleFitObject(
-							recop.at(j)->track,
-							recop.at(j)->part->getMass());
-						std::vector<double> covsector = getFOCovMatrix(tpfo );
-						//covsector needs rescaled
-						 std::vector<double> scaleFactor{1.0e-2, 1.0, 1.0e-3, 1.0e-2, 1.0};
-						int index = 0;
-						for(int i=0; i<5; i++){
-							for(int j=0; j<5; j++){
-								covsector.at(index) = covsector.at(index) * scaleFactor.at(i) * scaleFactor.at(j);
-								index++;
+			
+					//use the actual track cov matrix, but we must expand it into a square piece that is 1d
+					//easiest approach is 2d
+						std::vector<float> ldcov = recop.at(j)->track->getCovMatrix();
+						std::vector<std::vector<double> > tcov(5);
+						std::vector<double> tcovrow(5);
+						for(int k=0; k<tcov.size(); k++){
+							tcov.at(k) = tcovrow;
+						}
+						int tindex = 0;
+						for(int k=0; k<tcov.size(); k++){
+							for(int l=0; l<=k; l++){
+								tcov.at(k).at(l) = ldcov[tindex];
+								tcov.at(l).at(k) = ldcov[tindex];
+								tindex++;
 							}
 						}
-						cov.at(i).at(j) = covsector;
+						//remap to 1d
+						std::vector<double> tcov1d{};
+						for(int k=0; k<tcov.size(); k++){
+							for(int l=0; l<tcov.at(i).size(); l++){
+								tcov1d.push_back(tcov.at(l).at(k));
+							}
+						}
+						//add the sector
+						cov.at(i).at(j) = tcov1d;
 						
 					}
 					if( !recop.at(j)->isTrack ){
