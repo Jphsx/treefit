@@ -11,29 +11,45 @@
 
 <marlin>
 	<execute>
-	<!-- <processor name="MyT2RP"/> -->
+	<processor name="MyMCParticleSelection"/>
+	<processor name="MyT2RP"/> 
    	<processor name="MyTreeFitter"/>  
 	<processor name="MyLCIOOutputProcessor"/>
  	</execute>
 
 	<global>
-		<parameter name="LCIOInputFiles">  </parameter>
+		<parameter name="LCIOInputFiles"> /pnfs/desy.de/ilc/prod/ilc/mc-opt-3/ild/dst-merged/500-TDR_ws/4f_WW_semileptonic/ILD_l5_o1_v02/v02-00-01/rv02-00-01.sv02-00-01.mILD_l5_o1_v02.E500-TDR_ws.I250018.P4f_ww_sl.eL.pR.n001.d_dstm_10318_0.slcio </parameter>
    		<parameter name="SkipNEvents" value="0" />
    		<parameter name="MaxRecordNumber" value="0" /> <!-- 0 is all events -->
    		<parameter name="SupressCheck" value="false" />
    		<parameter name="GearXMLFile" value="gear_ILD_l5_o1_v02_dd4hep.xml" />
    		<parameter name="Verbosity"    options= "DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT"> DEBUG </parameter>
  	</global>
-	
+
+	 <processor name="MyMCParticleSelection" type="MCParticleSelection">
+
+                <parameter name="Pdgs" type="IntVec"> 421 -421 </parameter>
+
+                <!-- input/output collection names -->
+                <parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
+                <parameter name="McParticleCollectionName" value="MCParticle" />
+
+                <parameter name="OutputTrackCollectionName" type="string" lcioOutType="Track">d0candidates</parameter>
+                <parameter name="OutputMCCollectionName" type="string" lcioOutType="MCParticle"> MCd0s </parameter>
+
+        </processor>
+
 	<processor name="MyT2RP" type="TrackToReconstructedParticle">
 		<!-- particle assumptions to be applied to tracks -->		
-		<parameter name="Pdgs" type="IntVec"> 13 -13 </parameter>
-		<parameter name="Charges" type="IntVec"> 1 -1 </parameter>
-		<parameter name="Masses" type="FloatVec"> .1056583715 .1056583715</parameter>
+		<parameter name="Pdgs" type="IntVec"> -321 211 </parameter>    <!-- d0 -->
+	<!--	<parameter name="Pdgs" type="IntVec"> 321 -211 </paramter> --> <!-- d0bar  --> 
+		<parameter name="Charges" type="IntVec"> -1 1 </parameter>     <!-- d0 -->
+	<!--    <parameter name="Charges" type="IntVec"> 1 -1 </parameter> --> <!-- d0bar -->
+		<parameter name="Masses" type="FloatVec"> 0.493677 0.13957018</parameter>
 
 		<!-- input/output collection names -->
-		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
-		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">NewPfoCol</parameter>
+		<parameter name="InputTrackCollectionName" value="d0candidates" />
+		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">d0pfos</parameter>
 		
 	</processor>
 
@@ -55,10 +71,10 @@
 		<parameter name="FitProbabilityCut" value="0.01" />
 
 		<!-- input/output collection names -->
-		<parameter name="InputTrackCollectionName" value="MarlinTrkTracks" />
+		<parameter name="InputTrackCollectionName" value="d0candidates" />
 		<!-- we still require pfo collection to obtain mass information for the tracks -->
-		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">PandoraPFOs</parameter>
-		<parameter name="McParticleCollectionName" value="MCParticle" />  
+		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">d0pfos</parameter>
+		<parameter name="McParticleCollectionName" value="MCd0s" />  
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles</parameter>
    
  	</processor>
@@ -67,7 +83,7 @@
      		<!--   standard output: full reconstruction keep all collections -->
      		<parameter name="LCIOOutputFile" type="string" > ./D0fit.slcio </parameter>
      		<parameter name="LCIOWriteMode" type="string" value="WRITE_NEW"/>
-		<parameter name="DropCollectionTypes" >CalorimeterHit SimCalorimeterHit LCRelation Cluster SimTrackerHit TrackerHitPlane  </parameter>
+		<parameter name="DropCollectionTypes" >CalorimeterHit SimCalorimeterHit LCRelation Cluster SimTrackerHit TrackerHitPlane TrackerHit ReconstructedParticle Vertex  </parameter>
  	</processor>
 
 
