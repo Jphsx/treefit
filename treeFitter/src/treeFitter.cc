@@ -695,6 +695,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		//if the mass cut is not met continue to the next fit
 		bool massflag = false;
 		for(int m =0; m< _massCut.size(); m++){
+			std::cout<<" hello from masscut"<<std::endl;
 			if(_massCut.at(m) == -1) continue;
 			Node* node = Tree::getNode(TFit->ParticleTree->Root, m);
 			if(node->mass == -1 ) continue;
@@ -703,7 +704,10 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 			for(unsigned int n=0; n<fit.at(m).size(); n++){
 				recosum += TFit->recoparts.at( fit.at(m).at(n) )->v;
+				std::cout<< fit.at(m).at(n)<<" ";
 			}
+			std::cout<<std::endl;
+			std::cout<<"recosum "<<recosum.M()<<std::endl;
 			//get the node m mass
 			if( fabs(recosum.M()- node->mass) > _massCut.at(m) ){
 				std::cout<<"Mass requirement "<<m<<" not met for Fit "<< j <<std::endl;
