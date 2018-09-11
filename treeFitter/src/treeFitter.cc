@@ -113,6 +113,13 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 			          _fitProbabilityCut,
 			          (double)0.001);
 
+	std::vector<float> massCut;
+	preorderMass.push_back(-1.0);
+	registerProcessorParameter("massCut",
+				   "allowed mass deviation for each node, -1 for no cut",
+				   _massCut,
+				   massCut);
+
 	//Tracked Fit object option
 	registerProcessorParameter( "TrackFitObject" ,
 				   "[1] LeptonFitObject, [2] TrackParticleFitObject" ,
@@ -685,7 +692,26 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 				fit.at(i) = TFit->fitTable.at(i).at(j);
 			}
 		}
-		
+		//if the mass cut is not met continue to the next fit
+		bool massflag = false;
+		for(int m =0; m< _massCut.size(); m++){
+			if(_massCut.at(m) == -1) continue;
+			Node* node = Tree::getNode(TFit->ParticleTree->Root, m);
+			if(node->mass == -1 ) continue;
+			//sum the particles
+			TLorentzVector recosum;
+
+			for(unsigned int n=0; n<fit.at(m).size(); n++){
+				recosum += TFit->recoparts.at( fit.at(m).at(n) )->v;
+			}
+			//get the node m mass
+			if( fabs(recosum.M()- node->mass) > _massCut.at(m) ){
+				std::cout<<"Mass requirement "<<m<<" not met for Fit "<< j <<std::endl;
+				massflag = true;
+			}
+		}
+
+		if(massflag) continue;
 		//print to track fit info
 		std::cout<<"FIT: "<<j<<" Results - "<<std::endl;
 		fitter = fitParticles(fit);

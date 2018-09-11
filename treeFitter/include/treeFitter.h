@@ -158,6 +158,10 @@ class treeFitter : public marlin::Processor {
 
 	//cut parameters
 	double _fitProbabilityCut;
+	// ordering follows fit convention
+	//index 0 of _massCut is the allowed mass deviation for node 0
+	//index 1 -> node 1 etc..
+	std::vector<float> _massCut;
 
 	//TrackFitObject option
 	int _trackFitObject;
