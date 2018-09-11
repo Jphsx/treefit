@@ -722,8 +722,16 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 
 		if(massflag) continue;
 		//print to track fit info
-		std::cout<<"FIT: "<<j<<" Results - "<<std::endl;
 		fitter = fitParticles(fit);
+		bool probflag = false;
+		if(fitter->getProbability() <  _fitProbabilityCut){
+			std::cout<<"Probability requirement "<<_fitProbabilityCut<<" not met for Fit "<< j <<" Probability: "<<fitter->getProbability()<<std::endl;
+		   probflag = true;
+		}
+		if(probflag) continue;
+
+		std::cout<<"FIT: "<<j<<" Results - "<<std::endl;
+		
 ////////////////??TESTING TRACK fit iteration///////////////////////////////
 /*		//after the initial fit if there is a vertex fit we need to accomodate for change of reference
 		//int the reconstructed tracks, and then refit the tracks
