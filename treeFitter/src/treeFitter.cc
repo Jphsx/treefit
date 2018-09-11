@@ -714,7 +714,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			std::cout<<std::endl;
 			std::cout<<"recosum "<<recosum.M()<<std::endl;
 			//get the node m mass
-			if( fabs(recosum.M()- node->mass) > _massCut.at(m) ){
+			if( fabs(recosum.M()- _masses.at(m)) > _massCut.at(m) ){
 				std::cout<<"Mass requirement "<<m<<" not met for Fit "<< j <<std::endl;
 				massflag = true;
 			}
