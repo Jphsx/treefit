@@ -70,6 +70,7 @@
 		<!-- cuts -->
 		<parameter name="FitProbabilityCut" value="0.01" />
 		<parameter name="massCut" type="FloatVec"> 0.5 </parameter> <!-- in GeV -->
+		<parameter name="Masses" type="FloatVec"> 1.86484 </parameter> 
 
 		<!-- input/output collection names -->
 		<parameter name="InputTrackCollectionName" value="d0candidates" />

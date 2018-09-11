@@ -119,6 +119,12 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 				   "allowed mass deviation for each node, -1 for no cut",
 				   _massCut,
 				   massCut);
+	std::vector<float> masses;
+	preorderMass.push_back(-1.0);
+	registerProcessorParameter("Masses",
+				   "mass of each node for use with the mass cut",
+				   _masses,
+				   masses);
 
 	//Tracked Fit object option
 	registerProcessorParameter( "TrackFitObject" ,
@@ -697,8 +703,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		for(int m =0; m< _massCut.size(); m++){
 			std::cout<<" hello from masscut"<<std::endl;
 			if(_massCut.at(m) == -1) continue;
-			Node* node = Tree::getNode(TFit->ParticleTree->Root, m);
-			if(node->mass == -1 ) continue;
+			if(_masses.at(m) == -1 ) continue;
 			//sum the particles
 			TLorentzVector recosum;
 
