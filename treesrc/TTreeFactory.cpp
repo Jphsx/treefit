@@ -167,9 +167,9 @@ void TTreeFactory::addMCParticles(std::vector<MCParticle*> mcparts){
 		mcp.push_back(mcparts.at(i)->getEnergy());
 		mcp.push_back(mcparts.at(i)->getMass());
 		mcp.push_back(mcparts.at(i)->getCharge());
-		mcp.push_back(mcparts.at(i)->getVertex()[0]);
-		mcp.push_back(mcparts.at(i)->getVertex()[1]);
-		mcp.push_back(mcparts.at(i)->getVertex()[2]);
+		mcp.push_back(mcparts.at(i)->getEndpoint()[0]);
+		mcp.push_back(mcparts.at(i)->getEndpoint()[1]);
+		mcp.push_back(mcparts.at(i)->getEndpoint()[2]);
 	
 		mcParams.push_back(mcp);
 		mcp.clear();
