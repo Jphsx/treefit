@@ -21,6 +21,11 @@ class TTreeFactory{
 	void initVertexVars();
 	bool usingVertex{};
 	void clearVertex();
+
+	//montecarlo variable management
+	void initMCVars();
+	bool usingMCparts{};
+	void clearMC();
 		
 	TTree* tree{};
 	
@@ -44,7 +49,10 @@ class TTreeFactory{
 	//Errors : { dPx dPy dPz dE }
 	std::vector<double> recoParentErrors{}; //TODO these
 	std::vector<double> fitParentErrors{};
-	
+
+	//monte carlo particles
+	//params {pdg px py pz E m q x y z}
+	std::vector<std::vector<double> > mcParams{};
 	
 	//this nodes resonance mass
 	double RecoMass{};
@@ -63,6 +71,8 @@ class TTreeFactory{
 	void addFitDetails(double fitprob, double chisq); 
 	void addVertexDetails(VertexFitObject* vfo);
 	//TODO MonteCarlo stuff?
+	
+	void addMCParticles(std::vector<MCParticle*> mcparts); 
 
 	//parent error population
 	void addFitParentErrors(float* cov);

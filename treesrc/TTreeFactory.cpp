@@ -35,6 +35,10 @@ void TTreeFactory::initVertexVars(){
 	tree->Branch("vertexErrors.",&vertexErrors);
 	usingVertex=true;
 }
+void TTreeFactory::initMCVars(){
+	tree->Branch("mcParams.",&mcParams);
+	usingMCparts=true;	
+}
 void TTreeFactory::addFittedParticle(Particle* fitcontainer){
 	fitLocalParams.push_back(fitcontainer->localParams);
 	fitLocalErrors.push_back(fitcontainer->localErrors);
@@ -153,6 +157,24 @@ void TTreeFactory::addVertexDetails(VertexFitObject* vfo){
 	vertexErrors.push_back(vfo->getError(2));
 
 }
+void TTreeFactory::addMCParticles(std::vector<MCParticle*> mcparts){
+	std::vector<double> mcp{};
+	for(int i=0; i< mcparts.size(); i++){
+		mcp.push_back(mcparts.at(i)->getPDG());
+		mcp.push_back(mcparts.at(i)->getMomentum()[0]);
+		mcp.push_back(mcparts.at(i)->getMomentum()[1]);
+		mcp.push_back(mcparts.at(i)->getMomentum()[2]);
+		mcp.push_back(mcparts.at(i)->getEnergy());
+		mcp.push_back(mcparts.at(i)->getMass());
+		mcp.push_back(mcparts.at(i)->getCharge());
+		mcp.push_back(mcparts.at(i)->getVertex()[0]);
+		mcp.push_back(mcparts.at(i)->getVertex()[1]);
+		mcp.push_back(mcparts.at(i)->getVertex()[2]);
+	
+		mcParams.push_back(mcp);
+		mcp.clear();
+	}
+}
 void TTreeFactory::TreeFillAndClear(){
 	//fill the tree
 	tree->Fill();
@@ -177,6 +199,12 @@ void TTreeFactory::TreeFillAndClear(){
 	if(usingVertex){
 		vertex.clear();
 		vertexErrors.clear();
+	}
+	if(usingMCparts){
+		for(int i=0; i<mcPdgs.size(); i++){
+			mcPdgs.at(i).clear();
+		}
+		mcPdgs.clear();
 	}
 	
 }
