@@ -69,7 +69,7 @@
 		<parameter name="TrackFitObject" value="2" />
 
 		<!-- cuts -->
-		<parameter name="FitProbabilityCut" value="0.01" />
+		<parameter name="FitProbabilityCut" value="0.001" />
 		<parameter name="massCut" type="FloatVec"> 0.5 </parameter> <!-- in GeV -->
 		<parameter name="Masses" type="FloatVec"> 1.86484 </parameter> 
 
