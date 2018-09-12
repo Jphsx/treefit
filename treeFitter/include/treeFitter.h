@@ -81,6 +81,8 @@ class treeFitter : public marlin::Processor {
 	**************/ 
   	bool FindPFOs( LCEvent* evt );
   	bool FindTracks( LCEvent* evt );
+	//option to use MCParticles
+	int _useMCParticles{};
   	bool FindMCParticles( LCEvent* evt); 
 
 	/**************

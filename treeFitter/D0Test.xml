@@ -76,6 +76,8 @@
 		<parameter name="InputTrackCollectionName" value="d0candidates" />
 		<!-- we still require pfo collection to obtain mass information for the tracks -->
 		<parameter name="InputParticleCollectionName" type="string" lcioInType="ReconstructedParticle">d0pfos</parameter>
+
+		<parameter name="UseMCParticles" value="1" />
 		<parameter name="McParticleCollectionName" value="MCd0s" />  
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">FittedParticles</parameter>
    

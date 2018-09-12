@@ -131,6 +131,11 @@ treeFitter::treeFitter() : marlin::Processor("treeFitter") {
 				   "[1] LeptonFitObject, [2] TrackParticleFitObject" ,
 				    _trackFitObject ,
 				    (int) 2);
+	//mc option
+	registerProcessorParameter( "UseMCParticles" ,
+				   "[0] No, [1] Yes" ,
+				    _useMCParticles ,
+				    (int) 0);
 
 return;
 }
@@ -166,11 +171,18 @@ void treeFitter::init() {
 				//if VC at this node is != -1 prep the ttree to accept vertex info
 				ttf->initVertexVars();
 			}
+			if(_useMCParticles){
+				//each node will possess all mcparts because its easier
+				ttf->initMCVars();
+			}
 			ttrees.push_back(ttf);
 			
 			
 		}
-	}		
+	}	
+
+
+		
 	
 
   return;
@@ -196,7 +208,9 @@ void treeFitter::processEvent( LCEvent * evt ) {
 	
 		//TODO: if(using mcparticles){
 		//find mcparticles
-		FindMCParticles(evt);
+		if(_useMCParticles){
+			FindMCParticles(evt);
+		}
 	
 		//call fitter
 		this->FindMassConstraintCandidates(recparcol);
@@ -866,6 +880,7 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 		
 
 	
+	
 	//iterate through the fit, create the needed fit particles
 	//put the particles on new vectors, now indexed by a pdg vector
 	//re-vectoring will get rid of gaps in used reco/fit particle vector
@@ -917,6 +932,9 @@ void treeFitter::FindMassConstraintCandidates(LCCollectionVec * recparcol) {
 			float* cov4vec = Covariance::get4VecCovariance(gcov,gcovdim, TFit->fitparts, bestfit.at(0), bestfit.at(i), _trackFitObject);
 			ttrees.at(index)->addFitParentErrors(cov4vec);
 			ttrees.at(index)->addRecoParentErrors( Covariance::calculateRecoParentErrors( recop , _trackFitObject) );
+			if(_useMCParticles){
+				ttrees.at(index)->addMCParticles(_mcpartvec);
+			}
 			ttrees.at(index)->TreeFillAndClear();
 			
 			//TODO IN PROGRESS add this fn to ttrees
