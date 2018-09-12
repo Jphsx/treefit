@@ -201,10 +201,10 @@ void TTreeFactory::TreeFillAndClear(){
 		vertexErrors.clear();
 	}
 	if(usingMCparts){
-		for(int i=0; i<mcPdgs.size(); i++){
-			mcPdgs.at(i).clear();
+		for(int i=0; i<mcParams.size(); i++){
+			mcParams.at(i).clear();
 		}
-		mcPdgs.clear();
+		mcParams.clear();
 	}
 	
 }
