@@ -51,7 +51,7 @@
 		<parameter name="InputTrackCollectionName" value="d0candidates" />
 		<parameter name="OutputParticleCollectionName" type="string" lcioOutType="ReconstructedParticle">d0pfos</parameter>
 		
-	</processor>
+	</processor> 
 
 	<processor name="MyTreeFitter" type="treeFitter">   
 		<!-- tree parameters -->
