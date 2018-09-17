@@ -885,7 +885,7 @@ float* Covariance::calculateRecoParentErrors( std::vector<Particle*> recop ,int 
 			
 			}//end col loop
 		}//end row loop		
-	printSectoredCovarianceMatrix(cov );
+	//printSectoredCovarianceMatrix(cov );
 	//now transform the 3d matrix to 1d
 	double*  cov1d = matrix3DTo1D( cov , getnparamsvec(recop, combo));
 	double Nparams = getNparams(recop,combo);
@@ -898,7 +898,7 @@ float* Covariance::calculateRecoParentErrors( std::vector<Particle*> recop ,int 
 	int index =0;
 	for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
-			std::cout<<Covmatrix(i,j)<<" ";
+			//std::cout<<Covmatrix(i,j)<<" ";
 			newcov[index] = Covmatrix(i,j);
 			index++;
 		}
